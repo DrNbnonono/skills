@@ -123,7 +123,7 @@ FORMAL_WORDS = [
     r"endeavor(?:s|ed|ing)?", r"endeavour(?:s|ed|ing)?", r"ascertain(?:s|ed|ing)?",
     r"elucidat(?:e|es|ed|ing)", r"constitut(?:e|es|ed|ing)", r"compris(?:e|es|ed|ing)",
     r"aforementioned", r"henceforth", r"notwithstanding", r"whilst", r"amongst",
-    r"thereby", r"herein", r"thereof", r"substantial(?:ly)?",
+    r"thereby", r"herein", r"thereof",
     r"prior to", r"subsequent to", r"in order to", r"with respect to",
     r"due to the fact that", r"it is worth noting that", r"it should be noted that",
 ]
