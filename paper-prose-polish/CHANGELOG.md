@@ -1,5 +1,54 @@
 # Changelog
 
+## v2.3 - local artifacts, measured by annotation
+
+v2.2 measured what a word counter can see. This round measures what it cannot: defects that
+depend on where a sentence sits and what the previous sentence established. Five hypotheses, a
+precision audit, and **three null results**.
+
+### Corpus
+
+120 top-tier security papers (USENIX 58, CCS 30, NDSS 20, S&P 12), 1,489,207 words, 64,889
+sentences, segmented into introduction (165,399 words) and evaluation (204,398 words) strata;
+plus one magazine issue and the draft. Unit: per 1,000 sentences.
+
+### Confirmed
+
+- **A18 quantifier colon** (narrowed). Strict form - a quantifier standing directly before a
+  colon - occurs **0 times** in 120 papers and 0 times in the magazine. The loose form (any
+  quantifier near a colon) had ~30% precision: it fires on `both humans and machines:` and on
+  math appendix lines. Rule rewritten to the strict form; the loose form is explicitly not a rule.
+- **A19 author-framing hedge** (new). `That is an empirical question, not a premise`, `we treat X
+  as an empirical question`: **0 hits in 64,889 published sentences**, 1 in the draft. Excludes
+  `X remains an open question whether ...`, whose subject is the phenomenon and which is common
+  in limitations sections.
+
+### Null results (no rule written)
+
+| Artifact | Corpus | Magazine | Draft | Why no rule |
+|---|---|---|---|---|
+| Label summaries (colon + `X and Y`) | 2.8/1k, 89/120 papers | 1.6/1k | 0 | ordinary colon lists; published prose uses them freely |
+| Navigation (`the next section`) | 0.8/1k, 37/120 papers | 0.4/1k | 1 hit | signposting is not a defect |
+| `And` / `But` openers | 1.0/1k, 28/120 papers | **10.1/1k** | 0 | a register marker; **retracted** the v2.2 "paragraph-flattening" claim |
+
+### Added
+
+- **`references/local-artifacts.md`** - corpora, stratified rates, the per-detector precision
+  audit, the three nulls, and the four method lessons (including "build the detector from the
+  defect, not from the words").
+- **L20** the claim carries its own caveat; **A19** author-framing hedge.
+- **Linter**: `ah` / `ah_per_1k`; gate checks `fq_per_1k <= 0.2` and `ah_per_1k <= 0.2`. The
+  `fq` regex was tightened to the strict form.
+- **`ai-artifacts.md`**: section 3.4 upgraded from "local only" to measured; section 3.5
+  retracted with the magazine counter-evidence.
+
+### Not changed
+
+Everything v2.2 established: rewrite authority tiers, the DELETE verdict, negation norms,
+reader model.
+
+---
+
 ## v2.2 - what generated prose gets wrong, and one null result
 
 ### Measured, and rejected

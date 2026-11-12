@@ -85,24 +85,21 @@ next section's first sentence. Published prose does this at section boundaries, 
 end of a body paragraph. If the following block is a list of research questions, the closing
 summary is read twice in ten seconds.
 
-### 3.4 Meta-hedge in place of a claim
+### 3.4 Meta-hedge in place of a claim (measured in v2.3)
 
 > We treat AI's role in that acceleration as an empirical question.
 
-This is a statement about the author's method, not about the world. It reads as careful, but it
-costs a sentence and leaves the reader with no fact. Either fold the hedge into the claim it
-qualifies ("… whatever role AI plays in that acceleration"), or move it to the limitations
-section, where epistemic caveats belong.
+This is a statement about the author's method, not about the world. Measured on 120 top-tier
+papers (64,889 sentences): **zero** occurrences of the author-framing form; one in the draft.
+Rule: `sentence-rules.md` L20, code A19. The look-alike `X remains an open question whether ...`
+is legitimate (its subject is the phenomenon) and was excluded by the strict detector.
 
-### 3.5 Paragraph-flattening
+### 3.5 `And` at sentence start - retracted as a defect (v2.3)
 
-Two distinct thoughts joined with a coordinating conjunction at sentence start:
-
-> And a separate benchmark asks whether AI models can rediscover already-known vulnerabilities.
-
-`And` opening a sentence is normal in speech and in magazines; in a methods-adjacent paragraph it
-signals that a new unit of thought was appended rather than integrated. Merge it into the
-sentence it belongs to, or give it its own topic sentence.
+Measured: 1.0 per 1,000 sentences in 120 papers, **10.1 per 1,000 in a magazine issue**. It is a
+register marker, not an error. The earlier version of this file called it "paragraph-flattening";
+the data do not support that. Flag it only when consecutive sentences or paragraph openings begin
+this way.
 
 ---
 

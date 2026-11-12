@@ -55,6 +55,7 @@ Any failed question → the sentence enters revision. All five pass → **KEEP a
 | **A16** | Misordered information | Claim placed after its evidence, or old information in the stress position; conclusion buried in a trailing clause | L4, S8 |
 | **A17** | Negation stack | >=2 negators in one sentence; a sentence opening `Not / Never / No / Neither / Unlike`; `we do not ...` describing the author's own stance; a negator plus a negative prefix (`not uncommon`) | L18 |
 | **A18** | Unanchored quantifier / label summary | `both`, `the two`, `the second` before the pair is introduced; a closing sentence that restates the section's labels (`accuracy and pace`) instead of naming measured objects | L19 |
+| **A19** | Author-framing hedge | Sentence about the paper's own epistemic status: `that is an empirical question`, `not a premise`, `we treat X as an empirical question`; excludes `X remains an open question whether ...` (subject is the phenomenon) | L20 |
 
 ---
 

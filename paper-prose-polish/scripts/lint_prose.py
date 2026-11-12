@@ -80,9 +80,19 @@ AUTHOR_NEG_RE = re.compile(
 )
 
 # L19: a quantifier that announces a pair it has not introduced ("We measure both: X and Y").
+# Strict (v2.3): only a quantifier standing directly in front of a colon. The loose variant
+# matched correct prose ("both humans and machines:") and math appendix lines.
 FORWARD_QUANT_RE = re.compile(
-    r"\bboth\s*:|\btwo (?:things|parts|measurements|questions)\s*:|"
-    r"\bthe (?:two|three)\s+(?:things|parts|measurements)\s*:",
+    r"\b(?:both|the two|these two|these three|two things|two parts|two measurements)\s*:",
+    re.I,
+)
+
+# A19: a sentence about the paper's own epistemic status. Excludes
+# "X remains an open question whether ..." (subject is the phenomenon).
+AUTH_HEDGE_RE = re.compile(
+    r"\b(?:this|that|which) is an? (?:empirical|open) question\b"
+    r"|\bwe (?:treat|regard|consider|view)\b[^.]{0,60}\bas an? (?:empirical|open)\b"
+    r"|\bnot (?:a premise|an assumption)\b",
     re.I,
 )
 
@@ -285,6 +295,7 @@ def analyse_file(path: str) -> tuple[list[dict], dict]:
         contrast = len(CONTRAST_RE.findall(s))
         author_neg = len(AUTHOR_NEG_RE.findall(s))
         fq = len(FORWARD_QUANT_RE.findall(s))
+        ah = len(AUTH_HEDGE_RE.findall(s))
         rows.append(
             {
                 "file": os.path.basename(path),
@@ -306,6 +317,7 @@ def analyse_file(path: str) -> tuple[list[dict], dict]:
                 "contrast": contrast,
                 "author_neg": author_neg,
                 "fq": fq,
+                "ah": ah,
             }
         )
     n = len(rows)
@@ -342,6 +354,8 @@ def analyse_file(path: str) -> tuple[list[dict], dict]:
         ),
         "fq": sum(r["fq"] for r in rows),
         "fq_per_1k": round(1000 * sum(r["fq"] for r in rows) / total_words, 2),
+        "ah": sum(r["ah"] for r in rows),
+        "ah_per_1k": round(1000 * sum(r["ah"] for r in rows) / total_words, 2),
         # L2 blockers
         "w2v_mean": round(statistics.mean(w2v_valid), 1) if w2v_valid else 0.0,
         "w2v_over10": sum(1 for v in w2v_valid if v > 10),
@@ -392,6 +406,7 @@ GATE_TABLE = {
         ("double_neg_pct", "<=", 1.5, "sentences with >=2 negators %"),
         ("contrast_per_1k", "<=", 1.5, "contrast markers per 1,000 words"),
         ("fq_per_1k", "<=", 0.2, "forward-announcing quantifiers per 1,000"),
+        ("ah_per_1k", "<=", 0.2, "author-framing hedges per 1,000"),
     ],
     "magazine": [
         ("mean", "<=", 25, "mean sentence length"),
@@ -407,6 +422,7 @@ GATE_TABLE = {
         ("double_neg_pct", "<=", 1.5, "sentences with >=2 negators %"),
         ("contrast_per_1k", "<=", 1.5, "contrast markers per 1,000 words"),
         ("fq_per_1k", "<=", 0.2, "forward-announcing quantifiers per 1,000"),
+        ("ah_per_1k", "<=", 0.2, "author-framing hedges per 1,000"),
     ],
 }
 
@@ -536,6 +552,8 @@ def main() -> None:
         ),
         "fq": sum(r["fq"] for r in all_rows),
         "fq_per_1k": round(1000 * sum(r["fq"] for r in all_rows) / (sum(w) or 1), 2),
+        "ah": sum(r["ah"] for r in all_rows),
+        "ah_per_1k": round(1000 * sum(r["ah"] for r in all_rows) / (sum(w) or 1), 2),
     }
     print("-" * len(hdr))
     print(

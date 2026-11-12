@@ -362,6 +362,32 @@ section's list carry the load.
 
 ---
 
+## L20 The claim carries its own caveat
+
+Do not spend a sentence on the paper's own epistemic status. Fold the caveat into the claim it
+qualifies, or move it to the limitations section.
+
+**Before** (two sentences, one claim, zero information about the world)
+
+> We treat AI's role in that acceleration as an empirical question. That is an empirical question,
+> not a premise.
+
+**After** (the caveat rides inside the claim)
+
+> The question is whether advisories and the fixes they describe can stay accurate and keep pace
+> once discovery accelerates, whatever role AI plays in that acceleration.
+
+**Measured.** Sentences whose subject is the paper's epistemic status ("That is an empirical
+question, not a premise"; "we treat X as an empirical question") occur **0 times in 64,889
+sentences** of 120 top-tier papers and **0 times** in a magazine issue; the draft had one. The
+legitimate look-alike is `X remains an open question whether ...`, where the subject is the
+phenomenon and the sentence belongs in limitations or future work - that form is common and
+should be left alone.
+
+See `local-artifacts.md` section 4.2 for the corpus and the precision audit.
+
+---
+
 ## Paragraph-level companions
 
 - First sentence = the paragraph's claim, not its background.

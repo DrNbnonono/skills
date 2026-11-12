@@ -1,7 +1,7 @@
 ---
 name: paper-prose-polish
 description: Polish English academic prose for security/systems venues (S&P, USENIX Security, CCS, NDSS, journals, IEEE S&P Magazine), written for readers whose first language is not English. Use for 润色/改写/逐句修改论文表述, diagnosing why a paragraph is unreadable, converting a conference paper into a magazine feature, or a clarity review before submission. Core rule: if a competent non-native reader cannot follow a sentence on the first pass, the sentence is broken. Measures the draft first, then revises sentence by sentence with a defect code and a stated reader-stall reason for every change.
-version: 2.2
+version: 2.3
 ---
 
 # Paper prose polish
@@ -221,10 +221,11 @@ term, or three? Does the first sentence name the claim, or start with background
 | `references/venue-prose-corpus.md` | What the top-4 venues reward in prose; corpus protocol to re-measure |
 | `references/comprehension-gate.md` | The first-read / shadow / stranger tests, stall taxonomy, worked pairs |
 | `references/vocabulary.md` | Transparent vocabulary, idiom and phrasal-verb avoidance, what not to simplify |
-| `references/sentence-rules.md` | The 19 sentence rules (L1–L19) with mechanisms and before/after |
-| `references/rubric.md` | Five questions, defect codes A1–A18, verdicts, surgery moves |
+| `references/sentence-rules.md` | The 20 sentence rules (L1–L20) with mechanisms and before/after |
+| `references/rubric.md` | Five questions, defect codes A1–A19, verdicts, surgery moves |
 | `references/diagnosis-playbook.md` | Measurement method, thresholds (incl. L2 blockers), how to report findings |
 | `references/magazine-mode.md` | Converting a conference paper into a magazine feature |
+| `references/local-artifacts.md` | Annotation study over 120 papers: five local artifacts, per-sentence rates, precision audit, and three null results |
 | `references/ai-artifacts.md` | What generated prose gets wrong, split into measured artifacts and local-only ones, with null results kept |
 | `references/worked-example.md` | A full worked case: measured draft → revised paragraphs |
 | `scripts/lint_prose.py` | Sentence-length / passive / nominalisation / dash / negation / L2-blocker counter, `--gate`, `--explain` |
