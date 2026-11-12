@@ -272,6 +272,60 @@ somewhere else in the paper.
 
 ---
 
+## L18 Affirm first; negate only against a named alternative
+
+State the claim positively. Use a negation to contrast with **a specific, named alternative**
+("unlike Project Zero's estimate, which ..."; "the patch does not cover chain E"), and keep at
+most one negator per sentence.
+
+**Mechanism.** A negated statement costs two steps: the reader builds the positive proposition,
+then inverts it (the comprehension gate calls this stall S6). Two negators cost three. Worse,
+negation about one's own framing ("we do not assume ...", "that is not a premise") reads as
+*defensive*: the reviewer infers the author is pre-empting an objection instead of reporting a
+result.
+
+**Measured norm** (same counter, see `diagnosis-playbook.md` section 3.2):
+
+| Metric | 16 top-tier papers | IEEE S&P Magazine issue | A non-native draft |
+|---|---|---|---|
+| Negators per 1,000 words | 4.6 (range 2.6-7.1) | 4.6 | **9.7** |
+| Sentences with >=2 negators | 0.8% | 0.8% | **5.7%** |
+| Contrast markers per 1,000 | 0.66 | 0.50 | **3.7** |
+| "we do not / we cannot" per 1,000 | 0.14 | 0.00 | **0.90** |
+
+Negation is not rare in top-tier prose: roughly one negator per 220 words is normal. What is
+rare is **stacked** negation and **self-directed** negation. The fix is not to purge negation
+but to stop paying for it when the positive form says the same thing.
+
+**Before** (four sentences, two of them about what is *not* claimed):
+
+> We deliberately do not assume that these trends make advisories less accurate or exploitation
+> faster. That is an empirical question, not a premise. Our premise is narrower. If the pace of
+> discovery and exploit-artifact dissemination changes, it is an open question whether vendor
+> advisories, downstream advisories, and the remediation itself can keep pace.
+
+**After** (one negator left, the positive claim promoted to the front):
+
+> The premise is narrower: as discovery and exploit-artifact dissemination accelerate,
+> advisories and remediation may fail to keep pace. Whether AI is what accelerates them is an
+> empirical question, and RQ2 measures the trend descriptively.
+
+**Three shapes to delete on sight**
+
+1. **Meta-negation** - a sentence whose content is the status of the author's own claim:
+   "that is an empirical question, not a premise", "we do not claim X", "this is not to say Y".
+   Move the caveat into a subordinate clause, or delete it and let the limitations section carry it.
+2. **Payload in the negative slot** - an "X, not Y" appositive where the reader needs X but is
+   handed the contrast first ("a large attack surface, not an edge case"). Say X; drop Y.
+3. **Double negation** - "not uncommon", "not unlikely", "not without risk", "cannot be ruled
+   out". Replace with the positive adjective: "common", "likely", "risky", "possible".
+
+**Where negation earns its place**: contrasting a named prior system; a genuine impossibility
+that bounds a claim; a limitation the author is obliged to state. In those three cases keep it,
+and make the alternative explicit.
+
+---
+
 ## Paragraph-level companions
 
 - First sentence = the paragraph's claim, not its background.

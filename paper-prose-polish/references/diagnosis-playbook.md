@@ -71,6 +71,25 @@ idioms each are short and opaque. Check the L2 blockers before declaring the pas
 
 ---
 
+### 3.2 Negation calibration (v2.1)
+
+Same counter, three corpora:
+
+| Corpus | Words | Negators /1k | >=2-negator sentences | Contrast /1k | "we do not" /1k |
+|---|---|---|---|---|---|
+| 16 top-tier security papers (arXiv HTML, venue named in comments) | 250,316 | **4.6** (2.6-7.1) | **0.8%** (0.1-1.7) | 0.66 | 0.14 |
+| IEEE S&P Magazine, one full issue | 64,197 | **4.6** | **0.8%** | 0.50 | 0.00 |
+| A non-native draft (same paper as the worked example) | 6,480 | **9.7** | **5.7%** | 3.70 | 0.90 |
+
+The draft is beyond the maximum of every sampled paper on every negation metric. That is the
+signature of defensive framing (L18 / A17), not a stylistic preference. Two corpora agreeing at
+4.6 and 0.8% is the reason the gate uses 6 and 1.5% rather than a stricter cutoff.
+
+Method note: the conference corpus is 16 arXiv papers whose comment field names USENIX
+Security, IEEE S&P, ACM CCS, or NDSS; HTML full text was fetched and stripped, body plus
+references included. It is a convenience sample, adequate for an order of magnitude and for the
+observation that two independent corpora land on the same number.
+
 ## 4. Reading the numbers
 
 | Pattern | Interpretation | First action |
@@ -83,6 +102,7 @@ idioms each are short and opaque. Check the L2 blockers before declaring the pas
 | Abstract: 0 `We` sentences | The abstract describes results as if they occurred without an agent | Rewrite the abstract (do it last, once terminology is settled) |
 | Dashes >5 per 1,000 words | Argument is being smuggled into asides | Q4 audit: delete each dash and test the main clause |
 | Section mean >45 | Usually the appendix and the conclusion: the two places reviewers check rigour | Treat as a priority, not an afterthought |
+| Negators >8/1k **and** >=2-negator sentences >3% | Defensive framing: the paper spends sentences on what it does not claim | L18 pass: recast to positive, keep only contrasts with named alternatives |
 
 ---
 

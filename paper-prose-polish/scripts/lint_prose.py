@@ -63,6 +63,22 @@ BARE_THIS_RE = re.compile(
 )
 WE_START_RE = re.compile(r"(?:^|[.!?]\s+)(?:We|Our)\b")
 
+# Negation metrics (L18 / A17). Reference norm measured with this counter: 16 top-tier
+# security papers average 4.6 negators per 1,000 words (range 2.6-7.1), 0.8% of sentences
+# carry two or more, and author-negation ("we do not claim/assume") is near zero. A full
+# issue of IEEE S&P Magazine measures the same 4.6 / 0.8%.
+CORE_NEG_RE = re.compile(
+    r"\b(?:not|no|never|none|nobody|nothing|neither|nor|cannot|without)\b|n't\b", re.I
+)
+CONTRAST_RE = re.compile(
+    r"\b(?:rather than|instead of|as opposed to|unlike|in contrast|by contrast|"
+    r"on the contrary|contrary to)\b",
+    re.I,
+)
+AUTHOR_NEG_RE = re.compile(
+    r"\bwe\s+(?:do not|don't|did not|didn't|cannot|can't|never|are not)\b", re.I
+)
+
 # ---------------------------------------------------------------------------
 # L2 blocker lexicons
 # ---------------------------------------------------------------------------
@@ -258,6 +274,9 @@ def analyse_file(path: str) -> tuple[list[dict], dict]:
         idioms = sum(len(r.findall(s)) for r in IDIOM_RE)
         formal = sum(len(r.findall(s)) for r in FORMAL_RE)
         syl = sum(syllables(w) for w in words)
+        neg = len(CORE_NEG_RE.findall(s))
+        contrast = len(CONTRAST_RE.findall(s))
+        author_neg = len(AUTHOR_NEG_RE.findall(s))
         rows.append(
             {
                 "file": os.path.basename(path),
@@ -275,6 +294,9 @@ def analyse_file(path: str) -> tuple[list[dict], dict]:
                 "idioms": idioms,
                 "formal": formal,
                 "syll": syl,
+                "neg": neg,
+                "contrast": contrast,
+                "author_neg": author_neg,
             }
         )
     n = len(rows)
@@ -300,6 +322,15 @@ def analyse_file(path: str) -> tuple[list[dict], dict]:
         "bare_this": sum(r["bare_this"] for r in rows),
         "we_start": sum(r["we_start"] for r in rows),
         "dashes": sum(r["dash"] for r in rows),
+        # negation (L18)
+        "neg_per_1k": round(1000 * sum(r["neg"] for r in rows) / total_words, 1),
+        "double_neg_pct": round(
+            100 * sum(1 for r in rows if r["neg"] >= 2) / total_sent, 1
+        ),
+        "contrast_per_1k": round(1000 * sum(r["contrast"] for r in rows) / total_words, 2),
+        "author_neg_per_1k": round(
+            1000 * sum(r["author_neg"] for r in rows) / total_words, 2
+        ),
         # L2 blockers
         "w2v_mean": round(statistics.mean(w2v_valid), 1) if w2v_valid else 0.0,
         "w2v_over10": sum(1 for v in w2v_valid if v > 10),
@@ -346,6 +377,9 @@ GATE_TABLE = {
         ("clauses_over2", "<=", 0.15, "share of sentences with >2 clauses"),
         ("idioms_per_1k", "<=", 2, "idioms per 1,000 words"),
         ("formal_per_1k", "<=", 5, "non-transparent formal words per 1,000"),
+        ("neg_per_1k", "<=", 6, "negators per 1,000 words"),
+        ("double_neg_pct", "<=", 1.5, "sentences with >=2 negators %"),
+        ("contrast_per_1k", "<=", 1.5, "contrast markers per 1,000 words"),
     ],
     "magazine": [
         ("mean", "<=", 25, "mean sentence length"),
@@ -357,6 +391,9 @@ GATE_TABLE = {
         ("clauses_over2", "<=", 0.10, "share of sentences with >2 clauses"),
         ("idioms_per_1k", "<=", 2, "idioms per 1,000 words"),
         ("formal_per_1k", "<=", 3, "non-transparent formal words per 1,000"),
+        ("neg_per_1k", "<=", 6, "negators per 1,000 words"),
+        ("double_neg_pct", "<=", 1.5, "sentences with >=2 negators %"),
+        ("contrast_per_1k", "<=", 1.5, "contrast markers per 1,000 words"),
     ],
 }
 
@@ -442,7 +479,7 @@ def main() -> None:
     hdr = (
         f"{'file':24}{'sent':>6}{'words':>6}{'mean':>6}{'med':>6}{'p90':>5}{'max':>5}"
         f"{'>35':>5}{'>45':>5}{'pass%':>6}{'nom/s':>6}{'This':>5}{'We':>4}{'---':>4}"
-        f"{'w2v':>5}{'cl/s':>5}{'idiom':>6}{'formal':>7}{'FRES':>6}"
+        f"{'w2v':>5}{'cl/s':>5}{'idiom':>6}{'formal':>7}{'FRES':>6}{'neg/1k':>7}{'dbl%':>6}"
     )
     print(hdr)
     print("-" * len(hdr))
@@ -452,7 +489,7 @@ def main() -> None:
             f"{a['median']:>6}{a['p90']:>5}{a['max']:>5}{a['over35']:>5}{a['over45']:>5}"
             f"{a['passive_pct']:>6}{a['nom_per_sent']:>6}{a['bare_this']:>5}{a['we_start']:>4}"
             f"{a['dashes']:>4}{a['w2v_mean']:>5}{a['clauses_mean']:>5}{a['idioms']:>6}"
-            f"{a['formal']:>7}{a['flesch']:>6}"
+            f"{a['formal']:>7}{a['flesch']:>6}{a['neg_per_1k']:>7}{a['double_neg_pct']:>6}"
         )
 
     n = len(all_rows) or 1
@@ -478,6 +515,12 @@ def main() -> None:
         "formal": sum(r["formal"] for r in all_rows),
         "formal_per_1k": round(1000 * sum(r["formal"] for r in all_rows) / (sum(w) or 1), 2),
         "flesch": round(statistics.mean([a["flesch"] for a in aggs]), 1) if aggs else 0,
+        "neg_per_1k": round(1000 * sum(r["neg"] for r in all_rows) / (sum(w) or 1), 1),
+        "double_neg_pct": round(100 * sum(1 for r in all_rows if r["neg"] >= 2) / n, 1),
+        "contrast_per_1k": round(1000 * sum(r["contrast"] for r in all_rows) / (sum(w) or 1), 2),
+        "author_neg_per_1k": round(
+            1000 * sum(r["author_neg"] for r in all_rows) / (sum(w) or 1), 2
+        ),
     }
     print("-" * len(hdr))
     print(
@@ -487,6 +530,7 @@ def main() -> None:
         f"{total['nom_per_sent']:>6}{total['bare_this']:>5}{total['we_start']:>4}{total['dashes']:>4}"
         f"{total['w2v_mean']:>5}{round(sum(r['clauses'] for r in all_rows) / n, 2):>5}"
         f"{total['idioms']:>6}{total['formal']:>7}{total['flesch']:>6}"
+        f"{total['neg_per_1k']:>7}{total['double_neg_pct']:>6}"
     )
 
     if args.compare and os.path.exists(args.compare):

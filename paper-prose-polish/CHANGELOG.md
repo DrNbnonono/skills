@@ -1,5 +1,42 @@
 # Changelog
 
+## v2.1 - the negation norm
+
+A reader's hypothesis, tested rather than accepted: top-tier papers state claims positively and
+rarely negate. Half right, and the half that is wrong matters.
+
+### Measured
+
+Same counter on three corpora:
+
+| Corpus | Words | Negators /1k | >=2-negator sentences | Contrast /1k | "we do not" /1k |
+|---|---|---|---|---|---|
+| 16 top-tier security papers | 250,316 | 4.6 (2.6-7.1) | 0.8% (0.1-1.7) | 0.66 | 0.14 |
+| IEEE S&P Magazine, one issue | 64,197 | 4.6 | 0.8% | 0.50 | 0.00 |
+| The non-native draft in the worked example | 6,480 | 9.7 | 5.7% | 3.70 | 0.90 |
+
+Negation is **not** rare: one negator per 220 words is normal, and two independent corpora land
+on the same figure. What is rare is stacked negation and self-directed negation. The draft sits
+beyond the maximum of every sampled paper on every metric - the signature of defensive framing.
+
+### Added
+
+- **L18 affirm first; negate only against a named alternative** in `sentence-rules.md`, with the
+  corpus table, the three shapes to delete (meta-negation, payload in the negative slot, double
+  negation), and a before/after taken from the draft.
+- **A17 negation stack** in `rubric.md`, plus the fixed-direction recast table.
+- **Section 3.2 negation calibration** in `diagnosis-playbook.md`, including the method note
+  (arXiv HTML whose comment field names the venue; convenience sample, stated as such).
+- **Linter**: `neg/1k`, `dbl%` columns; `neg_per_1k`, `double_neg_pct`, `contrast_per_1k` in the
+  JSON; three new gate checks (`neg_per_1k <= 6`, `double_neg_pct <= 1.5`, `contrast_per_1k <= 1.5`).
+
+### Not changed
+
+Everything else. L18 does not contradict L2/L7 (agent as subject) - it is the same principle
+applied to polarity: say what is, then contrast it with something specific.
+
+---
+
 ## v2.0 — the first-read gate (L2 reader model)
 
 The v1 skill measured sentences for a native reader: length, passive, nominalisation,

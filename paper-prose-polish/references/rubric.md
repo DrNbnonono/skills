@@ -53,6 +53,24 @@ Any failed question → the sentence enters revision. All five pass → **KEEP a
 | **A14** | Referent lost | `this` / `it` / `the former` with a distant or ambiguous antecedent; two competing nouns before the pronoun | L16 |
 | **A15** | Clause stack | ≥3 subordinate clauses (`because/although/while/which/that/if`) or ≥2 parenthetical insertions in one sentence | L14, S3 |
 | **A16** | Misordered information | Claim placed after its evidence, or old information in the stress position; conclusion buried in a trailing clause | L4, S8 |
+| **A17** | Negation stack | >=2 negators in one sentence; a sentence opening `Not / Never / No / Neither / Unlike`; `we do not ...` describing the author's own stance; a negator plus a negative prefix (`not uncommon`) | L18 |
+
+---
+
+A17 has a fixed rewriting direction: **almost always recast to the positive**. Keep the
+negation only when the sentence contrasts a *named* alternative, or states a genuine
+impossibility that bounds the claim.
+
+| Negative form | Positive recast |
+|---|---|
+| "That is an empirical question, not a premise." | "The premise is narrower: ..." |
+| "This is not to say that every advisory is wrong." | "Most advisories are right; the errors concentrate in one claim." |
+| "We cannot rule out that the trend is confounded." | "The data are consistent with a confounded trend." |
+| "not uncommon" | "common" |
+| "We deliberately do not assume that AI accelerates this." | "Whether AI accelerates this is what RQ2 measures." |
+
+Norm: top-tier papers average 4.6 negators per 1,000 words and 0.8% sentences with two or
+more; see `sentence-rules.md` L18 for the corpora.
 
 ---
 

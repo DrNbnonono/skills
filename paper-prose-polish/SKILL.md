@@ -1,7 +1,7 @@
 ---
 name: paper-prose-polish
 description: Polish English academic prose for security/systems venues (S&P, USENIX Security, CCS, NDSS, journals, IEEE S&P Magazine), written for readers whose first language is not English. Use for 润色/改写/逐句修改论文表述, diagnosing why a paragraph is unreadable, converting a conference paper into a magazine feature, or a clarity review before submission. Core rule: if a competent non-native reader cannot follow a sentence on the first pass, the sentence is broken. Measures the draft first, then revises sentence by sentence with a defect code and a stated reader-stall reason for every change.
-version: 2.0
+version: 2.1
 ---
 
 # Paper prose polish
@@ -98,7 +98,8 @@ python scripts/lint_prose.py --path <paper-dir> --glob "*.tex" --out baseline.js
 
 Read `references/diagnosis-playbook.md` for how to interpret the numbers and how to set
 thresholds for the venue class. Report at minimum: mean/median/p90 sentence length,
-sentences over 45 words, passive rate, nominalisation density, dash count, and the share of
+sentences over 45 words, passive rate, nominalisation density, dash count, negation density
+(negators per 1,000 words and the share of sentences with two or more), and the share of
 sentences whose subject is an agent.
 
 Since v2 the linter also measures the four **L2 blockers**: words before the main verb,
@@ -187,6 +188,7 @@ term, or three? Does the first sentence name the claim, or start with background
 | Applying conference rules to a magazine | Wrong anonymity, template, CVE, and length decisions |
 | **Trusting a grammar checker as the gate** | Grammatical sentences routinely fail first-read comprehension; the gate is the L2 reader, not the parser |
 | **Native-style flourish** (rhetorical questions, fragments for drama, irony, metaphors that carry the claim) | Costs an L2 reader a re-read every time; the flourish is never worth it in a security paper |
+| **Negation-first framing** ("we do not assume ...", "that is not a premise") | Reads as defensive and costs the reader an extra inversion; top-tier papers spend far fewer sentences on what they do not claim (L18) |
 | **"Simplifying" the domain vocabulary** | An expert reader does not need `vulnerability` renamed; they need the sentence's syntax fixed |
 | **Hedging with unfamiliar forms** (`is liable to`, `stands to`) | An L2 reader may miss the hedge entirely and read a stronger claim than intended |
 | **Using an idiom as compression** ("the fix fell through the cracks") | The idiom is opaque to most international readers, and the compression hides the agent |
@@ -199,11 +201,11 @@ term, or three? Does the first sentence name the claim, or start with background
 | `references/venue-prose-corpus.md` | What the top-4 venues reward in prose; corpus protocol to re-measure |
 | `references/comprehension-gate.md` | The first-read / shadow / stranger tests, stall taxonomy, worked pairs |
 | `references/vocabulary.md` | Transparent vocabulary, idiom and phrasal-verb avoidance, what not to simplify |
-| `references/sentence-rules.md` | The 17 sentence rules (L1–L17) with mechanisms and before/after |
-| `references/rubric.md` | Five questions, defect codes A1–A16, verdicts, surgery moves |
+| `references/sentence-rules.md` | The 18 sentence rules (L1–L18) with mechanisms and before/after |
+| `references/rubric.md` | Five questions, defect codes A1–A17, verdicts, surgery moves |
 | `references/diagnosis-playbook.md` | Measurement method, thresholds (incl. L2 blockers), how to report findings |
 | `references/magazine-mode.md` | Converting a conference paper into a magazine feature |
 | `references/worked-example.md` | A full worked case: measured draft → revised paragraphs |
-| `scripts/lint_prose.py` | Sentence-length / passive / nominalisation / dash / L2-blocker counter, `--gate`, `--explain` |
+| `scripts/lint_prose.py` | Sentence-length / passive / nominalisation / dash / negation / L2-blocker counter, `--gate`, `--explain` |
 | `templates/revision-table.md` | Per-round record format |
 | `CHANGELOG.md` | What changed in v2 and why |
