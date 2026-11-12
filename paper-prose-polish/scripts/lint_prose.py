@@ -79,6 +79,13 @@ AUTHOR_NEG_RE = re.compile(
     r"\bwe\s+(?:do not|don't|did not|didn't|cannot|can't|never|are not)\b", re.I
 )
 
+# L19: a quantifier that announces a pair it has not introduced ("We measure both: X and Y").
+FORWARD_QUANT_RE = re.compile(
+    r"\bboth\s*:|\btwo (?:things|parts|measurements|questions)\s*:|"
+    r"\bthe (?:two|three)\s+(?:things|parts|measurements)\s*:",
+    re.I,
+)
+
 # ---------------------------------------------------------------------------
 # L2 blocker lexicons
 # ---------------------------------------------------------------------------
@@ -277,6 +284,7 @@ def analyse_file(path: str) -> tuple[list[dict], dict]:
         neg = len(CORE_NEG_RE.findall(s))
         contrast = len(CONTRAST_RE.findall(s))
         author_neg = len(AUTHOR_NEG_RE.findall(s))
+        fq = len(FORWARD_QUANT_RE.findall(s))
         rows.append(
             {
                 "file": os.path.basename(path),
@@ -297,6 +305,7 @@ def analyse_file(path: str) -> tuple[list[dict], dict]:
                 "neg": neg,
                 "contrast": contrast,
                 "author_neg": author_neg,
+                "fq": fq,
             }
         )
     n = len(rows)
@@ -331,6 +340,8 @@ def analyse_file(path: str) -> tuple[list[dict], dict]:
         "author_neg_per_1k": round(
             1000 * sum(r["author_neg"] for r in rows) / total_words, 2
         ),
+        "fq": sum(r["fq"] for r in rows),
+        "fq_per_1k": round(1000 * sum(r["fq"] for r in rows) / total_words, 2),
         # L2 blockers
         "w2v_mean": round(statistics.mean(w2v_valid), 1) if w2v_valid else 0.0,
         "w2v_over10": sum(1 for v in w2v_valid if v > 10),
@@ -380,6 +391,7 @@ GATE_TABLE = {
         ("neg_per_1k", "<=", 6, "negators per 1,000 words"),
         ("double_neg_pct", "<=", 1.5, "sentences with >=2 negators %"),
         ("contrast_per_1k", "<=", 1.5, "contrast markers per 1,000 words"),
+        ("fq_per_1k", "<=", 0.2, "forward-announcing quantifiers per 1,000"),
     ],
     "magazine": [
         ("mean", "<=", 25, "mean sentence length"),
@@ -394,6 +406,7 @@ GATE_TABLE = {
         ("neg_per_1k", "<=", 6, "negators per 1,000 words"),
         ("double_neg_pct", "<=", 1.5, "sentences with >=2 negators %"),
         ("contrast_per_1k", "<=", 1.5, "contrast markers per 1,000 words"),
+        ("fq_per_1k", "<=", 0.2, "forward-announcing quantifiers per 1,000"),
     ],
 }
 
@@ -521,6 +534,8 @@ def main() -> None:
         "author_neg_per_1k": round(
             1000 * sum(r["author_neg"] for r in all_rows) / (sum(w) or 1), 2
         ),
+        "fq": sum(r["fq"] for r in all_rows),
+        "fq_per_1k": round(1000 * sum(r["fq"] for r in all_rows) / (sum(w) or 1), 2),
     }
     print("-" * len(hdr))
     print(

@@ -54,6 +54,7 @@ Any failed question → the sentence enters revision. All five pass → **KEEP a
 | **A15** | Clause stack | ≥3 subordinate clauses (`because/although/while/which/that/if`) or ≥2 parenthetical insertions in one sentence | L14, S3 |
 | **A16** | Misordered information | Claim placed after its evidence, or old information in the stress position; conclusion buried in a trailing clause | L4, S8 |
 | **A17** | Negation stack | >=2 negators in one sentence; a sentence opening `Not / Never / No / Neither / Unlike`; `we do not ...` describing the author's own stance; a negator plus a negative prefix (`not uncommon`) | L18 |
+| **A18** | Unanchored quantifier / label summary | `both`, `the two`, `the second` before the pair is introduced; a closing sentence that restates the section's labels (`accuracy and pace`) instead of naming measured objects | L19 |
 
 ---
 
@@ -83,6 +84,7 @@ more; see `sentence-rules.md` L18 for the corpora.
 | **SPLIT** | Content correct, too long | Cut at `;`, `and`, or `which` into 2–3 sentences | ~25% |
 | **RECAST** | Content correct, unreadable because of subject or order | Change the subject, move the verb forward, put the conclusion last | ~10% |
 | **REWRITE** | **Meaning itself is unclear** | Stop and ask the author; do not guess | ~5% |
+| **DELETE** | Nothing to preserve: filler, duplicate, dangling quantifier, or a summary already given by the next section | Remove it; record what was removed and why nothing is lost | ~5% |
 
 REWRITE exists because some unreadable sentences are unreadable for a reason grammar cannot
 fix: the author has not decided what the sentence asserts. Ask, batch the questions, continue.

@@ -326,6 +326,42 @@ and make the alternative explicit.
 
 ---
 
+## L19 Quantifiers point backwards; summaries name objects
+
+`both`, `the two`, `the second`, `these three` presuppose that the reader has already stored the
+set. Introduce the pair **before** the quantifier, never after it.
+
+**Mechanism.** A forward-announcing quantifier makes the reader hold an empty slot while the
+sentence fills it; if what arrives is two abstract labels rather than two objects, the slot never
+resolves. The comprehension gate records this as a pause (S2) that no amount of re-reading fixes.
+
+**Before**
+
+> We measure both: accuracy and pace.
+
+**After** (name the objects, drop the quantifier)
+
+> We check the documents against dynamic exploitation, and we time the ecosystem's response
+> against public artifacts.
+
+**Or after** (keep the pair in front of the quantifier)
+
+> Two measurements follow: how accurately the documents describe what is exploitable, and how
+> fast the ecosystem responds. Both use the same disclosure timeline.
+
+**Corpus note.** Published prose uses `both X and Y` at 0.45-0.56 per 1,000 words, and in a full
+magazine issue every `both` points backwards to a pair the reader has already met; the
+forward-announcing `both:` form appears zero times. Do **not** treat signposting itself as a
+defect - meta-discourse runs at 0.77 per 1,000 words in top-tier papers, which is where the draft
+sits. The defect is the unanchored quantifier and the label noun, not the act of signposting.
+See `ai-artifacts.md` section 2 for the null result.
+
+A closing sentence that restates the section's labels adds no information. Either replace the
+labels with the objects the instrument produced, or delete the sentence and let the next
+section's list carry the load.
+
+---
+
 ## Paragraph-level companions
 
 - First sentence = the paragraph's claim, not its background.

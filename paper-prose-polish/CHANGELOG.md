@@ -1,5 +1,47 @@
 # Changelog
 
+## v2.2 - what generated prose gets wrong, and one null result
+
+### Measured, and rejected
+
+The hypothesis: generated prose over-narrates itself, so signposting should be rare in published
+papers and the draft should exceed the norm. Measured on the same three corpora:
+
+| Metric | 16 papers | Magazine | Draft |
+|---|---|---|---|
+| Meta-discourse per 1,000 words | 0.77 (0.13-1.18) | 0.48 | 0.91 |
+| Share of sentences with meta-discourse | 1.65% | 1.2% | 2.6% |
+| "both X and Y" per 1,000 | 0.45 | 0.56 | 0.15 |
+
+The draft sits inside the published range. **No rule was added.** The null result is recorded in
+`references/ai-artifacts.md` section 2, so the skill does not later acquire a rule that would
+flag accepted papers.
+
+### Added
+
+- **`references/ai-artifacts.md`** - generated-prose artifacts split into (a) measured, (b)
+  measured-and-rejected, (c) local-only, with the extension procedure that keeps null results.
+- **L19 quantifiers point backwards; summaries name objects**. The surviving defect is local: a
+  quantifier announcing a pair it has not introduced ("We measure both: accuracy and pace"), and
+  a closing sentence that restates the section's labels instead of the measured objects. Corpus
+  check: in one magazine issue every `both` points backwards; the forward-announcing `both:`
+  form appears zero times.
+- **A18 unanchored quantifier / label summary**.
+- **DELETE verdict** in `rubric.md` and in Step 3: nothing to preserve is a legitimate outcome.
+- **Rewrite authority** section in `SKILL.md`: three tiers (rebuild silently and report;
+  replace the sentence; restructure across paragraphs only after discussion), with the invariant
+  that numbers, claim strength, term meanings, and citations are never changed silently.
+- **Linter**: `fq` / `fq_per_1k` (forward-announcing quantifiers) and a gate check at <= 0.2 per
+  1,000.
+
+### Why the policy change matters
+
+The old instruction "do not improve KEEP sentences" was read as "keep the author's wording
+whenever the claim is intact". That produces polite rewrites of sentences that should not exist.
+Fidelity is owed to the claim, not to the sentence.
+
+---
+
 ## v2.1 - the negation norm
 
 A reader's hypothesis, tested rather than accepted: top-tier papers state claims positively and

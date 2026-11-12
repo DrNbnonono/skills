@@ -1,7 +1,7 @@
 ---
 name: paper-prose-polish
 description: Polish English academic prose for security/systems venues (S&P, USENIX Security, CCS, NDSS, journals, IEEE S&P Magazine), written for readers whose first language is not English. Use for 润色/改写/逐句修改论文表述, diagnosing why a paragraph is unreadable, converting a conference paper into a magazine feature, or a clarity review before submission. Core rule: if a competent non-native reader cannot follow a sentence on the first pass, the sentence is broken. Measures the draft first, then revises sentence by sentence with a defect code and a stated reader-stall reason for every change.
-version: 2.1
+version: 2.2
 ---
 
 # Paper prose polish
@@ -74,6 +74,26 @@ Not for: copy-editing that must preserve house style verbatim; proofreading-only
 9. **Do not trade accuracy for readability.** If making a sentence easy requires dropping a
    qualifier, keep the qualifier and split the sentence instead.
 
+## Rewrite authority
+
+Fidelity is owed to the **claim**, not to the sentence that currently carries it. Three tiers:
+
+**Tier 1 - rebuild silently, then report.** Delete, merge, split, or reorder inside a paragraph
+when the sentence is filler, a duplicate, a dangling quantifier, or a label summary. No
+discussion needed; record the change and state what was removed and why nothing is lost.
+
+**Tier 2 - replace the sentence.** Substitute a different sentence carrying the same claim. State
+the old wording, the new wording, and confirm the claim is unchanged.
+
+**Tier 3 - restructure, but discuss first.** Moving, merging, or reordering paragraphs; changing
+what a section argues; deleting a claim. Ask, because this changes the shape of the argument and
+the author may have a reason the text does not show.
+
+Never silent, at any tier: numbers, the strength of a claim, a technical term's meaning, or the
+removal of a citation or a fact. Those default to Tier 3.
+
+---
+
 ## Step 0 — Venue gate (do this before touching a sentence)
 
 Identify the target: top-4 security conference, systems conference, IEEE/ACM journal,
@@ -139,8 +159,8 @@ Work in batches of 20–30 sentences. For each sentence:
 1. **Five questions** (see `references/rubric.md`): who does what; one breath; can it be
    restated in one sentence in the author's language; does the main clause survive deleting
    parentheticals; does it survive one first read without a stall.
-2. **Assign defect codes** A1–A16 (A13–A16 are the L2 codes added in v2).
-3. **Assign a verdict**: KEEP / TRIM / SPLIT / RECAST / REWRITE.
+2. **Assign defect codes** A1–A18 (A13–A16 are the L2 codes added in v2).
+3. **Assign a verdict**: KEEP / TRIM / SPLIT / RECAST / REWRITE / DELETE.
 4. **Apply a surgery move**, not a paraphrase.
 5. **Record** the change with the reason ("the reader stalls at X"), never "smoother".
 
@@ -201,10 +221,11 @@ term, or three? Does the first sentence name the claim, or start with background
 | `references/venue-prose-corpus.md` | What the top-4 venues reward in prose; corpus protocol to re-measure |
 | `references/comprehension-gate.md` | The first-read / shadow / stranger tests, stall taxonomy, worked pairs |
 | `references/vocabulary.md` | Transparent vocabulary, idiom and phrasal-verb avoidance, what not to simplify |
-| `references/sentence-rules.md` | The 18 sentence rules (L1–L18) with mechanisms and before/after |
-| `references/rubric.md` | Five questions, defect codes A1–A17, verdicts, surgery moves |
+| `references/sentence-rules.md` | The 19 sentence rules (L1–L19) with mechanisms and before/after |
+| `references/rubric.md` | Five questions, defect codes A1–A18, verdicts, surgery moves |
 | `references/diagnosis-playbook.md` | Measurement method, thresholds (incl. L2 blockers), how to report findings |
 | `references/magazine-mode.md` | Converting a conference paper into a magazine feature |
+| `references/ai-artifacts.md` | What generated prose gets wrong, split into measured artifacts and local-only ones, with null results kept |
 | `references/worked-example.md` | A full worked case: measured draft → revised paragraphs |
 | `scripts/lint_prose.py` | Sentence-length / passive / nominalisation / dash / negation / L2-blocker counter, `--gate`, `--explain` |
 | `templates/revision-table.md` | Per-round record format |
