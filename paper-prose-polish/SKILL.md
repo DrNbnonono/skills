@@ -1,7 +1,7 @@
 ---
 name: paper-prose-polish
 description: Polish English academic prose for security/systems venues (S&P, USENIX Security, CCS, NDSS, journals, IEEE S&P Magazine), written for readers whose first language is not English. Use for 润色/改写/逐句修改论文表述, diagnosing why a paragraph is unreadable, converting a conference paper into a magazine feature, or a clarity review before submission. Core rule: if a competent non-native reader cannot follow a sentence on the first pass, the sentence is broken. Measures the draft first, then revises sentence by sentence with a defect code and a stated reader-stall reason for every change.
-version: 2.3
+version: 2.4
 ---
 
 # Paper prose polish
@@ -177,6 +177,19 @@ covers the restructure (display-item budget, sidebar instead of appendix, scene 
 For each paragraph, also check the L2 reader's load: does the paragraph introduce one new
 term, or three? Does the first sentence name the claim, or start with background?
 
+## Step 4.5 — Placement review
+
+After the sentences, read the paper for **where things sit**, not how they read. Use
+`references/structure-and-placement.md`:
+
+1. Compare the layout against measured conventions (120 papers): related work before design in
+   75%, a dedicated limitations section in 13%, a roadmap sentence in 17.5%.
+2. Flag paragraphs whose size is in the top decile (corpus p90: 97 words, 4 sentences).
+3. Flag content that a reader needs earlier than it appears, and content that repeats a passage
+   from another section.
+4. **Raise every placement change as a question, never apply it silently.** State the convention,
+   the cost, and two options; the author decides. Placement is Tier 3 in "Rewrite authority".
+
 ## Step 5 — Verify
 
 - Re-run the linter with `--compare baseline.json`; compare against the threshold table in
@@ -226,6 +239,8 @@ term, or three? Does the first sentence name the claim, or start with background
 | `references/diagnosis-playbook.md` | Measurement method, thresholds (incl. L2 blockers), how to report findings |
 | `references/magazine-mode.md` | Converting a conference paper into a magazine feature |
 | `references/local-artifacts.md` | Annotation study over 120 papers: five local artifacts, per-sentence rates, precision audit, and three null results |
+| `references/structure-and-placement.md` | Measured layout conventions, a placement checklist, and the protocol for raising a move as a question |
+| `references/l2-grammar.md` | Article / agreement / tense detectors: what was measured, and the three that failed |
 | `references/ai-artifacts.md` | What generated prose gets wrong, split into measured artifacts and local-only ones, with null results kept |
 | `references/worked-example.md` | A full worked case: measured draft → revised paragraphs |
 | `scripts/lint_prose.py` | Sentence-length / passive / nominalisation / dash / negation / L2-blocker counter, `--gate`, `--explain` |

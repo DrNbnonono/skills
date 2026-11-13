@@ -125,6 +125,28 @@ deliberately. Flag it only when a paragraph opens with `And` repeatedly.
 
 ---
 
+---
+
+## 7. Paragraph boundaries (v2.4)
+
+v2.3 could only approximate paragraph ends with navigation words, because the corpus kept flat
+section text. v2.4 re-parsed all 120 papers keeping `<p>` boundaries: 12,146 paragraphs.
+
+| Measure | Corpus |
+|---|---|
+| Paragraphs | 12,146 |
+| Words per paragraph (median / p90) | 75 / 97 |
+| Sentences per paragraph (median / p90) | 3 / 4 |
+| Redundant closure (last sentence overlaps the next paragraph and points forward) | 129 = **10.6 per 1,000 paragraphs**; 55.8% of papers have at least one |
+
+Draft for comparison: 54 paragraphs, median **112** words (p90 179), median 3.0 sentences
+(p90 6). The paragraph count matches the norm; the paragraph *mass* does not.
+
+Detection rule, so the number is reproducible: last sentence of paragraph *i* and first sentence
+of paragraph *i+1* share at least two content words (function words excluded), and the last
+sentence contains a forward marker (`below`, `the next section`, `we now`, `Section N`). See
+`structure-and-placement.md` sections 1.3 and 1.5 for the placement consequences.
+
 ## 6. Reproduce
 
 ```bash

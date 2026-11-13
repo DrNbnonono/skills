@@ -1,5 +1,59 @@
 # Changelog
 
+## v2.4 - placement, paragraphs, and an honest grammar dead end
+
+Three things a sentence counter cannot see: where a paragraph sits, where a paragraph ends, and
+whether the grammar is broken at all. One of the three produced a usable method.
+
+### Structure and placement (new reference)
+
+120 papers, 12,146 paragraphs, section roles detected from headings:
+
+| Convention | Share |
+|---|---|
+| Related work before design | 75.0% (after evaluation: 15.0%) |
+| Dedicated limitations section | 13.3% |
+| Threat model / assumptions section | 17.5% |
+| Ethics section | 29.2% |
+| Conclusion section | 90.8% |
+| Introduction ends with a roadmap sentence | **17.5%** |
+| Paragraph median / p90 | 75 / 97 words; 3 / 4 sentences |
+
+`references/structure-and-placement.md` adds a placement checklist and a **protocol**: a
+placement problem is raised with the convention, the cost, and two options, and the author
+decides. Placement is Tier 3 in the rewrite authority - never moved silently.
+
+### Paragraph boundaries
+
+The v2.3 corpus kept flat section text, so paragraph ends were approximated. v2.4 re-parsed all
+120 papers with `<p>` boundaries: 12,146 paragraphs, redundant closure at **10.6 per 1,000
+paragraphs** (55.8% of papers have at least one). Definition and draft comparison in
+`local-artifacts.md` section 7. The draft's paragraphs are 112 words at the median against 75;
+its sentence count per paragraph is normal, so the excess is sentence length again.
+
+### L2 grammar (mostly a null result)
+
+Four detectors on spaCy POS tags: `a`/`an`, bare singular nouns, `this`/`these` agreement, tense
+mixing. Results:
+
+- `a`/`an`: corpus 0.08 per 1,000 words; the draft is clean (its two hits are LaTeX artifacts).
+- Bare singular nouns: **122.8 per 1,000 nouns**, which is impossible; false positives from mass
+  nouns, headings, and compound heads. Detector discarded.
+- `this`/`these`: false positives from compound modifiers (`these crash [reports]`). Detector
+  discarded.
+- Tense mixing: 12.8% of published paragraphs mix past and present; convention, not error.
+
+`references/l2-grammar.md` records the dead ends and routes mechanical grammar to LanguageTool
+(needs a JVM, not installed here), keeping the skill's gates for discourse.
+
+### Added
+
+- `references/structure-and-placement.md`, `references/l2-grammar.md`
+- `scripts/build_corpus_v24.py`, `scripts/structure_study.py`, `scripts/l2_grammar.py`
+- **Step 4.5 placement review** in `SKILL.md`
+
+---
+
 ## v2.3 - local artifacts, measured by annotation
 
 v2.2 measured what a word counter can see. This round measures what it cannot: defects that
