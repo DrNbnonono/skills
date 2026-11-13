@@ -272,6 +272,115 @@ def split_sentences(text: str, min_words: int = 6) -> list[str]:
 
 
 # ---------------------------------------------------------------------------
+# Flow / coherence diagnostics (v2.5) - warnings, never a gate
+# ---------------------------------------------------------------------------
+SENT_OPEN_CONNECTIVE = re.compile(
+    r"^(?:However|Therefore|Thus|Moreover|Furthermore|Additionally|In contrast|By contrast|"
+    r"Consequently|Nevertheless|Nonetheless|Hence|Meanwhile|Instead|Otherwise|Similarly|"
+    r"Likewise|First|Second|Third|Finally)\b",
+    re.I,
+)
+
+
+def paragraphs_of(path: str) -> list[list[str]]:
+    """Sentences grouped by paragraph. Paragraph breaks are blank lines in the source."""
+    raw = open(path, encoding="utf-8", errors="replace").read()
+    low = path.lower()
+    if low.endswith(".tex"):
+        raw = re.sub(r"(?<!\\)%.*", "", raw)
+        raw = FLOAT_RE.sub(" ", raw)          # tables/figures are not prose
+        blocks = [clean_tex(b) for b in re.split(r"\n\s*\n", raw)]
+    elif low.endswith(".md"):
+        blocks = [clean_md(b) for b in re.split(r"\n\s*\n", raw)]
+    else:
+        blocks = [clean_text(b) for b in re.split(r"\n\s*\n", raw)]
+    paras = []
+    for block in blocks:
+        sents = split_sentences(block)
+        if len(sents) >= 2:                   # headings and stubs are not paragraphs
+            paras.append(sents)
+    return paras
+
+
+def flow_metrics(path: str) -> dict:
+    """Rhythm and seam diagnostics. These describe the reading experience; they do not gate.
+
+    A metric-driven revision can win the length gate and still produce choppy prose: a run of
+    three or more very short sentences, or a paragraph where every sentence opens the same way.
+    These counters make that visible so the reviser can merge back or repair a seam.
+    """
+    paras = paragraphs_of(path)
+    lens: list[int] = []
+    openers: list[str] = []
+    connectives = 0
+    max_run = run = 0
+    for para in paras:
+        for s in para:
+            wl = len(s.split())
+            lens.append(wl)
+            if wl <= 12:
+                run += 1
+                max_run = max(max_run, run)
+            else:
+                run = 0
+            words = re.findall(r"[A-Za-z][A-Za-z'\-]*", s)
+            openers.append(words[0].lower() if words else "")
+            if SENT_OPEN_CONNECTIVE.match(s):
+                connectives += 1
+    n = len(lens) or 1
+    mean = statistics.mean(lens) if lens else 0.0
+    cv = statistics.pstdev(lens) / mean if mean else 0.0
+    repeats = sum(1 for a, b in zip(openers, openers[1:]) if a and a == b)
+    para_words = sum(len(s.split()) for p in paras for s in p) / len(paras) if paras else 0
+    return {
+        "file": os.path.basename(path),
+        "paragraphs": len(paras),
+        "sentences": len(lens),
+        "sent_per_para": round(len(lens) / len(paras), 2) if paras else 0,
+        "mean_para_words": round(para_words, 1),
+        "cv": round(cv, 2),
+        "choppy_run": max_run,
+        "repeated_openers": repeats,
+        "repeated_pct": round(100 * repeats / n, 1),
+        "connective_pct": round(100 * connectives / n, 1),
+    }
+
+
+def run_flow(files: list[str]) -> None:
+    print("\n=== flow (coherence diagnostics, warnings only - not a gate) ===")
+    hdr = (f"{'file':24}{'paras':>6}{'s/para':>7}{'w/para':>7}{'cv':>6}"
+           f"{'chop':>5}{'reps':>5}{'rep%':>6}{'conn%':>6}")
+    print(hdr)
+    print("-" * len(hdr))
+    warn: list[str] = []
+    for f in files:
+        fm = flow_metrics(f)
+        print(
+            f"{fm['file'][:23]:24}{fm['paragraphs']:>6}{fm['sent_per_para']:>7}"
+            f"{fm['mean_para_words']:>7}{fm['cv']:>6}{fm['choppy_run']:>5}"
+            f"{fm['repeated_openers']:>5}{fm['repeated_pct']:>6}{fm['connective_pct']:>6}"
+        )
+        if fm["choppy_run"] >= 3:
+            warn.append(f"{fm['file']}: {fm['choppy_run']} consecutive sentences <= 12 words "
+                        f"- merge one back or vary the length")
+        if fm["cv"] < 0.25 and fm["sentences"] >= 8:
+            warn.append(f"{fm['file']}: sentence lengths nearly uniform (CV {fm['cv']}) "
+                        f"- monotone rhythm; merge or lengthen one sentence per paragraph")
+        if fm["repeated_pct"] > 12:
+            warn.append(f"{fm['file']}: {fm['repeated_pct']}% of adjacent pairs share a first "
+                        f"word - mechanical openings; vary the subject or merge")
+        if fm["connective_pct"] > 18:
+            warn.append(f"{fm['file']}: {fm['connective_pct']}% of sentences open with a "
+                        f"connective - over-glued; let the order carry the logic where it can")
+    if warn:
+        print("\nWARN")
+        for w in warn:
+            print("  -", w)
+    else:
+        print("\nno flow warnings")
+
+
+# ---------------------------------------------------------------------------
 # Analysis
 # ---------------------------------------------------------------------------
 def analyse_file(path: str) -> tuple[list[dict], dict]:
@@ -492,6 +601,8 @@ def main() -> None:
     ap.add_argument("--gate", action="store_true", help="print pass/fail against venue thresholds")
     ap.add_argument("--venue", default="conference", choices=["conference", "magazine"])
     ap.add_argument("--explain", type=int, default=0, help="print N sentences with the most L2 blockers")
+    ap.add_argument("--flow", action="store_true",
+                    help="print rhythm/coherence diagnostics (warnings, not a gate)")
     args = ap.parse_args()
 
     files = collect(args.path, args.glob)
@@ -595,6 +706,9 @@ def main() -> None:
 
     if args.explain:
         explain(all_rows, args.explain)
+
+    if args.flow:
+        run_flow(files)
 
     if args.json:
         json.dump(

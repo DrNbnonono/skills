@@ -1,4 +1,4 @@
-# Sentence rules L1–L17
+# Sentence rules L1–L23
 
 Each rule: **rule → mechanism (why the reader stalls) → before → after**.
 Examples are drawn from security manuscripts; the defect is what generalises, not the topic.
@@ -385,6 +385,82 @@ phenomenon and the sentence belongs in limitations or future work - that form is
 should be left alone.
 
 See `local-artifacts.md` section 4.2 for the corpus and the precision audit.
+
+---
+
+## L21 Split at a seam, never through a joint
+
+**Rule.** A long sentence may be split only where one information unit ends and the next
+begins. Some joints are load-bearing: a claim and its scope restriction, a paired construction,
+a definition, a list that shares one verb, a subject and its verb. Splitting through one of
+those produces two sentences that are individually short and jointly wrong.
+
+**Mechanism.** The length metric counts words; it cannot see what the words are doing. A
+restriction ("but only where opcache is enabled") is part of the claim, not an aside: detached,
+it becomes a second fact, and the reader over-reads the first sentence.
+
+**Before (46 words, one claim)**
+> The official patch seals four of the nine known paths, but only where the deployment disables
+> `session.upload_progress`, which most shared hosts do not do.
+
+**Not this (wins the metric, loses the claim)**
+> The official patch seals four of the nine known paths. Most shared hosts do not disable
+> `session.upload_progress`.
+
+**Instead (TRIM; seam intact)**
+> The official patch seals four of the nine known paths, and only where the deployment
+> disables `session.upload_progress`, which most shared hosts do not do.
+
+**Legal seams:** after the main clause, before a trailing example, between two independent
+claims of the same agent. **Illegal seams:** the list above, plus any joint inside a
+`not only … but also`, `both … and`, or `from … to` construction. See `coherence.md` §4.
+
+---
+
+## L22 Every split needs a seam repair
+
+**Rule.** After a split, check three things and repair what broke:
+
+- **R (reference):** does every `this / it / they / that` in the new sentence have a noun in
+  its own sentence? If not, name the noun.
+- **L (logic):** if the original carried `because / so / although / unless / while`, is that
+  relation still visible? If not, start the new sentence with it.
+- **T (topic):** does the new sentence begin with information the reader already has (the end
+  of the previous sentence)? If not, add the bridge phrase or merge back.
+
+**Mechanism.** A split creates a sentence boundary, and the boundary is where the reader's
+working memory is rebuilt. Every tie that crossed the old semicolon must now cross a period;
+an un-repaired tie is read as a gap.
+
+**Before → bad split**
+> Advisories under-describe the surface. The patch is under-scoped too.
+
+**After → repaired**
+> Advisories under-describe the surface. Scoped against those descriptions, the patch is
+> under-scoped too. *(T repaired: the new sentence opens with given information.)*
+
+---
+
+## L23 Merge when the bond is stronger than the boundary
+
+**Rule.** If two adjacent sentences repeat the same subject, the second only qualifies the
+first, or a one-line sentence carries no independent claim, merge them. MERGE is a verdict,
+not a failure of nerve.
+
+**Mechanism.** A run of short sentences forces the reader to rebuild context at every period.
+Past two or three in a row, prose reads as a bullet list with full stops, even when each
+sentence is individually clear (A21).
+
+**Before (four sentences, mean 9 words)**
+> We coded the advisories. We found 123 gaps. Most are patched-exclusion. Two other modes exist.
+
+**After (two sentences)**
+> We coded every advisory and found 123 gaps. Most are patched-exclusion; the other two modes
+> account for the rest.
+
+**When not to merge:** different agents, different paragraphs, or a deliberate short claim at
+the end of a section (the magazine's signature rhythm). One short sentence is style; four is
+salad.
 
 ---
 

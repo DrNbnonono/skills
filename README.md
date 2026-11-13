@@ -6,7 +6,7 @@ by the agent.
 
 | Skill | What it does | Version |
 |---|---|---|
-| [`paper-prose-polish`](paper-prose-polish/) | 逐句润色英文安全/系统论文：测量 → 术语锁定 → 逐句改写 → 首读门槛验收 | 2.0 |
+| [`paper-prose-polish`](paper-prose-polish/) | 逐句润色英文安全/系统论文：测量 → 术语锁定 → 逐句改写 → 首读门槛 + 连贯性验收 | 2.5 |
 | [`paper-figures`](paper-figures/) | 论文图表设计、绘制与验收：图表选型 → 统一风格 → 导出 → 灰度/色盲/字体检查，附带示例图 | 1.0 |
 
 两者都面向 **S&P / USENIX Security / CCS / NDSS** 以及 IEEE S&P Magazine 的写作与配图。
@@ -20,23 +20,29 @@ by the agent.
 阴影测试、陌生人复述测试，以及四个 L2 阻塞指标（主动词前的词数、从句数、习语/短语动词、不透明
 正式词）。
 
+v2.5 再加一条约束：**统计指标是目标，句子与句子之间的连贯性是底线**。拆分是为读者服务的，
+不是为了把 p90 压到阈值以下；如果满足指标必须切断指代、因果或"主张—限定"关系，就**放弃这个
+指标并记录原因**（claim fidelity > coherence > metrics）。
+
 包含：
 
 - `references/comprehension-gate.md` — 首读门槛：三个测试、S1–S8 卡顿分类、8 组改写示例
+- `references/coherence.md` — 连贯性约束：三级优先序、三处接缝（指代/逻辑/话题）、可拆与
+  不可拆的位置、MERGE 回并、段落级连贯性检查、指标未达标时的记录模板
 - `references/vocabulary.md` — 「透明优先」：对 L2 读者而言，`holds up` 比 `remains exploitable`
   更难；习语/短语动词替换表、歧义连接词表、什么**不要**简化
 - `references/venue-prose-corpus.md` — 四大会议在散文层面奖励什么；可复现的语料测量协议
-- `references/sentence-rules.md` — L1–L17 规则（v2 新增 L14–L17）
-- `references/rubric.md` — 五问、缺陷码 A1–A16、五种判决、手术动作
-- `references/diagnosis-playbook.md` — 测量与阈值（含 L2 阻塞指标）
+- `references/sentence-rules.md` — L1–L23 规则（v2.5 新增 L21–L23：拆在接缝、拆后补缝、必要时回并）
+- `references/rubric.md` — 五问、缺陷码 A1–A21、六种判决（新增 MERGE）、八种手术动作
+- `references/diagnosis-playbook.md` — 测量与阈值（含 L2 阻塞指标与 flow 诊断）
 - `references/magazine-mode.md` — 会议论文改杂志体
-- `scripts/lint_prose.py` — 句长/被动/名词化/破折号 + 四个 L2 指标；`--gate` 通过/不通过，
-  `--explain N` 列出卡顿最多的句子
-- `templates/revision-table.md` — 每轮修订记录表
+- `scripts/lint_prose.py` — 句长/被动/名词化/破折号 + L2 指标 + 否定指标；`--gate` 通过/不通过，
+  `--explain N` 列出卡顿最多的句子，`--flow` 报告节奏与接缝问题（短句连排、重复开头、连接词过密）
+- `templates/revision-table.md` — 每轮修订记录表（含接缝判定与"未达标指标"栏）
 
 ```bash
 python scripts/lint_prose.py --path paper/ --glob "*.tex" --json baseline.json
-python scripts/lint_prose.py --path paper/ --gate --venue magazine --explain 10
+python scripts/lint_prose.py --path paper/ --gate --venue magazine --explain 10 --flow
 ```
 
 ---
@@ -75,6 +81,8 @@ python scripts/check_figure.py "examples/*.png" --preview
 
 ## 版本
 
-- `paper-prose-polish` v2.0：新增首读门槛、L2 词表、语料协议、A13–A16、L14–L17、linter v2。
-  变更记录见 [`CHANGELOG.md`](paper-prose-polish/CHANGELOG.md)。
+- `paper-prose-polish` v2.5：v2.0 首读门槛；v2.1 否定规范；v2.2 改写权限与 DELETE 判决；
+  v2.3–v2.4 语料研究（局部缺陷、结构/位置）；**v2.5 连贯性约束（接缝三测、MERGE、`--flow`）**。
+  每次改动的实测数字与 null result 见
+  [`CHANGELOG.md`](paper-prose-polish/CHANGELOG.md)。
 - `paper-figures` v1.0：初版。

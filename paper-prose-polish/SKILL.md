@@ -1,7 +1,7 @@
 ---
 name: paper-prose-polish
 description: Polish English academic prose for security/systems venues (S&P, USENIX Security, CCS, NDSS, journals, IEEE S&P Magazine), written for readers whose first language is not English. Use for 润色/改写/逐句修改论文表述, diagnosing why a paragraph is unreadable, converting a conference paper into a magazine feature, or a clarity review before submission. Core rule: if a competent non-native reader cannot follow a sentence on the first pass, the sentence is broken. Measures the draft first, then revises sentence by sentence with a defect code and a stated reader-stall reason for every change.
-version: 2.4
+version: 2.5
 ---
 
 # Paper prose polish
@@ -92,6 +92,33 @@ the author may have a reason the text does not show.
 Never silent, at any tier: numbers, the strength of a claim, a technical term's meaning, or the
 removal of a citation or a fact. Those default to Tier 3.
 
+## Coherence is a constraint; the metrics are an objective
+
+The linter measures sentences one at a time. It cannot see whether the paragraph still reads as
+one argument, so a revision can win every gate and produce prose that is shorter, flatter, and
+harder to follow. Treat the two goals differently:
+
+| Rank | Goal | Can it be traded? |
+|---|---|---|
+| 1 | **Claim fidelity** — numbers, strength, term meanings, citations | Never |
+| 2 | **Coherence** — the reader can follow one sentence to the next | Only by the author |
+| 3 | **Metrics** — length, passive, nominalisation, negation vs the venue corpus | Yes: they are targets, not rules |
+
+So when hitting a threshold would cost cohesion, **miss the threshold and record why**:
+
+```
+Missed metric: p90 34 (target <=32)
+Reason: the 46-word unit is a claim plus its scope ("... but only where opcache is enabled").
+A split would detach the restriction and invite over-reading.
+Alternative taken: trimmed 6 words elsewhere in the paragraph; seam preserved.
+```
+
+Three mechanisms, all testable at the seam between two sentences: **reference** (does every
+pronoun still have one antecedent?), **logic** (did the `because / so / although` survive the
+split?), **topic** (does sentence 2 start from where sentence 1 ended?). Read
+`references/coherence.md` before your first SPLIT of the round; it also defines the legal and
+illegal split points, and **MERGE**, the move that undoes an over-chopped paragraph.
+
 ---
 
 ## Step 0 — Venue gate (do this before touching a sentence)
@@ -124,7 +151,13 @@ sentences whose subject is an agent.
 
 Since v2 the linter also measures the four **L2 blockers**: words before the main verb,
 subordinate clauses per sentence, idioms/phrasal verbs, and non-transparent formal words.
-Run it with `--gate --venue magazine|conference` for a pass/fail read.
+Since v2.5 it also reports **flow** diagnostics — paragraph size, sentence-length variety, runs
+of short sentences, repeated openers, connective density. Those are warnings, not a gate: they
+describe the reading experience, which no per-sentence counter can.
+
+```bash
+python scripts/lint_prose.py --path <paper-dir> --glob "*.tex" --gate --venue magazine --flow
+```
 
 ## Step 1.5 — The first-read gate
 
@@ -159,10 +192,14 @@ Work in batches of 20–30 sentences. For each sentence:
 1. **Five questions** (see `references/rubric.md`): who does what; one breath; can it be
    restated in one sentence in the author's language; does the main clause survive deleting
    parentheticals; does it survive one first read without a stall.
-2. **Assign defect codes** A1–A18 (A13–A16 are the L2 codes added in v2).
-3. **Assign a verdict**: KEEP / TRIM / SPLIT / RECAST / REWRITE / DELETE.
-4. **Apply a surgery move**, not a paraphrase.
-5. **Record** the change with the reason ("the reader stalls at X"), never "smoother".
+2. **Assign defect codes** A1–A21 (A13–A16 are the L2 codes; A20–A21 are the seam and rhythm
+   codes added in v2.5).
+3. **Assign a verdict**: KEEP / TRIM / SPLIT / MERGE / RECAST / REWRITE / DELETE.
+4. **Before recording a SPLIT, name the seam and run the R/L/T tests** in
+   `references/coherence.md` §3. If the split would detach a restriction from its claim, orphan
+   a pronoun, or drop a connector, use TRIM or RECAST instead.
+5. **Apply a surgery move**, not a paraphrase.
+6. **Record** the change with the reason ("the reader stalls at X"), never "smoother".
 
 Use `templates/revision-table.md`. A change without a stated reader-stall reason is
 unjustified.
@@ -192,11 +229,14 @@ After the sentences, read the paper for **where things sit**, not how they read.
 
 ## Step 5 — Verify
 
-- Re-run the linter with `--compare baseline.json`; compare against the threshold table in
+- **Coherence first.** Run the paragraph gate in `references/coherence.md` §6: seam tests
+  (R/L/T) on every adjacent pair, short-run count, opening variety, glue density,
+  topic sentence intact. If a metric was won by breaking a seam, revert the split.
+- Re-run the linter with `--compare baseline.json --flow`; compare against the threshold table in
   `references/diagnosis-playbook.md`.
 - Re-run the first-read gate; report stalls per 100 words before/after.
 - Thresholds are directional, not targets to game: if a sentence loses information to hit
-  a number, the edit is wrong.
+  a number, the edit is wrong. If coherence loses to a number, the same rule applies.
 - Read the revised paragraph aloud once. A sentence the reviser cannot finish in one breath
   is still too long.
 - Back-check: every number, `\cite`, `\ref`, and technical term unchanged.
@@ -204,10 +244,11 @@ After the sentences, read the paper for **where things sit**, not how they read.
 ## Deliverables per round
 
 1. A revision table (position, original, code, verdict, rewrite, reader-stall reason,
-   first-read status).
+   first-read status, seam check R/L/T).
 2. The applied source change, with a backup of the previous file.
 3. The before/after measurement table, including the L2 blockers.
-4. Two or three "so next time" rules tied to the author's recurring habits.
+4. The flow report (`--flow`) before and after, with any **missed metric and its reason**.
+5. Two or three "so next time" rules tied to the author's recurring habits.
 
 ## Anti-patterns
 
@@ -225,6 +266,11 @@ After the sentences, read the paper for **where things sit**, not how they read.
 | **"Simplifying" the domain vocabulary** | An expert reader does not need `vulnerability` renamed; they need the sentence's syntax fixed |
 | **Hedging with unfamiliar forms** (`is liable to`, `stands to`) | An L2 reader may miss the hedge entirely and read a stronger claim than intended |
 | **Using an idiom as compression** ("the fix fell through the cracks") | The idiom is opaque to most international readers, and the compression hides the agent |
+| **Metric gaming by chopping** — splitting every long sentence until the mean passes | Wins the table, loses the paragraph: the ties between sentences are severed and the prose reads as bullet points (A20–A21, `coherence.md`) |
+| **The orphan split** — a split that leaves `this` / `it` with no antecedent in its own sentence | The reader must reconstruct the referent across a sentence boundary, which is exactly the stall the skill exists to remove |
+| **Splitting a claim from its restriction** ("…, but only for PHP 7.4") | Turns a bounded claim into an unbounded one; a reviewer reads over-claiming |
+| **Sentence salad** — a paragraph of eight 12-word sentences | Each sentence is "clear"; together they read as a list. Merge back (MERGE verdict) |
+| **Connective glue** — `However / Therefore / Thus` in more than ~18 % of sentences | The logic is asserted instead of carried by the order; readers skim scaffolding |
 
 ## Resource map
 
@@ -233,9 +279,10 @@ After the sentences, read the paper for **where things sit**, not how they read.
 | `references/venue-profiles.md` | Official criteria per venue, magazine requirements, rules-void matrix |
 | `references/venue-prose-corpus.md` | What the top-4 venues reward in prose; corpus protocol to re-measure |
 | `references/comprehension-gate.md` | The first-read / shadow / stranger tests, stall taxonomy, worked pairs |
+| `references/coherence.md` | Precedence (claim > coherence > metrics), the three seams, legal/illegal splits, MERGE, the paragraph gate |
 | `references/vocabulary.md` | Transparent vocabulary, idiom and phrasal-verb avoidance, what not to simplify |
-| `references/sentence-rules.md` | The 20 sentence rules (L1–L20) with mechanisms and before/after |
-| `references/rubric.md` | Five questions, defect codes A1–A19, verdicts, surgery moves |
+| `references/sentence-rules.md` | The 23 sentence rules (L1–L23) with mechanisms and before/after |
+| `references/rubric.md` | Five questions, defect codes A1–A21, six verdicts, eight surgery moves |
 | `references/diagnosis-playbook.md` | Measurement method, thresholds (incl. L2 blockers), how to report findings |
 | `references/magazine-mode.md` | Converting a conference paper into a magazine feature |
 | `references/local-artifacts.md` | Annotation study over 120 papers: five local artifacts, per-sentence rates, precision audit, and three null results |
@@ -243,6 +290,6 @@ After the sentences, read the paper for **where things sit**, not how they read.
 | `references/l2-grammar.md` | Article / agreement / tense detectors: what was measured, and the three that failed |
 | `references/ai-artifacts.md` | What generated prose gets wrong, split into measured artifacts and local-only ones, with null results kept |
 | `references/worked-example.md` | A full worked case: measured draft → revised paragraphs |
-| `scripts/lint_prose.py` | Sentence-length / passive / nominalisation / dash / negation / L2-blocker counter, `--gate`, `--explain` |
+| `scripts/lint_prose.py` | Sentence-length / passive / nominalisation / dash / negation / L2-blocker counter, `--gate`, `--explain`, `--flow` (rhythm and seam warnings) |
 | `templates/revision-table.md` | Per-round record format |
 | `CHANGELOG.md` | What changed in v2 and why |

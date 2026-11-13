@@ -90,6 +90,29 @@ Security, IEEE S&P, ACM CCS, or NDSS; HTML full text was fetched and stripped, b
 references included. It is a convenience sample, adequate for an order of magnitude and for the
 observation that two independent corpora land on the same number.
 
+### 3.3 Flow diagnostics (v2.5) — warnings, never a gate
+
+The per-sentence counters cannot see rhythm or cohesion, so `--flow` reports the paragraph
+directly. These are **warnings**: a 2,000-word appendix may legitimately run hot on two of them.
+They locate the paragraph; the reviser decides.
+
+| Diagnostic | Column | Warning when | What it means |
+|---|---|---|---|
+| Paragraph size | `s/para`, `w/para` | >6 sentences or >150 words (corpus p90: 97 words) | The paragraph is carrying two claims |
+| Sentence-length variety | `cv` | <0.25 in a section of ≥8 sentences | Monotone rhythm: every sentence the same size |
+| Choppy run | `chop` | ≥3 consecutive sentences ≤12 words | Metric-driven splitting has left sentence salad (A21) |
+| Repeated openers | `rep%` | >12% of adjacent pairs | Mechanical openings; the same subject or word starts each sentence |
+| Connective density | `conn%` | >18% of sentences | Over-glued: logic asserted by `However/Therefore` instead of carried by order |
+
+Two of these are the direct fingerprint of a metrics-only pass. If `mean` falls and `chop`
+rises in the same round, the revision bought its numbers with cohesion: merge back before
+reporting the round.
+
+**Precedence.** Claim fidelity > coherence > metrics. A gate miss with a recorded reason is a
+decision; a gate miss without one is an accident. See `coherence.md` §1 for the recording format.
+
+---
+
 ## 4. Reading the numbers
 
 | Pattern | Interpretation | First action |
@@ -119,7 +142,9 @@ Present, in this order:
    P2 (terminology) → P3 (rhythm).
 5. **Worked examples**: 8–10 sentences, before → diagnosis → after, chosen to cover the
    most common codes rather than the worst sentences.
-6. **Questions for the author** — the REWRITE batch.
+6. **The flow report** — `--flow` before and after, with every **missed metric** and its reason.
+   A round that reports only improvements invites a reviewer to ask what was traded away.
+7. **Questions for the author** — the REWRITE batch.
 
 Do not lead with counts. Lead with the consequence, then the evidence.
 
@@ -134,5 +159,9 @@ Do not lead with counts. Lead with the consequence, then the evidence.
   stress position is correct English. Judge per sentence, use the rate only as a trend.
 - **Optimising the mean.** Deleting information to shorten sentences is the most common way
   to make a paper worse while the metrics improve. Prefer adding a sentence to cutting content.
+- **Buying the metric with cohesion.** Splitting until p90 passes is the second most common way.
+  The warning sign is a falling mean with a rising `chop` or `rep%`: the paragraph has been
+  converted into stubs (A20–A21). Metrics are targets; cohesion is a constraint. When they
+  conflict, miss the metric and record why (`coherence.md` §1).
 - **Revising the abstract first.** Terminology and claim strength are settled in the body;
   an abstract rewritten before that has to be redone.

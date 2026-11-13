@@ -1,5 +1,49 @@
 # Changelog
 
+## v2.5 - coherence is a constraint, not a metric
+
+Two rounds of corpus work taught the skill to split sentences until the numbers pass. This
+round adds the counterweight: **the metrics are targets; the reader's ability to follow one
+sentence to the next is a constraint with veto power.** Motivated by a reader's report that a
+draft revised to the targets read worse: correct length, broken seams.
+
+### Added
+
+- **`references/coherence.md`** - the precedence ladder (claim fidelity > coherence > metrics),
+  the three seam tests (reference / logic / topic), the legal and illegal split points, MERGE
+  as a legal move, the paragraph-level coherence gate, and the format for recording a missed
+  metric with its reason.
+- **MERGE verdict** in `rubric.md` (six verdicts; SPLIT now requires a named legal seam) and an
+  eighth surgery move ("merge two stubs").
+- **`references/sentence-rules.md` L21-L23**: split at a seam, never through a joint; every split
+  needs an R/L/T seam repair; merge when the bond is stronger than the boundary.
+- **`references/rubric.md` A20-A21**: orphan split / seam break, and choppy run / sentence salad.
+- **`scripts/lint_prose.py --flow`**: paragraph size, sentence-length CV, longest run of
+  sentences <=12 words, repeated-adjacent-opener share, sentence-initial connective share.
+  Warnings only, never a gate - they describe the reading experience, which no per-sentence
+  counter can see.
+- **`references/diagnosis-playbook.md` §3.3** flow thresholds and the warning rule, plus a new
+  reporting item ("the flow report, with every missed metric and its reason").
+- **Template**: seam column, flow baseline, missed-metric table, and a verification item that
+  every SPLIT has an R/L/T result.
+
+### Measured (on the draft that motivated this round, 9 sections, 316 sentences)
+
+| | Pre-revision text | Post-revision text |
+|---|---|---|
+| Longest choppy run (consecutive <=12-word sentences) | 5 (introduction) | 3 (three sections) |
+| Adjacent pairs sharing a first word | up to 14.5% | up to 14.3% |
+
+The metric pass did not create the problem from nothing, but it can preserve and spread it.
+Neither number is visible in the length table.
+
+### Not changed
+
+Every threshold and corpus finding from v2.1-v2.4. This round changes what a gate *miss* means
+(recorded, not failed) and adds a constraint the gates cannot enforce.
+
+---
+
 ## v2.4 - placement, paragraphs, and an honest grammar dead end
 
 Three things a sentence counter cannot see: where a paragraph sits, where a paragraph ends, and
