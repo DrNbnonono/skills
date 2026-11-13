@@ -95,6 +95,11 @@ SPLIT carries a condition the other verdicts do not: **a legal seam must exist**
 TRIM or RECAST is the correct verdict. Splitting through a joint is how a metric pass produces
 A20 and A21.
 
+**KEEP is the expected majority verdict, and a round may be almost all KEEP.** The gate is a
+reader-stall detector, not a quota. If a paragraph already passes all five questions, record
+"no change" and move on; manufacturing an edit to look productive is itself a defect (see
+`SKILL.md` non-negotiable 10).
+
 REWRITE exists because some unreadable sentences are unreadable for a reason grammar cannot
 fix: the author has not decided what the sentence asserts. Ask, batch the questions, continue.
 

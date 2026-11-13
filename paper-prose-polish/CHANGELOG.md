@@ -1,5 +1,29 @@
 # Changelog
 
+## v2.5.1 - do not manufacture edits
+
+A small correction to the skill's own incentives. After v2.5, the risk is a reviser who finds
+nothing wrong and invents a change so the round looks thorough. The skill's verdict distribution
+already expects KEEP to be the majority (~40 %); this release makes the rule explicit.
+
+### Added
+
+- **SKILL.md non-negotiable 10**: if the original sentence or paragraph already does its job, it
+  is KEEP and the words stay. The skill is a reader-stall detector, not a quota of changes.
+- **"A good draft is a valid finding"** paragraph: measure, read, report KEEP, done.
+- **Rubric**: KEEP is the expected majority and a round may be almost all KEEP; forcing a
+  SPLIT to look productive is a defect.
+- **Diagnosis playbook**: "if the draft is already good, say so and stop" in Reporting, and the
+  "polishing past the gate" pitfall.
+- **Template**: `Changes this round: __ (zero is a valid answer)`.
+- **Anti-pattern row**: nitpicking a good sentence.
+
+### Not changed
+
+Nothing else. v2.5's coherence constraint and all prior corpus findings stand.
+
+---
+
 ## v2.5 - coherence is a constraint, not a metric
 
 Two rounds of corpus work taught the skill to split sentences until the numbers pass. This

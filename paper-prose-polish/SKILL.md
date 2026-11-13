@@ -1,7 +1,7 @@
 ---
 name: paper-prose-polish
 description: Polish English academic prose for security/systems venues (S&P, USENIX Security, CCS, NDSS, journals, IEEE S&P Magazine), written for readers whose first language is not English. Use for 润色/改写/逐句修改论文表述, diagnosing why a paragraph is unreadable, converting a conference paper into a magazine feature, or a clarity review before submission. Core rule: if a competent non-native reader cannot follow a sentence on the first pass, the sentence is broken. Measures the draft first, then revises sentence by sentence with a defect code and a stated reader-stall reason for every change.
-version: 2.5
+version: 2.5.1
 ---
 
 # Paper prose polish
@@ -73,6 +73,17 @@ Not for: copy-editing that must preserve house style verbatim; proofreading-only
    is the sentence, not the concept.
 9. **Do not trade accuracy for readability.** If making a sentence easy requires dropping a
    qualifier, keep the qualifier and split the sentence instead.
+10. **Do not manufacture edits.** If the original sentence or paragraph already does its job,
+    it is KEEP, and KEEP means leave the words alone. The skill is a reader-stall detector,
+    not a quota of changes: a round with three real fixes in ten pages is a successful round,
+    and a paragraph that already reads well is evidence the draft is working — not a target.
+    Rewriting a good sentence to look productive trades the author's voice for nothing and
+    adds a chance to introduce meaning drift.
+
+**A good draft is a valid finding.** State it and stop. Do not open a paragraph, find nothing
+wrong, and invent a stylistic suggestion so the round looks thorough; "this section needs no
+change" belongs in the report next to the changes. The green path is: measure, read, report
+KEEP, done.
 
 ## Rewrite authority
 
@@ -271,6 +282,7 @@ After the sentences, read the paper for **where things sit**, not how they read.
 | **Splitting a claim from its restriction** ("…, but only for PHP 7.4") | Turns a bounded claim into an unbounded one; a reviewer reads over-claiming |
 | **Sentence salad** — a paragraph of eight 12-word sentences | Each sentence is "clear"; together they read as a list. Merge back (MERGE verdict) |
 | **Connective glue** — `However / Therefore / Thus` in more than ~18 % of sentences | The logic is asserted instead of carried by the order; readers skim scaffolding |
+| **Nitpicking a good sentence** — rewriting prose that already passes the gates | Every unnecessary edit is a chance to introduce meaning drift; KEEP is ~40 % of a normal round by design, and three real fixes beat forty cosmetic ones |
 
 ## Resource map
 

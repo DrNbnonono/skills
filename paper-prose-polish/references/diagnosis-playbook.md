@@ -148,6 +148,11 @@ Present, in this order:
 
 Do not lead with counts. Lead with the consequence, then the evidence.
 
+**If the draft is already good, say so and stop.** "This section needs no change" is a
+finding, not a failure to find something. A report that says *measured, read, KEEP, exit* is
+the best possible outcome for that section; padding it with cosmetic edits is a regression
+(SKILL.md non-negotiable 10).
+
 ---
 
 ## 6. Pitfalls
@@ -163,5 +168,8 @@ Do not lead with counts. Lead with the consequence, then the evidence.
   The warning sign is a falling mean with a rising `chop` or `rep%`: the paragraph has been
   converted into stubs (A20–A21). Metrics are targets; cohesion is a constraint. When they
   conflict, miss the metric and record why (`coherence.md` §1).
+- **Polishing past the gate.** Once a section passes the first-read gate and the coherence gate,
+  stop. Further edits are not free: each one can drift the meaning and none of them is measured.
+  A revision round that ends with "nothing else to fix here" is finished, not unfinished.
 - **Revising the abstract first.** Terminology and claim strength are settled in the body;
   an abstract rewritten before that has to be redone.

@@ -3,6 +3,8 @@
 Baseline (before this round): mean __ / p90 __ / >45 __ / passive __% / idioms __ / stalls/100w __ / flow: chop __ rep% __ / `\todo` __
 Target (after this round): mean ≤ __ / p90 ≤ __ / >45 ≤ __ / passive ≤ __% / idioms ≤ __ / stalls ≤ __ / flow: chop ≤2
 
+Changes this round: __ sentences (zero is a valid answer; record the KEEP share instead)
+
 ## Sentences
 
 | # | Location | Original (truncated) | Code | Verdict | Rewrite | Where the reader stalls | First read | Seam R/L/T |

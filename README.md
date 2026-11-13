@@ -6,7 +6,7 @@ by the agent.
 
 | Skill | What it does | Version |
 |---|---|---|
-| [`paper-prose-polish`](paper-prose-polish/) | 逐句润色英文安全/系统论文：测量 → 术语锁定 → 逐句改写 → 首读门槛 + 连贯性验收 | 2.5 |
+| [`paper-prose-polish`](paper-prose-polish/) | 逐句润色英文安全/系统论文：测量 → 术语锁定 → 逐句改写 → 首读门槛 + 连贯性验收 | 2.5.1 |
 | [`paper-figures`](paper-figures/) | 论文图表设计、绘制与验收：图表选型 → 统一风格 → 导出 → 灰度/色盲/字体检查，附带示例图 | 1.0 |
 
 两者都面向 **S&P / USENIX Security / CCS / NDSS** 以及 IEEE S&P Magazine 的写作与配图。
@@ -23,6 +23,9 @@ by the agent.
 v2.5 再加一条约束：**统计指标是目标，句子与句子之间的连贯性是底线**。拆分是为读者服务的，
 不是为了把 p90 压到阈值以下；如果满足指标必须切断指代、因果或"主张—限定"关系，就**放弃这个
 指标并记录原因**（claim fidelity > coherence > metrics）。
+
+v2.5.1 补一句同样重要的：**原文已经写得好的句子和段落，就保持 KEEP，不要改**。这个 skill 是
+"读者卡点检测器"，不是"必须改出点什么"的任务清单；一轮里只有三处真问题，就是一轮好活。
 
 包含：
 
@@ -81,8 +84,9 @@ python scripts/check_figure.py "examples/*.png" --preview
 
 ## 版本
 
-- `paper-prose-polish` v2.5：v2.0 首读门槛；v2.1 否定规范；v2.2 改写权限与 DELETE 判决；
-  v2.3–v2.4 语料研究（局部缺陷、结构/位置）；**v2.5 连贯性约束（接缝三测、MERGE、`--flow`）**。
+- `paper-prose-polish` v2.5.1：v2.0 首读门槛；v2.1 否定规范；v2.2 改写权限与 DELETE 判决；
+  v2.3–v2.4 语料研究（局部缺陷、结构/位置）；v2.5 连贯性约束（接缝三测、MERGE、`--flow`）；
+  **v2.5.1 明确「原文已经写得好就不改」**（KEEP 是正常结果，不是失败）。
   每次改动的实测数字与 null result 见
   [`CHANGELOG.md`](paper-prose-polish/CHANGELOG.md)。
 - `paper-figures` v1.0：初版。
