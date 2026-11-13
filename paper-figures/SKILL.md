@@ -1,7 +1,7 @@
 ---
 name: paper-figures
-description: Design, draw, and verify figures for security/systems papers (IEEE S&P, USENIX Security, CCS, NDSS, journals, IEEE S&P Magazine), in the style of strong top-4 papers. Use for 画图/作图/图表设计/论文配图, choosing the right chart for a claim, making a figure print-safe, writing captions that state the takeaway, or converting a matplotlib figure into a camera-ready vector PDF. Ships runnable examples with synthetic data (examples/), a matplotlib style module (scripts/figure_style.py), a generator (scripts/make_examples.py), and a pre-submission checker (scripts/check_figure.py).
-version: 1.0
+description: Design, draw, and verify figures for security/systems papers (IEEE S&P, USENIX Security, CCS, NDSS, journals, IEEE S&P Magazine), in the style of strong top-4 papers. Use for 画图/作图/图表设计/论文配图, choosing the right chart for a claim, making a figure print-safe, writing captions that state the takeaway, or converting a matplotlib figure into a camera-ready vector PDF. Optionally recovers your own figures from a PDF as self-contained vector SVG with a pixel QA gate (never for other people's figures). Ships runnable examples with synthetic data (examples/), a matplotlib style module (scripts/figure_style.py), a generator (scripts/make_examples.py), and pre-submission checkers (scripts/check_figure.py, scripts/figure_recovery.py).
+version: 1.1
 ---
 
 # Paper figures
@@ -41,6 +41,10 @@ is read as none of them.
    background fills, no gridlines that fight the data.
 10. **Reproducible**: the script that generated the figure lives next to it in the repo, with
     the data file or a seed. A figure no one can regenerate is a liability at camera-ready.
+11. **Never lift a figure.** A figure from another paper is copyrighted unless its licence says
+    otherwise, and presenting it as yours is plagiarism. `scripts/figure_recovery.py` exists to
+    recover **your own** figures (or licensed ones, with attribution) from a PDF — not to
+    harvest other people's. Recovered files live under `analysis/`, never in `figs/`.
 
 ## Step 0 — Decide the claim first
 
@@ -130,6 +134,28 @@ writes `fig1_cdf_gray.png` / `fig1_cdf_cvd.png`. **Look at both.**
    not truncated; error bars are defined in the caption.
 6. **Reuse test**: delete the PNG; does the script regenerate it byte-comparably? It should.
 
+## Optional: recover a vector copy of an existing figure
+
+Use this only for **your own** figure (source lost, PDF remains) or a licensed one you are
+adapting with attribution — never to lift a figure from another paper (non-negotiable 11).
+
+```bash
+python scripts/figure_recovery.py probe   --pdf paper.pdf --page 3
+python scripts/figure_recovery.py extract --pdf paper.pdf --page 3 --bbox 54,120,300,260 \
+                                          --out analysis/recovered
+```
+
+- `probe` says whether the figure is native vector or raster. If it is raster, do **not** trace
+  it and call it vector: redraw from data, or keep the image at 300 dpi.
+- `extract` writes a self-contained SVG, a 300 dpi PNG, and a reference/recovered/difference
+  image, and gates on a normalised pixel comparison (exit code 1 on failure).
+- A recovered figure is for slides, archaeology, or study; anything going into the paper should
+  still be redrawn with `scripts/figure_style.py`.
+
+Requires PyMuPDF, Pillow, and numpy for this optional step only; the rest of the skill needs
+matplotlib. Full workflow, guardrails, text-mode trade-offs, and known limits:
+`references/figure-recovery.md`.
+
 ## Display-item budget
 
 | Venue class | Total display items | Notes |
@@ -168,9 +194,11 @@ rewrite the sentence.
 | `references/captions.md` | Caption formula and before/after examples |
 | `references/accessibility.md` | Colour-blind and grayscale safety, contrast, alt text |
 | `references/production.md` | Export, LaTeX inclusion, fonts, file layout, reproducibility |
+| `references/figure-recovery.md` | Recover a vector copy of a figure you own (or are licensed to reuse): guardrails, workflow, QA gate, limits |
 | `references/anti-patterns.md` | What to remove, with the example that shows it |
 | `scripts/figure_style.py` | rcParams, Okabe–Ito palette, `new_fig`, `save`, `panel_label` |
 | `scripts/check_figure.py` | Size/dpi check, grayscale and deuteranopia previews, palette report |
+| `scripts/figure_recovery.py` | Optional: PDF figure → self-contained SVG + pixel QA (PyMuPDF; own figures only) |
 | `scripts/make_examples.py` | Generates every example figure (synthetic data) |
 | `examples/` | Reference images: what good looks like, plus a bad-vs-good pair |
 | `templates/figure-brief.md` | One-page brief before drawing |

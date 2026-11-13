@@ -1,5 +1,43 @@
 # Changelog
 
+## v1.1 — figure recovery (own figures only)
+
+Integrates the workflow of [`pdf-figure-vector`](https://github.com/tanzhouhu/pdf-figure-vector)
+into this skill, re-implemented to be headless and dependency-light, with an explicit copyright
+guard. A user asked whether the skill could recover figures from a PDF; the answer is yes for
+figures you own, and emphatically not for figures you do not.
+
+### Added
+
+- **`scripts/figure_recovery.py`** — three subcommands:
+  - `probe` — is the figure native vector or raster, plus the ink bbox and counts;
+  - `extract` — crop a figure to a self-contained SVG (cropped viewBox, optional editable
+    text), render a 300 dpi PNG, and gate on a normalised pixel comparison;
+  - `compare` — re-check an existing SVG against the PDF crop, writing a reference / recovered /
+    difference image.
+- **`references/figure-recovery.md`** — guardrails (copyright, licence, never ship a recovered
+  figure), workflow, how to read the QA numbers (`mae_norm`, `struct_pct`), text-vs-paths
+  trade-off, editing path (Inkscape/Illustrator/PowerPoint), known limits, and a differences
+  table against the upstream project.
+
+### Design decisions (vs the upstream project)
+
+- **Headless**: PyMuPDF renders the SVG for the comparison, so no Chrome and no browser popup.
+- **QA as a gate, not a vibe**: normalised MAE plus structural-difference share, exit code 1 on
+  failure, so it can run in a build or a batch.
+- **No fake vectorisation**: a raster figure is reported as raster and refused; tracing it and
+  calling the result vector is the failure mode this skill exists to prevent.
+- **No PPTX output**: python-pptx cannot embed SVG, and no converter is assumed. The documented
+  editable path is PowerPoint's Insert → SVG → Convert to Shape.
+- **No code copied**: the script is our own; the upstream project is credited as prior art and
+  remains the choice for editable-text PPTX with font subsetting.
+
+### Unchanged
+
+The style system, examples, captions, accessibility, and production guidance from v1.0.
+
+---
+
 ## v1.0 — initial release
 
 Built from the figure practices of strong top-4 security/systems papers (S&P, USENIX Security,

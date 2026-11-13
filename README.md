@@ -7,7 +7,7 @@ by the agent.
 | Skill | What it does | Version |
 |---|---|---|
 | [`paper-prose-polish`](paper-prose-polish/) | 逐句润色英文安全/系统论文：测量 → 术语锁定 → 逐句改写 → 首读门槛 + 连贯性验收 | 2.5.1 |
-| [`paper-figures`](paper-figures/) | 论文图表设计、绘制与验收：图表选型 → 统一风格 → 导出 → 灰度/色盲/字体检查，附带示例图 | 1.0 |
+| [`paper-figures`](paper-figures/) | 论文图表设计、绘制与验收：图表选型 → 统一风格 → 导出 → 灰度/色盲/字体检查，附带示例图；可恢复自有 PDF 图的矢量版 | 1.1 |
 
 两者都面向 **S&P / USENIX Security / CCS / NDSS** 以及 IEEE S&P Magazine 的写作与配图。
 
@@ -70,12 +70,16 @@ Okabe–Ito 配色、矢量导出、灰度可读、caption 第一句就给结论
 - `scripts/figure_style.py` — rcParams、调色板、`new_fig/save/panel_label`
 - `scripts/make_examples.py` — 生成 `examples/` 下全部示例（合成数据，固定种子）
 - `scripts/check_figure.py` — 尺寸/dpi 检查、灰度与色盲预览、配色塌缩告警
+- `scripts/figure_recovery.py` — 从 PDF 裁出自有图的矢量 SVG（PyMuPDF，无需 Chrome），带
+  逐像素 QA 门禁；**只用于自己的图或有授权的图**，详见 `references/figure-recovery.md`
 - `examples/` — 9 张参考图 + 一张「坏图 vs 好图」对照 + 灰度版；`examples/README.md` 说明
   每张图演示哪条规则
 
 ```bash
 python scripts/make_examples.py
 python scripts/check_figure.py "examples/*.png" --preview
+python scripts/figure_recovery.py probe   --pdf paper.pdf --page 3      # 矢量还是位图
+python scripts/figure_recovery.py extract --pdf paper.pdf --page 3 --out analysis/recovered
 ```
 
 示例图全部由代码生成，数据是合成的：仓库保存的是**风格**，不包含任何已发表论文的图。
@@ -89,4 +93,7 @@ python scripts/check_figure.py "examples/*.png" --preview
   **v2.5.1 明确「原文已经写得好就不改」**（KEEP 是正常结果，不是失败）。
   每次改动的实测数字与 null result 见
   [`CHANGELOG.md`](paper-prose-polish/CHANGELOG.md)。
-- `paper-figures` v1.0：初版。
+- `paper-figures` v1.1：v1.0 初版（风格/编码/可访问性/生产）；
+  **v1.1 新增"自有 PDF 图的矢量恢复 + 像素 QA"**（`figure_recovery.py`），
+  并加了版权约束：不拿别人的图。上游灵感来自
+  [`pdf-figure-vector`](https://github.com/tanzhouhu/pdf-figure-vector)，本仓库为独立实现。
