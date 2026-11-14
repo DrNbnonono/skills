@@ -1,7 +1,7 @@
 ---
 name: paper-prose-polish
 description: Polish English academic prose for security/systems venues (S&P, USENIX Security, CCS, NDSS, journals, IEEE S&P Magazine), written for readers whose first language is not English. Use for 润色/改写/逐句修改论文表述, diagnosing why a paragraph is unreadable, converting a conference paper into a magazine feature, or a clarity review before submission. Core rule: if a competent non-native reader cannot follow a sentence on the first pass, the sentence is broken. Measures the draft first, then revises sentence by sentence with a defect code and a stated reader-stall reason for every change.
-version: 2.6
+version: 2.6.1
 ---
 
 # Paper prose polish
@@ -79,6 +79,13 @@ Not for: copy-editing that must preserve house style verbatim; proofreading-only
     and a paragraph that already reads well is evidence the draft is working — not a target.
     Rewriting a good sentence to look productive trades the author's voice for nothing and
     adds a chance to introduce meaning drift.
+
+11. **Never win a metric by breaking the prose.** The metrics are targets; coherence between
+    sentences is a constraint with veto power. If a change improves a number and breaks a
+    referent, a causal link, or the topic chain, revert the change and record the missed metric
+    with its reason (`references/coherence.md`). A gate that FAILS with a recorded reason is a
+    decision; a gate that PASSES over a broken seam is a defect. This rule outranks every
+    threshold in this file.
 
 **A good draft is a valid finding.** State it and stop. Do not open a paragraph, find nothing
 wrong, and invent a stylistic suggestion so the round looks thorough; "this section needs no

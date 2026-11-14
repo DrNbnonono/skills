@@ -36,6 +36,11 @@ and revising everything (destroys precision and the author's voice). A measureme
 
 ## 3. Thresholds by venue class
 
+**These numbers are targets, not rules.** Claim fidelity outranks coherence, and coherence
+outranks every threshold below: a change that lowers a number while breaking a referent, a causal
+link, or the topic chain is wrong, and the miss is recorded instead of bought
+(`coherence.md` section 1). Read the table as "where to look", never as "what must be".
+
 | Metric | Conference draft (target) | Magazine draft (target) | Red flag |
 |---|---|---|---|
 | Mean sentence length | ≤25 words | ≤22–25 words | >30 |

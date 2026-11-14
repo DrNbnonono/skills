@@ -548,6 +548,9 @@ def run_gate(agg: dict, venue: str) -> bool:
         ok = ok and passed
         print(f"  {'PASS' if passed else 'FAIL'}  {label:45s} {val:>8} (limit {op} {limit})")
     print("  RESULT:", "PASS" if ok else "FAIL")
+    if not ok:
+        print("  note: a FAIL is acceptable when the miss is recorded with its reason")
+        print("        (coherence.md, Precedence). Do not buy a PASS by breaking a seam.")
     return ok
 
 

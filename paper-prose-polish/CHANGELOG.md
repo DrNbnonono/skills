@@ -1,5 +1,27 @@
 # Changelog
 
+## v2.6.1 - put the precedence rule where the temptation is
+
+The rule already existed (v2.5): claim fidelity > coherence > metrics, and a gate miss with a
+recorded reason is a decision. What was missing is that nothing enforced it **at the gate**, which
+is exactly where a reviser is tempted to buy a PASS.
+
+### Added
+
+- **Non-negotiable 11**: never win a metric by breaking the prose. Explicitly outranks every
+  threshold in the file.
+- **`lint_prose.py --gate`** now prints, on FAIL: a gate miss is acceptable when recorded with its
+  reason, and a PASS bought by breaking a seam is a defect.
+- **`diagnosis-playbook.md` section 3** opens with the same statement, above the threshold table.
+- **Revision template**: verification item "no metric was improved by breaking a seam".
+
+### Not changed
+
+No threshold moved. This release only makes the existing precedence visible where numbers are
+consumed.
+
+---
+
 ## v2.6 - display items have a reading order
 
 A figure the reader meets before it is introduced is worse than a delayed one: the reader either

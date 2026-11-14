@@ -47,6 +47,9 @@ records which two sentences were joined and the tie it restored.
 
 ## Verification
 
+- [ ] No metric was improved by breaking a seam; every missed target has a recorded reason
+
+
 - [ ] Numbers and claim strength unchanged
 - [ ] `\cite` / `\ref` / math / table data untouched
 - [ ] Previous file backed up as `.bak-YYYYMMDD`
