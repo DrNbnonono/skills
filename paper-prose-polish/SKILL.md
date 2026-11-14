@@ -1,7 +1,7 @@
 ---
 name: paper-prose-polish
 description: Polish English academic prose for security/systems venues (S&P, USENIX Security, CCS, NDSS, journals, IEEE S&P Magazine), written for readers whose first language is not English. Use for 润色/改写/逐句修改论文表述, diagnosing why a paragraph is unreadable, converting a conference paper into a magazine feature, or a clarity review before submission. Core rule: if a competent non-native reader cannot follow a sentence on the first pass, the sentence is broken. Measures the draft first, then revises sentence by sentence with a defect code and a stated reader-stall reason for every change.
-version: 2.5.1
+version: 2.6
 ---
 
 # Paper prose polish
@@ -238,6 +238,21 @@ After the sentences, read the paper for **where things sit**, not how they read.
 4. **Raise every placement change as a question, never apply it silently.** State the convention,
    the cost, and two options; the author decides. Placement is Tier 3 in "Rewrite authority".
 
+## Step 4.6 — Display-item order
+
+Floats are read, not just counted. Before submission, check the reading order of every figure and
+table against `references/floats-and-references.md`:
+
+1. Every float is cited at least once in the body; an unreferenced float is a defect, not a
+   stylistic choice.
+2. The first citation precedes the float in the **source**, because LaTeX queues floats
+   first-in, first-out; a float declared earlier can appear before the reader is introduced to it.
+3. The citing sentence names what to look at (panel, column, axis), and a sentence after the float
+   interprets it rather than restating the caption.
+4. The caption stands alone: one sentence with the takeaway.
+5. Default placement spec is `[t]`; `[!ht]` can reorder floats, `[H]` can break IEEEtran columns.
+6. Check the **compiled PDF**, not the source: source order cannot tell you where a float landed.
+
 ## Step 5 — Verify
 
 - **Coherence first.** Run the paragraph gate in `references/coherence.md` §6: seam tests
@@ -298,6 +313,7 @@ After the sentences, read the paper for **where things sit**, not how they read.
 | `references/diagnosis-playbook.md` | Measurement method, thresholds (incl. L2 blockers), how to report findings |
 | `references/magazine-mode.md` | Converting a conference paper into a magazine feature |
 | `references/local-artifacts.md` | Annotation study over 120 papers: five local artifacts, per-sentence rates, precision audit, and three null results |
+| `references/floats-and-references.md` | Reading order of figures and tables: citation-before-appearance, LaTeX float mechanics, caption rules, and a submission checklist |
 | `references/structure-and-placement.md` | Measured layout conventions, a placement checklist, and the protocol for raising a move as a question |
 | `references/l2-grammar.md` | Article / agreement / tense detectors: what was measured, and the three that failed |
 | `references/ai-artifacts.md` | What generated prose gets wrong, split into measured artifacts and local-only ones, with null results kept |

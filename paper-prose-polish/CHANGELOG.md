@@ -1,5 +1,40 @@
 # Changelog
 
+## v2.6 - display items have a reading order
+
+A figure the reader meets before it is introduced is worse than a delayed one: the reader either
+skips it or reads it without knowing what to look for. This round adds the reading-order layer for
+figures and tables.
+
+### Added
+
+- **`references/floats-and-references.md`**: venue requirements (IEEE: near, but not before, the
+  first mention; introduce before, interpret after; explain significance in the caption), the
+  LaTeX mechanics that decide whether those hold (FIFO float queue, `[t]` vs `[!ht]` vs `[H]`,
+  `\FloatBarrier`), seven rules, a symptom-to-cause table, and a submission checklist.
+- **Step 4.6 display-item order** in `SKILL.md`, including the instruction to check the compiled
+  PDF rather than the source.
+- **`scripts/float_study.py`**: parses LaTeXML HTML (arXiv or the faster `ar5iv` mirror), maps
+  `Figure N` / `Table N` links to float elements, and reports citation coverage and source-order
+  distance.
+
+### Measured, and deliberately not turned into thresholds
+
+A 40-paper run: 23 floats per paper (median), 69.7% with at least one body reference, 52.8% of
+float elements appearing before their first mention **in the source**. The last figure is a
+statement about authors' LaTeX habits, not about printed pages, because arXiv HTML preserves
+source order. The caption classifier (19.3% full sentences) also proved too brittle. The numbers
+are recorded in the reference with their failure modes, and the file says explicitly: read the
+compiled PDF, never gate on these.
+
+### Audited in the paper under revision
+
+Two appendix tables (`tab:typology`, `tab:rt-loo`) are never cited in the body; four figure files
+exist without being `\input` anywhere; one table uses `[!ht]` while every other float uses `[t]`.
+All four input figures are cited before their `\input`, which is correct.
+
+---
+
 ## v2.5.1 - do not manufacture edits
 
 A small correction to the skill's own incentives. After v2.5, the risk is a reviser who finds
