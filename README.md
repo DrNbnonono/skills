@@ -6,11 +6,13 @@ by the agent.
 
 | Skill | What it does | Version |
 |---|---|---|
-| [`paper-prose-polish`](paper-prose-polish/) | 逐句润色英文安全/系统论文：测量 → 术语锁定 → 逐句改写 → 首读门槛 + 连贯性验收 | 2.6.1 |
+| [`paper-survey`](paper-survey/) | 论文前期调研（方向调研与可行性论证）：九节固定框架，每节有内容约束；证据 E1–E4 分级、Gap 三段式、可行性与路线表、Go/Narrow/Stop 决定 | 1.0 |
+| [`paper-writing`](paper-writing/) | 论文从 RQ 长出来：故事五问 → 结构选型 → 结果清单 → 章节主张 → 术语与图表分配 → 先引言后摘要；附中英双语问卷 | 1.2.1 |
 | [`paper-figures`](paper-figures/) | 论文图表设计、绘制与验收：图表选型 → 统一风格 → 导出 → 灰度/色盲/字体检查，附带示例图；可恢复自有 PDF 图的矢量版 | 1.1 |
-| [`paper-writing`](paper-writing/) | 论文从 RQ 长出来：故事五问 → 结构选型 → 结果清单 → 章节主张 → 术语与图表分配 → 先引言后摘要；附中英双语问卷 | 1.2 |
+| [`paper-prose-polish`](paper-prose-polish/) | 逐句润色英文安全/系统论文：测量 → 术语锁定 → 逐句改写 → 首读门槛 + 连贯性验收 | 2.6.1 |
 
-三者都面向 **S&P / USENIX Security / CCS / NDSS** 以及 IEEE S&P Magazine：写（paper-writing）→ 配图（paper-figures）→ 润色（paper-prose-polish）。
+四者覆盖一篇论文从 0 到投稿的流水线，都面向 **S&P / USENIX Security / CCS / NDSS** 以及 IEEE S&P Magazine：
+**调研（paper-survey）→ 写作（paper-writing）→ 配图（paper-figures）→ 润色（paper-prose-polish）**。
 
 ---
 
@@ -87,6 +89,41 @@ python scripts/figure_recovery.py extract --pdf paper.pdf --page 3 --out analysi
 
 ---
 
+## paper-survey
+
+润色解决"句子读不懂"，写作解决"文章从哪长出来"，这个 skill 解决更早的一层：
+**这个方向值不值得做、到底缺什么、我们做不做得了**。
+
+报告固定九节，每节都有内容约束（必须回答什么、必须产出什么、禁止写什么、长度范围）：
+
+> 基本信息 → 目的与背景 → 范围与方法 → 相关工作 → 现状总结 → 空白与问题 →
+> 可行性 → 初步思路 → 结论与建议
+
+三条铁律贯穿全篇：
+
+1. **可溯源**：每个事实有来源（链接 + venue + year），否则标 `[unverified]`。
+2. **分级**：E1 已确认（公告/修复/可复现论文）→ E2 我们复现 → E3 候选 → E4 推断，
+   候选永不悄悄升级为已确认。
+3. **有界**："没找到"必须带检索窗口与会议列表，不能写成"不存在"；"首次/填补空白"
+   若无范围限定，直接判 FAIL。
+
+Gap 必须写成三段式（**已有问题 / 研究空白 / 拟解决问题**），且每个 Gap 能追溯到相关工作的
+一行、并对应到方案的模块与指标；可行性要给出"任务 / 可行性 / 风险"表和每条风险的
+触发条件、应对、停止条件；§8 的指标必须分成三组（发现能力 / 实际影响 / 防御效果）分别报告。
+
+自带 `scripts/check_survey.py` 做机械校验（结构、长度、对比表、Gap 三段式、风险应对、
+未加范围的过度声称）。在作者认可的一份 9,157 单位范例报告上跑：**0 fail / 0 warn**；
+在一份只有标题的薄报告上跑：**5 fail / 18 warn**。
+
+```bash
+python scripts/check_survey.py report.md           # 九节结构 + 证据 + 过度声称
+python scripts/check_survey.py report.md --json    # 机器可读
+```
+
+模板：`templates/survey-plan.md`（开工前问卷）、`templates/report-skeleton.md`（九节骨架与必填表格）。
+
+---
+
 ## paper-writing
 
 润色解决"句子读不懂"，这个 skill 解决更早的一层：**这篇文章要回答什么、凭什么值得回答**。
@@ -110,16 +147,21 @@ skill 里带一份 `templates/paper-plan.md` 问卷：RQ、五环、结构选型
 
 ## 版本
 
+- `paper-survey` v1.0：九节调研框架、E1–E4 证据分级、相关工作三维距离表、Gap 三段式、
+  可行性/风险/路线表、三组指标分离、Go/Narrow/Stop 判据，以及 `check_survey.py` 校验器
+  （在作者认可的范例上 0 fail / 0 warn）。见
+  [`CHANGELOG.md`](paper-survey/CHANGELOG.md)。
 - `paper-prose-polish` v2.6.1：v2.0 首读门槛；v2.1 否定规范；v2.2 改写权限与 DELETE 判决；
   v2.3–v2.4 语料研究（局部缺陷、结构/位置）；v2.5 连贯性约束（接缝三测、MERGE、`--flow`）；
   v2.5.1 明确「原文已经写得好就不改」；v2.6 图表阅读顺序（先引用后出现）；
   **v2.6.1 把「不许为指标牺牲连贯」放到 gate、阈值表和模板上**（阈值一个没动）。
   每次改动的实测数字与 null result 见
   [`CHANGELOG.md`](paper-prose-polish/CHANGELOG.md)。
-- `paper-writing` v1.1：初版（五环故事线、章节蓝图、摘要、正文/附录分配、作者问卷）；
+- `paper-writing` v1.2.1：初版（五环故事线、章节蓝图、摘要、正文/附录分配、作者问卷）；
   **v1.1 加实测解剖**（引言 10 段/1032 词、评估 24 段、附录 60.8%）、结果清单工作流、配色实测、中文问卷；
   **v1.2 完成四项补测**：99 篇引言人工标注（五环位置 0.00/0.12/0.38/0.62/0.78，出现率 100/76/100/58/90%）、
-  评估子节（中位 4 个、62% 标题是主张专属）、图型（抽样全是示意图/截图）、分母修正（每篇 17 件、附录 10.9%）。
+  评估子节（中位 4 个、62% 标题是主张专属）、图型（抽样全是示意图/截图）、分母修正（每篇 17 件、附录 10.9%）；
+  **v1.2.1 补上两个研究脚本**（`build_intro_kit.py`、`aggregate_annotations.py`），使引言标注研究可复现。
   实测见 [`CHANGELOG.md`](paper-writing/CHANGELOG.md)。
 - `paper-figures` v1.1：v1.0 初版（风格/编码/可访问性/生产）；
   **v1.1 新增"自有 PDF 图的矢量恢复 + 像素 QA"**（`figure_recovery.py`），

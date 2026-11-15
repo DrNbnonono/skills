@@ -1,7 +1,7 @@
 ---
 name: paper-writing
 description: Plan and draft a research paper from the research question outward, for security/CS venues (S&P, USENIX Security, CCS, NDSS, journals, IEEE S&P Magazine). Use when starting a paper, choosing its structure, deciding what each section must claim, allocating figures and tables between body and appendix, or writing the abstract last. Use for 论文写作/搭框架/定RQ/章节规划/摘要怎么写. Not for sentence-level revision (paper-prose-polish) or figure design (paper-figures).
-version: 1.2
+version: 1.2.1
 ---
 
 # Paper writing

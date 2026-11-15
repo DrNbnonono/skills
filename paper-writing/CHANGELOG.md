@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.2.1 - ship the two study scripts
+
+Packaging only, no text change. `references/introduction-anatomy.md` and
+`references/intro-annotation-rubric.md` cite two scripts that were not in the repository:
+`scripts/build_intro_kit.py` (builds the annotation kit) and `scripts/aggregate_annotations.py`
+(aggregates the five annotators' labels). Both are now shipped so the annotation study can be
+repeated on another corpus. Version bumped here and in `SKILL.md` and the repository README so
+the three stay in step.
+
+---
+
 ## v1.2 - the four deferred measurements, finished
 
 v1.1 left four things unmeasured and said so. This round measures them and fixes three denominators
