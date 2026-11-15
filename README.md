@@ -6,10 +6,11 @@ by the agent.
 
 | Skill | What it does | Version |
 |---|---|---|
-| [`paper-prose-polish`](paper-prose-polish/) | 逐句润色英文安全/系统论文：测量 → 术语锁定 → 逐句改写 → 首读门槛 + 连贯性验收 | 2.5.1 |
+| [`paper-prose-polish`](paper-prose-polish/) | 逐句润色英文安全/系统论文：测量 → 术语锁定 → 逐句改写 → 首读门槛 + 连贯性验收 | 2.6.1 |
 | [`paper-figures`](paper-figures/) | 论文图表设计、绘制与验收：图表选型 → 统一风格 → 导出 → 灰度/色盲/字体检查，附带示例图；可恢复自有 PDF 图的矢量版 | 1.1 |
+| [`paper-writing`](paper-writing/) | 论文从 RQ 长出来：故事五问 → 结构选型 → 章节主张 → 术语与图表分配 → 先引言后摘要；附作者填写问卷 | 1.0 |
 
-两者都面向 **S&P / USENIX Security / CCS / NDSS** 以及 IEEE S&P Magazine 的写作与配图。
+三者都面向 **S&P / USENIX Security / CCS / NDSS** 以及 IEEE S&P Magazine：写（paper-writing）→ 配图（paper-figures）→ 润色（paper-prose-polish）。
 
 ---
 
@@ -86,13 +87,37 @@ python scripts/figure_recovery.py extract --pdf paper.pdf --page 3 --out analysi
 
 ---
 
+## paper-writing
+
+润色解决"句子读不懂"，这个 skill 解决更早的一层：**这篇文章要回答什么、凭什么值得回答**。
+核心是一条五环故事线，任何一环缺失，对应章节就会写成流水账：
+
+> 问题从哪来？→ 为什么值得回答？→ 怎么回答？→ 证据支持到哪一步？→ 最后多知道了什么？
+
+写作顺序也固定：**引言与背景先写**（它们锁定用词与主张，后面变了也只影响这两节），
+**中间章节按结果迭代**（缺实验就去跑，不要绕过去写），**摘要在最后写**（审稿人第一眼看到它，
+而它只能等结论定稿）。
+
+skill 里带一份 `templates/paper-plan.md` 问卷：RQ、五环、结构选型、每节主张、术语锁定、
+图表正文/附录分配、缺口与风险。**填不出来的地方写 `?`**，那些 `?` 就是下一次讨论的议程——
+比一个看似合理的猜测有用得多。
+
+实测（120 篇顶会摘要）：中位 **212 词 / 9 句**，**99.2% 用 "we"**，70.8% 含数字，32.5% 含百分比。
+所以中文期刊那套"第三人称、不用本文作主语"的摘要规范**在英文安全论文里正好是反的**——
+`references/abstract.md` 里把可迁移的部分（自明、独立、不过度声称）和必须反转的部分分开写了。
+
+---
+
 ## 版本
 
-- `paper-prose-polish` v2.5.1：v2.0 首读门槛；v2.1 否定规范；v2.2 改写权限与 DELETE 判决；
+- `paper-prose-polish` v2.6.1：v2.0 首读门槛；v2.1 否定规范；v2.2 改写权限与 DELETE 判决；
   v2.3–v2.4 语料研究（局部缺陷、结构/位置）；v2.5 连贯性约束（接缝三测、MERGE、`--flow`）；
-  **v2.5.1 明确「原文已经写得好就不改」**（KEEP 是正常结果，不是失败）。
+  v2.5.1 明确「原文已经写得好就不改」；v2.6 图表阅读顺序（先引用后出现）；
+  **v2.6.1 把「不许为指标牺牲连贯」放到 gate、阈值表和模板上**（阈值一个没动）。
   每次改动的实测数字与 null result 见
   [`CHANGELOG.md`](paper-prose-polish/CHANGELOG.md)。
+- `paper-writing` v1.0：初版（五环故事线、章节蓝图、摘要、正文/附录分配、作者问卷）。
+  实测见 [`CHANGELOG.md`](paper-writing/CHANGELOG.md)。
 - `paper-figures` v1.1：v1.0 初版（风格/编码/可访问性/生产）；
   **v1.1 新增"自有 PDF 图的矢量恢复 + 像素 QA"**（`figure_recovery.py`），
   并加了版权约束：不拿别人的图。上游灵感来自
