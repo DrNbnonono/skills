@@ -6,9 +6,9 @@
 |---|---|
 | Papers with an appendix | **60.8%** (73/120) |
 | Appendix sections per paper with one | 251 / 73 = **3.4** |
-| Display items in the appendix | 11.4% of all items (30-paper sample) |
+| Display items in the appendix | **10.9%** of all items (25-paper sample, top-level items only) |
 
-Topic frequency over the 251 appendix sections:
+Topic frequency over the 251 appendix sections (titles can match more than one topic, so the column does not sum to 251):
 
 | Topic | Sections |
 |---|---|

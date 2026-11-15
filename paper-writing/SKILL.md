@@ -1,7 +1,7 @@
 ---
 name: paper-writing
 description: Plan and draft a research paper from the research question outward, for security/CS venues (S&P, USENIX Security, CCS, NDSS, journals, IEEE S&P Magazine). Use when starting a paper, choosing its structure, deciding what each section must claim, allocating figures and tables between body and appendix, or writing the abstract last. Use for 论文写作/搭框架/定RQ/章节规划/摘要怎么写. Not for sentence-level revision (paper-prose-polish) or figure design (paper-figures).
-version: 1.1
+version: 1.2
 ---
 
 # Paper writing
@@ -77,6 +77,11 @@ Every paper answers five questions in order. Write one sentence for each before 
 
 The five sentences are the paper's spine. If any one is missing, the corresponding section will
 read as filler no matter how well it is written.
+
+Measured on 99 annotated introductions (`references/introduction-anatomy.md`): the five moves appear
+in this order, at normalised positions 0.00 / 0.12 / 0.38 / 0.62 / 0.78. Presence rates are
+100% / 76% / 100% / 58% / 90% — the spine is real, and its two weakest links are "why it is worth
+answering" and "how far the evidence reaches", which is exactly where reviewers push.
 
 ## Step 3 — Section plan
 
@@ -161,6 +166,8 @@ plausible guess.
 
 | File | Use |
 |---|---|
+| `references/introduction-anatomy.md` | Annotated anatomy of 99 introductions: presence, position, order, openings, and the two weak links |
+| `references/intro-annotation-rubric.md` | The annotation protocol, for repeating the measurement on another corpus |
 | `references/story-spine.md` | The five links, why each fails, and the repair |
 | `references/section-blueprints.md` | Per-section job, measured conventions, common failures |
 | `references/abstract.md` | Four elements, three properties, four failure modes, field differences |

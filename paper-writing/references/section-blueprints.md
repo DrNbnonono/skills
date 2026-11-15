@@ -49,14 +49,19 @@ Measured on 120 papers:
 | Property | Value |
 |---|---|
 | Introduction length | median **10 paragraphs / 1,032 words** (p90: 15 / 1,531) |
-| Opens with boilerplate ("In recent years…", "With the rapid development…") | **1.7%** only |
+| Opens with a general trend statement rather than a specific claim | **36%** (annotated) |
+| Opens with a stock phrase ("In recent years…", "With the rapid development…") | **1.7%** (phrase match) |
 | States a research question explicitly ("we ask / we study / our question") | 36.7% |
 | Announces contributions in prose ("we make the following contributions") | 20.8% (bullet lists are invisible to this count, so the true rate is higher) |
 | Ends with a roadmap ("the rest of this paper…") | **17.5%** |
 
-Two readings. First, the boilerplate opening is nearly absent in accepted papers — 1.7%, not 30% —
-which is the strongest evidence in this skill against opening with "in recent years". Second, a
-roadmap is a minority convention and is the first paragraph to cut under a page limit.
+Two readings. First, the stock phrase is rare (1.7%) but the general-trend opening is not (36%):
+if you open with a trend, make it carry a specific, checkable assertion rather than "the area is
+growing". Second, a roadmap is a minority convention and is the first paragraph to cut under a page
+limit.
+
+The annotated positions of the five moves (0 = first paragraph, 1 = last): problem 0.00, worth
+answering 0.12, method 0.38, boundary 0.62, change 0.78. See `introduction-anatomy.md`.
 
 **Failure:** a literature review in the introduction that duplicates §2. Numbers and case details
 belong in one of the two, never both.

@@ -16,6 +16,34 @@ maps back to the claims in the introduction.
 So the evaluation is roughly **two to three times the introduction**, and it is usually one section,
 not several. A paper with five evaluation sections is usually a paper with five papers inside it.
 
+### Evaluation subsections (60 papers, ar5iv section hierarchy)
+
+| Measure | Value |
+|---|---|
+| Subsections per evaluation | median **4** (mean 4.4, max 11) |
+| Has a setup subsection | 53.3% |
+| ...and it comes first | 46.7% |
+| Ends with a summary/discussion subsection | **5.0%** |
+| Has a named ablation subsection | 13.3% |
+| Has a named sensitivity subsection | 5.0% |
+| Titles that are claim-specific rather than generic | **62%** |
+
+The last row is the finding that matters. Most evaluation subsections are named after the specific
+claim or condition they test ("Impact of phase differences", "Detection under compression"), not
+after a generic function ("Setup", "Ablation", "Results"). The section is organised claim by claim;
+the generic labels are a minority.
+
+Two consequences:
+
+- Do not force the generic vocabulary. A subsection called "Impact of X" is doing its job; one
+  called "Additional experiments" is usually hiding an unmapped result.
+- A closing "summary" subsection is rare (5%). The summary of what the evaluation established
+  normally sits at the end of the **last** subsection or opens the discussion, not in its own
+  heading.
+
+Caveat: only papers whose evaluation contains subsections were counted; papers with a flat
+evaluation section are not represented.
+
 ---
 
 ## 1. The mapping rule

@@ -36,15 +36,24 @@ figure has no job.
 
 ## 3. Colour: what the corpus actually does
 
-`scripts/figure_color_study.py` sampled **50 figures from 20 top-tier papers** (ar5iv raster images):
+`scripts/figure_color_study.py` and `scripts/figure_features.py` sampled **48 figures from 20
+top-tier papers** (ar5iv raster images). The counts below use **top-level** display items only, so
+sub-figures no longer inflate the denominators:
 
 | Measure | Result |
 |---|---|
-| Distinct hues carrying ≥5% of coloured pixels | **median 2** |
-| Figures with ≥4 distinct hues | 32% |
-| Figures using a red **and** green pair | **18%** |
-| Mean saturation of coloured pixels | 0.47 (moderate) |
+| Display items per paper (top-level) | **median 17** (was 36 when sub-figures were counted separately) |
+| Display items in the appendix | **10.9%** of all items |
+| Distinct hues at a 3% share threshold | median **3**; 35% of figures have >=4 |
+| Distinct hues at 5% | median **2**; 31% have >=4 |
+| Distinct hues at 10% | median **2**; 17% have >=4 |
+| Figures using a red **and** green pair | 18% |
+| Mean saturation of coloured pixels | 0.47 |
 | Luminance spread (grayscale proxy) | median std 55 |
+
+The hue result is threshold-dependent above the median: "two hues" is robust, but "how many figures
+use four or more hues" ranges from 17% to 35% depending on where the share cutoff sits. Quote the
+range, not a single number.
 
 Read this as a description, not a target. The usable lessons:
 
@@ -57,6 +66,26 @@ Read this as a description, not a target. The usable lessons:
    grey blocks in grayscale.
 4. **Luminance separation is what survives printing.** Check the figure in grayscale before
    submission; a distinction that exists only in hue disappears in print.
+
+### What the figures actually are
+
+A manual sample of six figures from the same corpus: **all six were diagrams or screenshots** —
+system pipelines, query plans, attack flows, UI panels — and none was a quantitative plot. This is
+consistent with how security papers work: quantitative evidence usually lives in tables, while
+figures carry the **mechanism**.
+
+The practical consequence for planning: before asking "bar or line", ask "is this a diagram or a
+plot?".
+
+| If the figure shows | It is | Plan for |
+|---|---|---|
+| how the attack or system works | diagram | one overview figure, drawn once, reused as the mental model |
+| what the tool looks like in use | screenshot | crop tightly, annotate the region that matters, check legibility at print size |
+| how a quantity changes | plot | chart type by claim (above), axes with units, grayscale check |
+| a matrix of coverage or conditions | table or heatmap | explicit cells, no continuous colormap without a legend |
+
+Caveat: n=6, and the image filter skipped SVG figures, which may be plot-heavy. Treat this as a
+hypothesis to check against your own venue's proceedings, not as a distribution.
 
 For palettes, export settings, and the automated checks, use `paper-figures`.
 

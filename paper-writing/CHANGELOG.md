@@ -1,5 +1,71 @@
 # Changelog
 
+## v1.2 - the four deferred measurements, finished
+
+v1.1 left four things unmeasured and said so. This round measures them and fixes three denominators
+that were inflating earlier numbers.
+
+### Introductions, annotated (99 papers, five annotators)
+
+| Move | Present | Median position in the intro |
+|---|---|---|
+| Where the problem comes from | **100%** | 0.00 |
+| Why it is worth answering | 76% | 0.12 |
+| How it is answered | **100%** | 0.38 |
+| How far the evidence reaches | **58%** | 0.62 |
+| What we now know | 90% | 0.78 |
+
+The spine is real and monotone. 45% of introductions carry all five moves, 33% four, 20% three.
+The two weak links are importance (76%, and only ~25% under a strict "named blocked decision"
+reading) and boundary (58%). Openings: 63% a specific claim, 36% a general trend statement, and only
+**1.7%** the stock "in recent years" phrase -- both numbers are reported, because they answer
+different questions. Explicit RQ: 24% (annotated) vs 37% (regex), a definitional gap, reported as a
+range.
+
+New: `references/introduction-anatomy.md`, and `references/intro-annotation-rubric.md` so the
+measurement can be repeated on another corpus. Scripts: `build_intro_kit.py`,
+`aggregate_annotations.py`.
+
+Annotator variance is reported rather than smoothed: the strict batch found importance in 25% of its
+papers, the lenient ones in 95-100%. The disagreement is itself the finding -- authors state severity,
+not the decision that is blocked.
+
+### Evaluation subsections (60 papers)
+
+Median **4** subsections (max 11); a setup subsection in 53% (first in 47%); a summary/discussion
+subsection last in only **5%**; a named ablation in 13%; a named sensitivity subsection in 5%; and
+**62% of subsection titles are claim-specific** rather than generic. The evaluation is organised
+claim by claim, not by a fixed vocabulary.
+
+### Figure types and palettes
+
+A manual sample of six figures: **all six were diagrams or screenshots**, none a quantitative plot --
+security figures carry the mechanism, tables carry the numbers. Colour, with top-level display items
+and three share thresholds:
+
+| Measure | Value |
+|---|---|
+| Display items per paper (top-level) | median **17** (was 36 with sub-figures) |
+| In the appendix | **10.9%** |
+| Hues at 3% / 5% / 10% threshold | median **3 / 2 / 2**; >=4 hues in 35% / 31% / 17% |
+| Red+green pair | 18% |
+
+### Denominator fixes
+
+- Floats per paper: 36 -> **17** by counting only top-level figures/tables.
+- Appendix share: 11.4% -> **10.9%** with the same correction.
+- Hue breadth: a single number -> a **3/5/10% threshold range** (the median is stable, the ">=4
+  hues" share is not).
+- Appendix topics: noted that titles can match several topics, so the column does not sum.
+
+### Still not measured
+
+Inter-annotator kappa (no double coding); the figure-type distribution at n>6; the five-move
+positions for the 21 papers whose extracts were truncated. All three are stated in the files rather
+than implied away.
+
+---
+
 ## v1.1 - anatomy, evidence first, and a Chinese questionnaire
 
 v1.0 said what each section must do. v1.1 adds what 120 papers actually do, and a mechanism for
