@@ -43,7 +43,8 @@ This block is what makes "在本次检索范围内" mean something. Keep it shor
 | [End-to-End Measurements of Email Spoofing Attacks](url)（USENIX Security 2018） | 测量 35 个服务商对伪造邮件的检测、投递与用户警告 | 已测伪造与用户警告；本研究测认证结果消费 |
 ```
 
-Rules:
+Rules that make the table persuasive (the table itself is optional — with only three close works,
+three paragraphs may read better):
 
 1. **Link + venue + year** in the first cell. No link, no row.
 2. **Column 2 is what they did**, in their terms — not what they failed to do.
@@ -98,7 +99,8 @@ Rules:
 - **拟解决** names an invariant, a metric, or an artifact. If it cannot be started next week, it
   is too vague.
 - **Trace**: each gap cites at least one row of §4 by its short name.
-- **Count**: ≥3 gaps, mutually distinct.
+- **How many:** as many as are real. Two strong gaps beat five padded ones; number them
+  (`Gap 1…`) when there are more than two, so §8 can refer to them.
 
 ### Gap failure modes (the checker uses these)
 
@@ -112,25 +114,23 @@ Rules:
 
 ---
 
-## 4. Mapping: work → gap → module → metric
+## 4. Mapping: work → gap → module → metric (optional)
 
-Add this table at the end of §6 (or in the appendix). It is the cheapest way to catch a report
-that has gaps the plan does not address.
+If the report has several gaps and several modules, this one table is the cheapest way to catch a
+gap the plan does not address. If there are only two of each, a sentence is enough.
 
 | §4 row | Distance | Gap | §8 module | Metric |
 |---|---|---|---|---|
 | Composition Kills | object | Gap 1 | A + C | independent root causes found |
 | RFC 8601 | evidence | Gap 5 | F | blocked insecure statements / false positives |
 
-A row with a gap but no module is a gap the plan ignores. A module with no gap is scope creep.
+A gap with no module is a gap the plan ignores. A module with no gap is scope creep.
 
 ---
 
-## 5. Checklist
+## 5. Before you call it done
 
-- [ ] Search protocol present: databases, venues, years, queries, inclusion/exclusion, stop rule.
-- [ ] Table has ≥5 rows, every row has link + venue + year, and a distance.
-- [ ] The closest work appears, described fairly.
-- [ ] §5 concedes what prior work settled.
-- [ ] ≥3 gaps, each three-part, each traced to a row.
-- [ ] Gap → module → metric mapping complete.
+- Can the reader name the closest work and the distance without re-reading §5?
+- Does every gap trace to something in §4?
+- Would the authors of the closest work accept your description of it?
+- Is there at least one sentence that says what would falsify the gap?

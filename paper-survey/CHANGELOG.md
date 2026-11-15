@@ -1,50 +1,65 @@
 # Changelog
 
-## v1.0 — pre-paper research survey (9 sections, graded evidence)
+## v1.1 — remove the quotas; keep the clarity
 
-The skill covers the stage before `paper-writing`: deciding whether a direction is worth a paper,
-what exactly is missing, and whether it can be done. It is calibrated against a report the author
-judged good, and its checker passes that report with zero failures and zero warnings.
+v1.0 turned a good report into a compliance form: length ranges per section, and a list of
+"required artifacts" that a section had to produce. That is the wrong direction. The report's job
+is to let a reader understand what was surveyed and why the conclusion follows; word counts and
+mandatory tables are proxies that can be satisfied while the argument stays unclear.
+
+### Changed
+
+- **No word limits.** All per-section length ranges are gone. A section is as long as its question
+  needs; the checker reports size only as orientation, with no pass/fail.
+- **No mandatory artifacts.** Tables, risk matrices, routes, and numbered lists are recommended as
+  tools when they clarify a comparison, and explicitly optional. A three-paragraph section with no
+  table can be complete.
+- **Section guide rewritten** (`references/section-constraints.md`): each section now lists the
+  questions the reader must be able to answer, what a convincing answer looks like, the failure
+  mode, and self-check questions — no "must contain" lists, no ranges.
+- **Checker rewritten** (`scripts/check_survey.py`): it now produces a structure map (sections,
+  units, tables, links) and flags (a) accuracy problems — unscoped "首次/填补空白/尚无" are still
+  failures — and (b) readability risks as warnings: a heading-only section, gaps missing a beat, a
+  recommendation without a next step. Missing tables are warnings, not failures.
+- **Templates labelled optional**, and the report skeleton says to delete anything that does not
+  help the reader.
 
 ### Added
 
-- **`SKILL.md`** — the nine-section frame, the decision the report must support (continue / narrow
-  / stop), recommended writing order (§1 → §3 → §4 → §6 → §5 → §8 → §7 → §9 → §2 → pass), and
-  ten non-negotiables (traceability, grading, bounded negatives, no fake gaps, separated metrics).
-- **`references/section-constraints.md`** — per-section job, required artifacts, forbidden
-  content, length range, checklist. Length ranges are calibrated on a 9,157-unit report judged
-  good (e.g. §6 gaps 1,717 units, §4 related work 1,153).
-- **`references/evidence-and-claims.md`** — the E1–E4 ladder (confirmed / reproduced / candidate /
-  inferred), promotion rules, scope formulas for negative and "first" claims, source record
-  format, ten accuracy traps.
-- **`references/related-work-and-gaps.md`** — reproducible search protocol (databases, venues,
-  window, queries, inclusion, snowballing, stop rule), the three-distance comparison table
-  (object / method / evidence), the three-part gap (已有问题 / 研究空白 / 拟解决问题), gap failure
-  modes, and the work→gap→module→metric mapping.
-- **`references/plan-and-feasibility.md`** — capability list, feasibility/risk tables, risk
-  register with trigger/response/stop condition, module spec, P0–Pn route with exit conditions,
-  three separated metric groups, and go/narrow/stop criteria.
-- **`templates/survey-plan.md`** — pre-search questionnaire (decision, assets, protocol, evidence
-  list, nearest work, risks).
-- **`templates/report-skeleton.md`** — the nine headings with prompts and required tables.
-- **`scripts/check_survey.py`** — mechanical checks: sections present/ordered, per-section length,
-  related-work table size/links/distance column, three-part gaps (≥3), feasibility table and risk
-  responses, next steps, RQ count, date, search protocol, evidence grades, and unscoped overclaim
-  wording ("首次/填补空白/尚无…"). `--json` and `--strict`; exit 1 on FAIL.
+- **"What readable means here"** in `SKILL.md`: first 100 words state the object/decision/headline;
+  each section opens with its judgment; the chain background → scope → known → missing → plan →
+  feasibility → decision is traceable; one term per concept; comparisons name a dimension; no
+  padding. Plus the reader test: ask someone uninvolved to restate question, closest work, gap,
+  recommendation.
+
+### Unchanged
+
+The accuracy rules (E1–E4 grades, bounded negatives, denominators, "a known problem is not a
+gap") and the decision requirement in §9. Those are about claims, not form.
 
 ### Calibration
 
-Run on the reference report (9 sections, 9,157 units, 9 sources, 9-row comparison table, 5 gaps,
-4 risks): **PASS, 0 fail / 0 warn**. Run on a deliberately thin report of the same headings:
-**5 fail / 18 warn** — missing tables, no three-part gaps, no next steps, unscoped "首次/填补空白".
+- Reference report (the author's 9-section survey): PASS, 0 fail / 0 warn.
+- A thin report with the same headings but no content: FAIL on unscoped overclaims, warnings for
+  near-empty sections, missing comparison, missing next step.
+- A prose-only report (no tables, one page) passes with warnings at most — by design.
 
-The reference report itself is not shipped (it is the author's research material); the ranges and
-checks are what carry its standard.
+---
 
-### Not covered
+## v1.0 — pre-paper research survey (9 sections, graded evidence)
 
-- Turning the report into a paper (that is `paper-writing`).
-- Language-level revision (`paper-prose-polish`).
-- Figures (`paper-figures`).
-- Deciding whether the *search* was adequate — the checker verifies that a protocol is recorded,
-  not that it was good.
+The skill covers the stage before `paper-writing`: deciding whether a direction is worth a paper,
+what exactly is missing, and whether it can be done.
+
+### Added
+
+- Nine-section frame, recommended writing order, ten non-negotiables (traceability, grading,
+  bounded negatives, no fake gaps, separated metrics).
+- `references/evidence-and-claims.md`: E1–E4 ladder, promotion rules, scope formulas, source
+  record format, ten accuracy traps.
+- `references/related-work-and-gaps.md`: search protocol, three-distance comparison, three-part
+  gaps, gap failure modes.
+- `references/plan-and-feasibility.md`: risk register, staged route, separated metric groups,
+  go/narrow/stop criteria.
+- Templates: pre-search plan, report skeleton.
+- `scripts/check_survey.py`.

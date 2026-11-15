@@ -36,8 +36,10 @@ Three to five items, each: **asset → therefore not-from-scratch**.
 | 真实部署评估 | 中等 | 配置与版本信息不可见 |
 ```
 
-Rules: ≥5 rows; feasibility ∈ {高, 较高, 中等, 低}; every 中等/低 row must also appear in the
-risk list below.
+Rules that make it useful (a table is easiest when there are many tasks; with three tasks, three
+short paragraphs read just as well): every row's feasibility is one of 高 / 较高 / 中等 / 低, and
+anything at 中等 or below reappears in the risk list below. A risk that is not on the list cannot
+be monitored.
 
 ### Risk register
 
@@ -80,7 +82,7 @@ A module that has no output consumed by another module is either a report or sco
 | P4 防御消融 | 修复与合法流量回归 | 阻断率、误报、兼容性 | 兼容性可接受 |
 ```
 
-Rules:
+Rules that make it credible — a table is optional, a numbered list works:
 
 - **P0 must be cheap and fatal.** Its job is to kill the project early if the premise is false.
 - **Every stage has an exit condition**, written as a number or a binary event.
@@ -106,6 +108,9 @@ Rules:
 - A metric that cannot move the §9 decision is decoration — cut it.
 - Add one **cost** metric (person-weeks or test budget) per group, because efficiency claims need
   a denominator too.
+
+The point is not the number of metrics. Two well-defined metrics with denominators are worth more
+than six that measure the same thing.
 
 ---
 
@@ -140,13 +145,10 @@ Writing this before the experiments is what separates a plan from a hope.
 
 ---
 
-## 6. Checklist
+## 6. Before you call it done
 
-- [ ] Capability list: each item is asset → not-from-scratch.
-- [ ] Feasibility table ≥5 rows; every 中等/低 row has a risk entry.
-- [ ] Risk register: trigger, response, stop condition for each.
-- [ ] Modules: input / action / output / dependency; no orphan module.
-- [ ] Route: P0 is cheap and fatal; every stage has an exit condition.
-- [ ] Metrics: three groups, each with denominators, plus a cost metric.
-- [ ] Contributions marked as hypotheses.
-- [ ] Go / narrow / stop criteria written.
+- Can the reader tell which assets already exist and which must still be built?
+- Does every risk have a response someone could execute next week?
+- Is at least one stop condition written, and is it observable?
+- Are the three metric groups visibly separate, each with a denominator?
+- If P0 fails, does the report say what happens next?

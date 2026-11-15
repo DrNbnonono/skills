@@ -1,7 +1,9 @@
-# Survey report skeleton
+# Survey report skeleton (optional)
 
-Copy, keep the section headings, fill the prompts. The heading text is what the checker keys on,
-so keep the Chinese keyword and the English gloss in each `##` line.
+This is a prompt sheet, not a form. Use it when a blank page is the problem; ignore the table
+placeholders when prose is clearer. Keep the nine `##` headings (the reader expects that order),
+write each section as long as its question needs, and delete anything that does not help the
+reader follow the argument.
 
 Header block before §1:
 
