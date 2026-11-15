@@ -1,7 +1,7 @@
 ---
 name: paper-writing
 description: Plan and draft a research paper from the research question outward, for security/CS venues (S&P, USENIX Security, CCS, NDSS, journals, IEEE S&P Magazine). Use when starting a paper, choosing its structure, deciding what each section must claim, allocating figures and tables between body and appendix, or writing the abstract last. Use for 论文写作/搭框架/定RQ/章节规划/摘要怎么写. Not for sentence-level revision (paper-prose-polish) or figure design (paper-figures).
-version: 1.0
+version: 1.1
 ---
 
 # Paper writing
@@ -91,6 +91,23 @@ For each section, write three lines before drafting it:
 A section whose claim cannot be written is a section that has not been thought through. A section
 whose claim is not needed by the next section is a section to cut.
 
+## Step 3.5 — The results inventory (draft from evidence)
+
+When the experiments exist but the paper does not, do not start writing prose. Build the inventory
+first (`templates/results-inventory.md`), then the section writes itself:
+
+1. One line per result: what was run, on what, and what it shows.
+2. One column per result: **which introduction claim it settles**. A result with no claim goes to the
+   appendix or the bin.
+3. Order the survivors: headline first, then the order the introduction promises.
+4. For each survivor, write the four sentences of a results subsection — question, design, evidence,
+   interpretation (`references/results-arrangement.md`).
+5. Check the reverse direction: every introduction claim has a subsection.
+
+This is the mechanism behind "enough experiments produce a near-complete draft": the draft is a
+mapping from claims to evidence, and the inventory is that mapping written down. If the mapping has
+holes, the paper is missing an experiment, not a paragraph.
+
 ## Step 4 — Terminology and display items
 
 **Terminology lock.** One canonical form per concept, with its definition and the variants that are
@@ -147,6 +164,11 @@ plausible guess.
 | `references/story-spine.md` | The five links, why each fails, and the repair |
 | `references/section-blueprints.md` | Per-section job, measured conventions, common failures |
 | `references/abstract.md` | Four elements, three properties, four failure modes, field differences |
+| `references/results-arrangement.md` | Order of experiments, the four sentences of a results subsection, common defects |
+| `references/appendix-catalog.md` | What actually goes in appendices, ranked by measured frequency, with a decision checklist |
+| `references/figures-in-the-argument.md` | One figure one claim, chart type by claim, measured palette data, grayscale |
 | `references/appendix-and-display-items.md` | Body vs appendix decision rules, with measured split |
-| `templates/paper-plan.md` | The author questionnaire to fill before drafting |
+| `templates/paper-plan.md` | The author questionnaire (English) |
+| `templates/paper-plan.zh.md` | The same questionnaire in Chinese |
+| `templates/results-inventory.md` | Results → claims → sections worksheet |
 | `scripts/story_study.py` | Reproduces the abstract and appendix measurements |

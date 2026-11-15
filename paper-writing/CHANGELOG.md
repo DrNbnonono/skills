@@ -1,5 +1,50 @@
 # Changelog
 
+## v1.1 - anatomy, evidence first, and a Chinese questionnaire
+
+v1.0 said what each section must do. v1.1 adds what 120 papers actually do, and a mechanism for
+turning a pile of experiments into a draft.
+
+### Added
+
+- **`references/results-arrangement.md`**: the measured shape of evaluations (78.3% have one, median
+  24 paragraphs, 2-3x the introduction), the claim-to-subsection mapping, the default order, the four
+  sentences every results subsection needs, and six failure modes.
+- **`references/appendix-catalog.md`**: appendices exist in 60.8% of papers, 3.4 sections each;
+  topics ranked by frequency (parameters 16, additional results 11, proofs 11, protocol 10, ...);
+  what belongs, what does not, and a decision checklist.
+- **`references/figures-in-the-argument.md`**: one figure one claim, chart type by claim type, and
+  the first measured palette data (50 figures, 20 papers): median 2 hues, 32% with >=4 hues, **18%
+  using a red+green pair**, saturation 0.47, luminance std 55.
+- **Step 3.5 results inventory** in `SKILL.md`, plus `templates/results-inventory.md`: every result
+  mapped to the introduction claim it settles, then to a subsection and a display item. This is the
+  "enough experiments produce a near-complete draft" path -- the draft is the mapping, and holes in
+  the mapping are missing experiments, not missing paragraphs.
+- **`templates/paper-plan.zh.md`**: the full questionnaire in Chinese, for authors who think in
+  Chinese. Same sections, same `?` convention.
+
+### Measured (120-paper corpus)
+
+| Property | Value |
+|---|---|
+| Introduction: median paragraphs / words | 10 / 1,032 (p90 15 / 1,531) |
+| Opens with boilerplate ("In recent years...") | **1.7%** |
+| States a research question explicitly | 36.7% |
+| Announces contributions in prose | 20.8% (bullet lists invisible to this count) |
+| Ends with a roadmap | 17.5% |
+| Evaluation section present | 78.3%; median 1 section, 24 paragraphs |
+| Appendix present | 60.8%; 3.4 sections each |
+
+The boilerplate figure is the strongest single number in this skill: accepted top-tier introductions
+essentially never open with "in recent years" (1.7%), which is the opposite of what many drafts do.
+
+### Not changed
+
+The story spine, the skeleton choice, the drafting order (introduction and background first, abstract
+last), and the non-negotiables.
+
+---
+
 ## v1.0 - the story, before the sentences
 
 A writing skill that starts at the research question and ends at the abstract, built from a

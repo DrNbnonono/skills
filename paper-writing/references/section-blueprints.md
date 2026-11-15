@@ -44,9 +44,19 @@ Five moves, in order:
 5. **Contributions** — a short list, each with its evidence. Three is usually right; ten is a sign
    the paper has no single question.
 
-Measured: a roadmap sentence ("the rest of this paper is organized as follows") ends only **17.5%**
-of introductions; the word "contribution" appears in 38.3%. A roadmap is optional and is the first
-paragraph to cut under a page limit.
+Measured on 120 papers:
+
+| Property | Value |
+|---|---|
+| Introduction length | median **10 paragraphs / 1,032 words** (p90: 15 / 1,531) |
+| Opens with boilerplate ("In recent years…", "With the rapid development…") | **1.7%** only |
+| States a research question explicitly ("we ask / we study / our question") | 36.7% |
+| Announces contributions in prose ("we make the following contributions") | 20.8% (bullet lists are invisible to this count, so the true rate is higher) |
+| Ends with a roadmap ("the rest of this paper…") | **17.5%** |
+
+Two readings. First, the boilerplate opening is nearly absent in accepted papers — 1.7%, not 30% —
+which is the strongest evidence in this skill against opening with "in recent years". Second, a
+roadmap is a minority convention and is the first paragraph to cut under a page limit.
 
 **Failure:** a literature review in the introduction that duplicates §2. Numbers and case details
 belong in one of the two, never both.
@@ -110,8 +120,12 @@ Rules:
    fail.
 5. **Put the boundary in the same subsection** as the claim it limits.
 
-Measured: paragraphs run **75 words / 3 sentences** at the median (p90: 97 / 4). A results
-subsection longer than a page without a display item is usually prose doing a table's job.
+Measured: **78.3%** of papers have a dedicated evaluation section (median 1, max 2), and it runs
+**24 paragraphs** at the median (p90 41) — roughly two to three times the introduction. Paragraphs
+run 75 words / 3 sentences (p90: 97 / 4), so the evaluation is a long section built from short
+paragraphs, not a few long ones. A results subsection longer than a page without a display item is
+usually prose doing a table's job. See `results-arrangement.md` for the order and the per-subsection
+structure.
 
 **Failure:** numbers reported, conclusion left implicit; or a conclusion asserted more strongly than
 the numbers allow.

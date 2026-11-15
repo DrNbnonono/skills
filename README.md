@@ -8,7 +8,7 @@ by the agent.
 |---|---|---|
 | [`paper-prose-polish`](paper-prose-polish/) | 逐句润色英文安全/系统论文：测量 → 术语锁定 → 逐句改写 → 首读门槛 + 连贯性验收 | 2.6.1 |
 | [`paper-figures`](paper-figures/) | 论文图表设计、绘制与验收：图表选型 → 统一风格 → 导出 → 灰度/色盲/字体检查，附带示例图；可恢复自有 PDF 图的矢量版 | 1.1 |
-| [`paper-writing`](paper-writing/) | 论文从 RQ 长出来：故事五问 → 结构选型 → 章节主张 → 术语与图表分配 → 先引言后摘要；附作者填写问卷 | 1.0 |
+| [`paper-writing`](paper-writing/) | 论文从 RQ 长出来：故事五问 → 结构选型 → 结果清单 → 章节主张 → 术语与图表分配 → 先引言后摘要；附中英双语问卷 | 1.1 |
 
 三者都面向 **S&P / USENIX Security / CCS / NDSS** 以及 IEEE S&P Magazine：写（paper-writing）→ 配图（paper-figures）→ 润色（paper-prose-polish）。
 
@@ -116,7 +116,9 @@ skill 里带一份 `templates/paper-plan.md` 问卷：RQ、五环、结构选型
   **v2.6.1 把「不许为指标牺牲连贯」放到 gate、阈值表和模板上**（阈值一个没动）。
   每次改动的实测数字与 null result 见
   [`CHANGELOG.md`](paper-prose-polish/CHANGELOG.md)。
-- `paper-writing` v1.0：初版（五环故事线、章节蓝图、摘要、正文/附录分配、作者问卷）。
+- `paper-writing` v1.1：初版（五环故事线、章节蓝图、摘要、正文/附录分配、作者问卷）；
+  **v1.1 加实测解剖**（引言 10 段/1032 词、1.7% 用套话开头；评估 24 段；附录 60.8%）、
+  结果清单工作流、图表配色实测（50 张图：中位 2 色相、18% 红绿同用）、中文问卷。
   实测见 [`CHANGELOG.md`](paper-writing/CHANGELOG.md)。
 - `paper-figures` v1.1：v1.0 初版（风格/编码/可访问性/生产）；
   **v1.1 新增"自有 PDF 图的矢量恢复 + 像素 QA"**（`figure_recovery.py`），
