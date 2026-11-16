@@ -1,4 +1,4 @@
-# skills
+﻿# skills
 
 Some skills created by dr. Each folder is a self-contained skill: drop it into
 `~/.claude/skills/` (global) or `<project>/.claude/skills/` (per project) and it is picked up
@@ -7,9 +7,9 @@ by the agent.
 | Skill | What it does | Version |
 |---|---|---|
 | [`paper-survey`](paper-survey/) | 论文前期调研（方向调研与可行性论证）：十节（九节论证 + §10 资料索引），带调研元信息、四条检索方法、相关工作五列（核心思路/局限/可借鉴）、可行性五维度、多候选方案；不设字数、不强制表格，准确性约束保留 | 1.2 |
-| [`paper-writing`](paper-writing/) | 论文从 RQ 长出来：故事五问 → 结构选型 → 结果清单 → 章节主张 → 术语与图表分配 → 先引言后摘要；附中英双语问卷 | 1.2.1 |
+| [`paper-writing`](paper-writing/) | 论文从 RQ 长出来：故事五问 → 结构选型 → 结果清单 → 章节主张 → 术语与图表分配 → 先引言后摘要；附中英双语问卷 | 1.2.2 |
 | [`paper-figures`](paper-figures/) | 论文图表设计、绘制与验收：图表选型 → 统一风格 → 导出 → 灰度/色盲/字体检查，附带示例图；可恢复自有 PDF 图的矢量版 | 1.1 |
-| [`paper-prose-polish`](paper-prose-polish/) | 逐句润色英文安全/系统论文：测量 → 术语锁定 → 逐句改写 → 首读门槛 + 连贯性验收 | 2.6.1 |
+| [`paper-prose-polish`](paper-prose-polish/) | 逐句润色英文安全/系统论文：测量 → 术语锁定 → 逐句改写 → 首读门槛 + 连贯性验收；摘要按四大实测的英文惯例改（v2.7） | 2.7.0 |
 
 四者覆盖一篇论文从 0 到投稿的流水线，都面向 **S&P / USENIX Security / CCS / NDSS** 以及 IEEE S&P Magazine：
 **调研（paper-survey）→ 写作（paper-writing）→ 配图（paper-figures）→ 润色（paper-prose-polish）**。
@@ -30,6 +30,11 @@ v2.5 再加一条约束：**统计指标是目标，句子与句子之间的连�
 v2.5.1 补一句同样重要的：**原文已经写得好的句子和段落，就保持 KEEP，不要改**。这个 skill 是
 "读者卡点检测器"，不是"必须改出点什么"的任务清单；一轮里只有三处真问题，就是一轮好活。
 
+v2.7 修正摘要：**不再按中文摘要（目的—方法—结果—结论、去主语、结果前置）来改，而是按四大
+164 篇已录用摘要实测出的英文惯例**——中位数 207 词、9 句、均长 22.5 词、92% 出现 we/our、
+54% 用 "In this paper, we"、结果先于方法仅 1%。新增 `references/abstract.md`、`--abstract`
+检查（A22–A25 四个摘要缺陷码）和可复现语料脚本。
+
 包含：
 
 - `references/comprehension-gate.md` — 首读门槛：三个测试、S1–S8 卡顿分类、8 组改写示例
@@ -38,17 +43,21 @@ v2.5.1 补一句同样重要的：**原文已经写得好的句子和段落，�
 - `references/vocabulary.md` — 「透明优先」：对 L2 读者而言，`holds up` 比 `remains exploitable`
   更难；习语/短语动词替换表、歧义连接词表、什么**不要**简化
 - `references/venue-prose-corpus.md` — 四大会议在散文层面奖励什么；可复现的语料测量协议
+- `references/abstract.md` — **英文摘要**：五大动作、人物/语序/节奏规则、中文模板的"翻译腔"
+  症状与修法、检查表、语料方法与局限
 - `references/sentence-rules.md` — L1–L23 规则（v2.5 新增 L21–L23：拆在接缝、拆后补缝、必要时回并）
-- `references/rubric.md` — 五问、缺陷码 A1–A21、六种判决（新增 MERGE）、八种手术动作
-- `references/diagnosis-playbook.md` — 测量与阈值（含 L2 阻塞指标与 flow 诊断）
+- `references/rubric.md` — 五问、缺陷码 A1–A25、七种判决（新增 MERGE）、九种手术动作
+- `references/diagnosis-playbook.md` — 测量与阈值（含 L2 阻塞指标、flow 诊断与摘要 §3.4 目标）
 - `references/magazine-mode.md` — 会议论文改杂志体
 - `scripts/lint_prose.py` — 句长/被动/名词化/破折号 + L2 指标 + 否定指标；`--gate` 通过/不通过，
-  `--explain N` 列出卡顿最多的句子，`--flow` 报告节奏与接缝问题（短句连排、重复开头、连接词过密）
+  `--explain N` 列出卡顿最多的句子，`--flow` 报告节奏与接缝问题，`--abstract` 按四大摘要形态检查
+- `scripts/abstract_study.py` — 重新采集并分析摘要语料（OpenAlex + usenix.org），复现 abstract.md 的表
 - `templates/revision-table.md` — 每轮修订记录表（含接缝判定与"未达标指标"栏）
 
 ```bash
 python scripts/lint_prose.py --path paper/ --glob "*.tex" --json baseline.json
 python scripts/lint_prose.py --path paper/ --gate --venue magazine --explain 10 --flow
+python scripts/lint_prose.py --abstract sections/00_abstract.tex --venue magazine
 ```
 
 ---
@@ -171,13 +180,17 @@ skill 里带一份 `templates/paper-plan.md` 问卷：RQ、五环、结构选型
   §8 多候选方案、§9 四种结论、§10 多来源资料索引；`check_survey.py` 只报结构地图 + 准确性 FAIL +
   可读性 WARN（范例 0 fail/2 warn，纯散文 0 fail/3 warn）。见
   [`CHANGELOG.md`](paper-survey/CHANGELOG.md)。
-- `paper-prose-polish` v2.6.1：v2.0 首读门槛；v2.1 否定规范；v2.2 改写权限与 DELETE 判决；
+- `paper-prose-polish` v2.7.0：v2.0 首读门槛；v2.1 否定规范；v2.2 改写权限与 DELETE 判决；
   v2.3–v2.4 语料研究（局部缺陷、结构/位置）；v2.5 连贯性约束（接缝三测、MERGE、`--flow`）；
   v2.5.1 明确「原文已经写得好就不改」；v2.6 图表阅读顺序（先引用后出现）；
-  **v2.6.1 把「不许为指标牺牲连贯」放到 gate、阈值表和模板上**（阈值一个没动）。
+  v2.6.1 把「不许为指标牺牲连贯」放到 gate、阈值表和模板上（阈值一个没动）；
+  **v2.7.0 重写摘要规范**：按四大 164 篇已录用摘要实测的英文惯例（中位 207 词、9 句、
+  均长 22.5、92% 有 we/our、结果先于方法仅 1%），新增 `references/abstract.md`、
+  `--abstract` 检查、A22–A25、`abstract_study.py`；并纠正了此前"结果前置摘要"的错误说法。
+  **同时纠正杂志摘要：官方上限 50 词（已刊 200 篇中位 40 词、2 句），此前写的 ≤200 词是错的。**
   每次改动的实测数字与 null result 见
   [`CHANGELOG.md`](paper-prose-polish/CHANGELOG.md)。
-- `paper-writing` v1.2.1：初版（五环故事线、章节蓝图、摘要、正文/附录分配、作者问卷）；
+- `paper-writing` v1.2.2：**摘要长度纠错——杂志上限 50 词（已刊中位 40 词/2 句），此前写的 ≤200 词来自描述 IEEE 期刊的二手来源**；v1.2.1 初版（五环故事线、章节蓝图、摘要、正文/附录分配、作者问卷）；
   **v1.1 加实测解剖**（引言 10 段/1032 词、评估 24 段、附录 60.8%）、结果清单工作流、配色实测、中文问卷；
   **v1.2 完成四项补测**：99 篇引言人工标注（五环位置 0.00/0.12/0.38/0.62/0.78，出现率 100/76/100/58/90%）、
   评估子节（中位 4 个、62% 标题是主张专属）、图型（抽样全是示意图/截图）、分母修正（每篇 17 件、附录 10.9%）；

@@ -57,16 +57,22 @@ Sentence-level foundations:
 | Item | Requirement | Confidence |
 |---|---|---|
 | Length | **6–10 double-column pages**, including figures and references | Secondary summary; verify on the official author page before submitting |
-| Abstract | **≤200 words, no citations** | Same |
-| Title | Short, attractive; avoid a subtitle full of jargon | Same |
-| Review | **Single-blind**, at least two reviewers, ~6–8 weeks | Same |
+| Words | Peer-reviewed articles **4,900–7,200 words**, including abstract, keywords, bibliography, biography and table text (250 words per table/figure); **≤15 references** | Official author page |
+| Abstract | **≤50 words, no citations** | Official: the author page says "The abstract word limit is 50 words" |
+| Title | Short, attractive; avoid a subtitle full of jargon | Secondary summary |
+| Review | **Single-blind**, at least two reviewers, ~6–8 weeks | Secondary summary |
 | Audience | Security engineers, practitioners, adjacent researchers; "technical depth plus accessible expression" | Consistent with the magazine's stated scope |
 | Proposal | Feature/special-issue articles may need a ~200-word proposal plus outline to the EIC first | Verify |
 | Production | Two-column, 10 pt, figures inline; **publisher typesets the final version** | Verify |
 
-Secondary source for the table: <https://www.aje.cn/arc/ieee-security--privacy>
-Official author page (JavaScript-rendered, open manually):
-<https://www.computer.org/csdl/magazine/sp/write-for-us/14680>
+Official author page (JavaScript shell; body read through the site's own content endpoint):
+<https://www.computer.org/csdl/magazine/sp/write-for-us/14680>.
+
+**Correction (v2.7.0).** Earlier versions of this skill said "≤200 words" for the magazine abstract.
+That figure came from a secondary source and describes **journals**, not the magazine; the official
+page states 50 words. Measured on 200 published magazine abstracts (2022–2025): median **40 words**,
+median **2 sentences**, 92% have 1–3 sentences, 61% use `we`/`our`, only 15% contain a number.
+A 200-word abstract is four times over the limit, not a style preference.
 
 **Measured rhythm.** A full issue of IEEE S&P Magazine (Vol. 15, No. 5, Sep/Oct 2017,
 100 pages, 419k characters) yields **2,658 sentences, mean 23.5 words, median 20.0**

@@ -21,6 +21,7 @@ Usage
     python lint_prose.py --compare baseline.json  # per-file deltas after a revision round
     python lint_prose.py --gate --venue magazine  # pass/fail against magazine thresholds
     python lint_prose.py --explain 10             # the 10 sentences with the most stalls
+    python lint_prose.py --abstract abs.tex --venue magazine   # abstract-only mode (v2.7)
 
 Exit code: 0 normally; with --gate, 1 when a gate check fails (so it can be used in CI).
 """
@@ -381,6 +382,165 @@ def run_flow(files: list[str]) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Abstract mode (v2.7) - calibrated on 164 top-4 abstracts (references/abstract.md)
+# ---------------------------------------------------------------------------
+ABS_NUM = re.compile(r"(?<![\w.])\d+(?:\.\d+)?(?:%|x|k|M|B)?\b")
+ABS_FIRST_PERSON = re.compile(r"\b(?:we|our)\b", re.I)
+ABS_CITE = re.compile(r"\\cite[a-z]*\{|\[\d+\]")
+ABS_GAP = re.compile(
+    r"\b(?:however|yet|but|remains?|little is known|no (?:existing|prior|previous|systematic|"
+    r"effective)|unclear|has not been|lack(?:s|ing)?|under-?studied|previous (?:work|studies)|"
+    r"prior (?:work|studies)|overlook\w*|fail(?:s|ed)? to)\b",
+    re.I,
+)
+ABS_TRANSLATIONESE = re.compile(
+    r"\b(?:nowadays|with the (?:rapid )?development|plays? an important role|in order to|"
+    r"of great significance|important (?:theoretical and practical )?significance|"
+    r"paves? the way)\b",
+    re.I,
+)
+ABS_CEREMONIAL = re.compile(
+    r"\b(?:of (?:great|important|significant) (?:significance|value)|"
+    r"important (?:theoretical and practical )?significance|paves? the way|"
+    r"opens? up (?:new|a new) (?:avenues?|directions?)|lays? the foundation)\b",
+    re.I,
+)
+ABS_AVAIL = re.compile(
+    r"\b(?:available at|available on|open[- ]sourc\w*|artifact|released at|"
+    r"github\.com|publicly available|we release)\b", re.I
+)
+
+
+def abstract_text(path: str) -> str:
+    raw = open(path, encoding="utf-8", errors="replace").read()
+    low = path.lower()
+    if low.endswith(".tex"):
+        return clean_tex(raw)
+    if low.endswith(".md"):
+        return clean_md(raw)
+    return re.sub(r"\s+", " ", raw).strip()
+
+
+def run_abstract(path: str, venue: str, limit: int) -> None:
+    """Lint one abstract against the measured shape. Warnings only; exit 0."""
+    raw = open(path, encoding="utf-8", errors="replace").read()
+    text = abstract_text(path)
+    magazine = venue == "magazine"
+    sents = split_sentences(text, min_words=2 if magazine else 3)
+    if not sents or (not magazine and len(sents) < 3):
+        print(f"abstract: {path}: too few sentences extracted - check the file")
+        return
+    words = len(text.split())
+    lens = [len(s.split()) for s in sents]
+    mean = statistics.mean(lens)
+    n = len(sents)
+    we = len(ABS_FIRST_PERSON.findall(text))
+    we_start = sum(1 for s in sents if re.match(r"^(?:We|Our)\b", s))
+    nums = len(ABS_NUM.findall(text))
+    dens = 100 * nums / words
+    first = sents[0]
+    if re.match(r"^(?:We|Our)\b", first):
+        opening = "first person"
+    elif re.match(r"^(?:However|Yet|But|While|Although|Despite)\b", first, re.I):
+        opening = "contrast"
+    elif re.match(r"^(?:In this paper|This paper|This article|Here)\b", first, re.I):
+        opening = "this-paper"
+    else:
+        opening = "statement"
+
+    if ABS_CEREMONIAL.search(sents[-1]):
+        closing = "ceremonial"
+    elif ABS_AVAIL.search(sents[-1]):
+        closing = "availability"
+    else:
+        closing = "result/detail"
+
+    this_article = bool(re.search(r"\bthis (?:article|paper|column)\b", text, re.I))
+    warns: list[str] = []
+    notes: list[str] = []
+
+    if limit and words > limit:
+        warns.append(f"[LIMIT] {words} words > {limit} limit (over by {words - limit})")
+    if ABS_CITE.search(raw):
+        warns.append("[CITE] citation marker in the abstract (the magazine forbids it; the "
+                     "conferences discourage it)")
+    if closing == "ceremonial":
+        warns.append("[A24] the last sentence asserts significance instead of stating what "
+                     "changes or what is available")
+
+    if magazine:
+        if not 25 <= words <= 70:
+            warns.append(f"[MAG-LEN] {words} words: published magazine abstracts median 40 "
+                         f"(p90 78); the hard limit is 50")
+        if n > 5 or mean > 26:
+            warns.append(f"[MAG-SENTS] {n} sentences, mean {mean:.1f}: the magazine shape is "
+                         f"2-3 sentences (92% of published abstracts have 1-3)")
+        if we == 0 and not this_article:
+            warns.append("[MAG-AGENT] neither 'we' nor 'this article' appears: 71% of published "
+                         "magazine abstracts name an actor")
+        if nums > 2:
+            notes.append("[MAG-NUM] more than two numbers: only 15% of published magazine "
+                         "abstracts carry any")
+    else:
+        if we == 0:
+            warns.append(
+                f"[A22] no 'we'/'our' in {n} sentences: the abstract reports findings with no "
+                f"agent (92% of top-4 abstracts name the author team)")
+        if mean < 18 or n >= 14 or (dens > 5 and mean < 20):
+            why = []
+            if mean < 18:
+                why.append(f"mean sentence {mean:.1f} words (corpus p10: 18.7)")
+            if n >= 14:
+                why.append(f"{n} sentences (corpus 80%: 6-12)")
+            if dens > 5 and mean < 20:
+                why.append(f"{nums} numbers in {words} words ({dens:.1f}/100w) with short "
+                           f"sentences")
+            warns.append("[A25] fact-sheet rhythm: " + "; ".join(why) +
+                         " - the abstract lists results instead of narrating them")
+        if n < 4 or mean > 34:
+            warns.append(f"[COMP] very compressed ({n} sentences, mean {mean:.1f}): "
+                         f"check for truncation and for a missing gap/result")
+        if we_start == 0 and we > 0:
+            notes.append("[A22] no sentence starts with 'We': legal (15% of top-4 abstracts), "
+                         "but check that the agent is visible somewhere")
+        if not ABS_GAP.search(text):
+            notes.append("[M2] no explicit gap sentence found (34% of top-4 abstracts have none "
+                         "either; a reviewer will still look for one)")
+        if not nums:
+            notes.append("[M4] no numbers: the result move is weak without one")
+        appr = next((i for i, s in enumerate(sents) if ABS_FIRST_PERSON.search(s)), None)
+        numpos = next((i for i, s in enumerate(sents) if ABS_NUM.search(s)), None)
+        if appr is not None and numpos is not None and numpos < appr:
+            notes.append(f"[A23] the first number appears (sentence {numpos + 1}) before the "
+                         f"first author action (sentence {appr + 1}): question before answer")
+
+    m = ABS_TRANSLATIONESE.search(text)
+    if m:
+        notes.append(f"[TRANS] translationese opener '{m.group(0)}': tolerated (5% of the "
+                     f"corpus), carries no claim")
+
+    lim = f" (limit {limit}, OVER by {words - limit})" if limit and words > limit else (
+        f" (limit {limit})" if limit else "")
+    print(f"\n=== abstract: {path} ({'magazine' if magazine else 'conference'}) ===")
+    print(f"words {words}{lim} | sentences {n} | mean {mean:.1f} | max {max(lens)}")
+    if magazine:
+        print(f"person: {'we' if we else ('this article' if this_article else 'none')} | "
+              f"numbers {nums} | gap: {'yes' if ABS_GAP.search(text) else 'no'}")
+    else:
+        print(f"person: {'yes' if we else 'no'} ({we} we/our) | We-start {we_start}/{n} | "
+              f"gap: {'yes' if ABS_GAP.search(text) else 'no'} | numbers {nums} "
+              f"({dens:.1f}/100w)")
+    print(f"opening: {opening} | closing: {closing}")
+    for w in warns:
+        print("WARN", w)
+    for t in notes:
+        print("NOTE", t)
+    if not warns:
+        print("no warnings: within the measured shape")
+    print(f"{len(warns)} warning(s), {len(notes)} note(s)")
+
+
+# ---------------------------------------------------------------------------
 # Analysis
 # ---------------------------------------------------------------------------
 def analyse_file(path: str) -> tuple[list[dict], dict]:
@@ -606,7 +766,16 @@ def main() -> None:
     ap.add_argument("--explain", type=int, default=0, help="print N sentences with the most L2 blockers")
     ap.add_argument("--flow", action="store_true",
                     help="print rhythm/coherence diagnostics (warnings, not a gate)")
+    ap.add_argument("--abstract", default=None,
+                    help="lint one abstract file against the measured top-4 shape (v2.7)")
+    ap.add_argument("--limit", type=int, default=0,
+                    help="abstract word limit; defaults to 200 with --venue magazine")
     args = ap.parse_args()
+
+    if args.abstract:
+        limit = args.limit or (50 if args.venue == "magazine" else 0)
+        run_abstract(args.abstract, args.venue, limit)
+        sys.exit(0)
 
     files = collect(args.path, args.glob)
     if not files:

@@ -49,7 +49,7 @@ link, or the topic chain is wrong, and the miss is recorded instead of bought
 | Passive rate | ≤18% | ≤12% | >30% in method, limitation, or conclusion sections |
 | Nominalisations per sentence | ≤1.6 | ≤1.4 | >2.2 |
 | Dashes (`---`) per 1,000 words | ≤2 | ≤2 | >5 |
-| Sentences opening with `We` in the abstract | ≥3 | ≥2 | 0 |
+| Sentences opening with `We` in the abstract | 3–4 in 9 | 2–3 in 9 | 0 |
 | Unfinished markers (`\todo`, `[TBD]`, `XXX`) | 0 | 0 | any |
 
 Calibration data: a full issue of IEEE S&P Magazine (Vol. 15 No. 5, 2017; 100 pages,
@@ -116,6 +116,26 @@ reporting the round.
 **Precedence.** Claim fidelity > coherence > metrics. A gate miss with a recorded reason is a
 decision; a gate miss without one is an accident. See `coherence.md` §1 for the recording format.
 
+### 3.4 Abstract targets (v2.7) — measured, not remembered
+
+An abstract is not a small paper; it is a different genre with its own corpus. The values below
+come from 164 accepted abstracts (S&P, USENIX Security, CCS, NDSS, 2022–2025); the full analysis,
+the method, and the caveats are in `references/abstract.md`. Use `--abstract` to measure one file.
+
+| Column | Conference target | Magazine target | Red flag |
+|---|---|---|---|
+| Words | 150–280 (median 207) | **≤50** (hard; median 40) | conference: outside 120–350; magazine: >50 |
+| Sentences | 8–11 (median 9) | 2–3 (median 2) | conference: ≥14 or <4; magazine: >5 |
+| Mean sentence length | 20–26 (median 22.5) | 18–22 | conference: <18 (fact-sheet) or >34 (compressed) |
+| Sentences containing `we`/`our` | present; 2–4 start with `We` | `we` or `this article` | 0 (A22 / MAG-AGENT) |
+| `In this paper, we` | optional (54% use it) | optional | four or more `This paper …` sentences with no `we` |
+| Numbers | 2–4 sentences carry them | 0–2 total (85% carry none) | conference: every sentence numeric, no verb (A25) |
+| Result before the question | 1% of the corpus | rare | headline number in sentence 1–2 (A23) |
+| Closing sentence | result, implication, or availability | one action or takeaway | significance judgement (A24) |
+
+Corpus norm for person: 92% of abstracts contain `we`/`our`, 28% of sentences start with `We`,
+9% of first sentences do. A draft at 0% is at the tail of the distribution, not at the ideal.
+
 ---
 
 ## 4. Reading the numbers
@@ -127,7 +147,7 @@ decision; a gate miss without one is an accident. See `coherence.md` §1 for the
 | Passive >30% in one section only | That section hides the agent — usually methods or limitations | Recast with `we`; check that nothing became unreproducible |
 | Passive high in the conclusion | The paper is hedging at the moment it should be assertive | Convert to active, keep the claim strength |
 | Nominalisations >2.2 | Verbs are locked inside nouns | L3 pass, sentence by sentence |
-| Abstract: 0 `We` sentences | The abstract describes results as if they occurred without an agent | Rewrite the abstract (do it last, once terminology is settled) |
+| Abstract: 0 `We` sentences | The abstract describes results as if they occurred without an agent (8% of top-4 abstracts do this, so it is rare, not ideal) | Rewrite the abstract last, restoring the actor (`§3.4`, A22); do not "fix" it by deleting the remaining agents |
 | Dashes >5 per 1,000 words | Argument is being smuggled into asides | Q4 audit: delete each dash and test the main clause |
 | Section mean >45 | Usually the appendix and the conclusion: the two places reviewers check rigour | Treat as a priority, not an afterthought |
 | Negators >8/1k **and** >=2-negator sentences >3% | Defensive framing: the paper spends sentences on what it does not claim | L18 pass: recast to positive, keep only contrasts with named alternatives |

@@ -119,5 +119,5 @@ Each move is one sentence at most; the whole lands at 180–230 words, inside th
 - [ ] No background paragraph that belongs to the introduction.
 - [ ] Boundary stated where the claim is strongest (one clause is enough).
 - [ ] Uses "we" (English security venue) or the impersonal form the venue requires (Chinese journal).
-- [ ] Length within the venue's limit (magazine: ≤200 words, no citations).
+- [ ] Length within the venue's limit (magazine: ≤50 words, no citations; published median 40).
 - [ ] Every number identical to the one in the body.

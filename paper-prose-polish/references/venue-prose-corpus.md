@@ -35,7 +35,7 @@ do. Treat them as structure, not statistics.
 
 | Convention | What it looks like | Why reviewers reward it |
 |---|---|---|
-| **Result-first abstract** | The finding and its number appear in the first two or three sentences; the method comes after | A reviewer decides within one paragraph whether to keep reading |
+| **Abstract is a narrative, not a fact sheet** | 8–11 sentences, mean ~23 words; the author team appears (92% of abstracts); the question precedes the headline number (result-first: 1%) | The reviewer uses the abstract to decide whether the paper is about something; a list of numbers does not say what was done |
 | **Contributions visible by page 2** | A short list or one paragraph naming what is new, before the background | Conference reviewers need the claim to judge novelty |
 | **Problem → gap → approach → result** in the opening | Each move is its own paragraph; the gap is stated as what prior work could not do | A missing gap is the most common rejection reason |
 | **"We" for author actions** | "We collected", "we validated", "we measured" | Methods must be attributable and reproducible |
@@ -77,6 +77,13 @@ draft with a mean of 27 and no tail.
 Calibration anchor, for order of magnitude only: a full issue of IEEE S&P Magazine
 (Vol. 15 No. 5, 2017; 419k characters, noise included) measures **mean 23.5, median 20.0**.
 Magazine prose is the easier target; conference prose usually runs a few words longer.
+
+**The abstract sub-corpus (v2.7).** 164 abstracts from the four venues, 2022–2025: median **207
+words**, **9 sentences**, mean sentence **22.5** (p10 18.7, p90 28.9); **92%** contain `we`/`our`;
+**60%** contain `In this paper`; the approach sentence appears by sentence 4 in **54%**; a result
+before the approach appears in **1%**. Reproduce with `scripts/abstract_study.py`; the full
+tables and caveats are in `abstract.md`. The earlier "result-first abstract" claim in this file
+was wrong and is corrected there.
 
 ## 4. What to imitate, and what not to
 

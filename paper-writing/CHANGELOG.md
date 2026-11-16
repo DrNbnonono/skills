@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.2.2 - the magazine abstract is 50 words, not 200
+
+One line in `references/abstract.md` said "magazine: ≤200 words". The IEEE Security & Privacy
+Magazine author page states "The abstract word limit is 50 words", and 200 published abstracts
+(2022-2025) measure median **40 words**, **2 sentences**, 61% `we`/`our`, 15% any number. The 200
+figure came from a secondary source describing IEEE journals. Corrected here to 50; the revision
+layer in `paper-prose-polish` (`references/abstract.md` section 10, `--abstract --venue magazine`)
+carries the measured magazine shape and the linter check.
+
+---
+
 ## v1.2.1 - ship the two study scripts
 
 Packaging only, no text change. `references/introduction-anatomy.md` and

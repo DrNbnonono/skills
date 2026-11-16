@@ -1,5 +1,62 @@
 # Changelog
 
+## v2.7.0 - the abstract is an English genre, not a translated one
+
+The previous abstract guidance was inherited from Chinese-journal conventions (目的 / 方法 / 结果 /
+结论): front the finding, delete the actor, close with a sentence about significance. Measured on
+accepted papers, the four venues do the opposite. This release replaces the advice with the
+measurement.
+
+### Measured (164 abstracts: S&P 40, USENIX Security 44, CCS 40, NDSS 40; 2022-2025)
+
+- median **207 words**, **9 sentences**, mean sentence **22.5** (p10 18.7, p90 28.9);
+- **92%** contain `we`/`our`; 28% of sentences start with `We`; only 9% of first sentences do;
+- **54%** use `In this paper, we`; passive markers in 12% of sentences;
+- the approach sentence arrives by sentence 4 in **54%**; a result before the approach in **1%**;
+- **70%** carry at least one number, **48%** at least three.
+
+### Added
+
+- **`references/abstract.md`**: the five moves measured in the corpus, person/order/rhythm rules,
+  a symptom-to-repair table for translated Chinese-template abstracts, a synthetic before/after,
+  a checklist, and the collection method with its caveats.
+- **`lint_prose.py --abstract`** (and `--limit`): words against the venue limit, sentences, mean,
+  person, gap marker, number density, opening and closing class, with WARN/NOTE mapped to A22-A25.
+  Calibrated so only 8-10% of accepted abstracts trip a warning; never fails the build.
+- **`scripts/abstract_study.py`**: re-collects and re-analyses the abstract corpus (OpenAlex for
+  S&P/CCS/NDSS, usenix.org for USENIX Security) and prints the tables used in `abstract.md`.
+- **Rubric A22-A25** (abstract without an actor, result before the question, ceremonial closing,
+  fact-sheet abstract) and **surgery move 9** (restore the abstract's agent).
+- **`diagnosis-playbook.md` section 3.4**: measured abstract targets, separate from the generic
+  sentence thresholds.
+- **`SKILL.md` Step 4.7**: the abstract is revised last, then linted with `--abstract`.
+- **`magazine-mode.md` section 7**: rewritten to the five moves plus the linter check.
+
+### Corrected
+
+- `venue-prose-corpus.md` claimed a **result-first abstract** (finding and number in the first two
+  or three sentences). Measured: the approach arrives before the result, and result-first is 1%.
+  The row is replaced, not reworded.
+- `diagnosis-playbook.md` treated "0 `We` sentences in the abstract" both as a red flag and as
+  something the rewrite removed. The rewrite now restores the agent (A22), and the target is
+  stated as 2-4 `We`-starting sentences in 9.
+- `worked-example.md` section 4 described the old result-first structure as the target; it now
+  diagnoses the translated-template defect and records the repair.
+- **Magazine abstract: 50 words, not 200.** The official author page states "The abstract word
+  limit is 50 words"; the earlier "≤200" came from a secondary source that described IEEE
+  *journals*. Measured on 200 published magazine abstracts (2022-2025): median **40 words**, **2
+  sentences**, 61% use `we`/`our`, 15% contain a number. Fixed in `venue-profiles.md`,
+  `magazine-mode.md` §7, `diagnosis-playbook.md` §3.4, `abstract.md` §10, and the linter's
+  magazine default (`--venue magazine` now implies `--limit 50` and a magazine-specific shape).
+  A 200-word magazine abstract is four times over the limit.
+
+### Not changed
+
+No gate threshold moved. The abstract warnings are advisory: 8-10% of accepted abstracts trip one,
+which is why `--abstract` always exits 0.
+
+---
+
 ## v2.6.1 - put the precedence rule where the temptation is
 
 The rule already existed (v2.5): claim fidelity > coherence > metrics, and a gate miss with a

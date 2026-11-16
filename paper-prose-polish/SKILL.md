@@ -1,7 +1,7 @@
 ---
 name: paper-prose-polish
-description: Polish English academic prose for security/systems venues (S&P, USENIX Security, CCS, NDSS, journals, IEEE S&P Magazine), written for readers whose first language is not English. Use for 润色/改写/逐句修改论文表述, diagnosing why a paragraph is unreadable, converting a conference paper into a magazine feature, or a clarity review before submission. Core rule: if a competent non-native reader cannot follow a sentence on the first pass, the sentence is broken. Measures the draft first, then revises sentence by sentence with a defect code and a stated reader-stall reason for every change.
-version: 2.6.1
+description: Polish English academic prose for security/systems venues (S&P, USENIX Security, CCS, NDSS, journals, IEEE S&P Magazine), written for readers whose first language is not English. Use for 润色/改写/逐句修改论文表述, 摘要润色 (English top-4 conventions, not the Chinese 摘要 template), diagnosing why a paragraph is unreadable, converting a conference paper into a magazine feature, or a clarity review before submission. Core rule: if a competent non-native reader cannot follow a sentence on the first pass, the sentence is broken. Measures the draft first, then revises sentence by sentence with a defect code and a stated reader-stall reason for every change.
+version: 2.7.0
 ---
 
 # Paper prose polish
@@ -49,6 +49,7 @@ only for native readers does hurt everyone else.
 - A draft that must be readable to reviewers who do not work in the same subfield.
 - A non-native author's manuscript that "reads strangely" without an obvious grammar error.
 - A draft that passes grammar checkers but still needs re-reading.
+- An abstract that reads like a results table: numbers, no agent, no question.
 - A conference paper being reshaped for a magazine, journal, or a broader audience.
 - A pre-submission clarity pass, or a response to "the paper is hard to follow".
 
@@ -171,7 +172,8 @@ Since v2 the linter also measures the four **L2 blockers**: words before the mai
 subordinate clauses per sentence, idioms/phrasal verbs, and non-transparent formal words.
 Since v2.5 it also reports **flow** diagnostics — paragraph size, sentence-length variety, runs
 of short sentences, repeated openers, connective density. Those are warnings, not a gate: they
-describe the reading experience, which no per-sentence counter can.
+describe the reading experience, which no per-sentence counter can. Since v2.7 it also lints an
+abstract on its own (`--abstract`), against the conventions measured in `references/abstract.md`.
 
 ```bash
 python scripts/lint_prose.py --path <paper-dir> --glob "*.tex" --gate --venue magazine --flow
@@ -260,6 +262,24 @@ table against `references/floats-and-references.md`:
 5. Default placement spec is `[t]`; `[!ht]` can reorder floats, `[H]` can break IEEEtran columns.
 6. Check the **compiled PDF**, not the source: source order cannot tell you where a float landed.
 
+## Step 4.7 — Abstract, written last
+
+The abstract is revised last: its numbers and terms come from the body. Then lint it and read it
+once as a reviewer would:
+
+```bash
+python scripts/lint_prose.py --abstract sections/00_abstract.tex --venue magazine
+```
+
+`--venue magazine` applies the magazine's hard limit (**≤50 words**; published median 40); without
+it the linter uses the conference shape (median 207 words, 9 sentences). `references/abstract.md`
+carries the conventions measured on 164 top-4 abstracts: 9 sentences,
+mean 23 words, 92% name the author team, 54% use `In this paper, we`, and 1% put the result
+before the question. **The English abstract narrates who did what.** The Chinese-journal template
+(目的-方法-结果-结论, actor deleted, result first, closing significance sentence) is a different
+genre, and when translated it shows up as A22–A25: no agent, fact-sheet rhythm, ceremonial
+closing. Fix person and order first, then length. Do not "fix" person by deleting agents.
+
 ## Step 5 — Verify
 
 - **Coherence first.** Run the paragraph gate in `references/coherence.md` §6: seam tests
@@ -305,11 +325,13 @@ table against `references/floats-and-references.md`:
 | **Sentence salad** — a paragraph of eight 12-word sentences | Each sentence is "clear"; together they read as a list. Merge back (MERGE verdict) |
 | **Connective glue** — `However / Therefore / Thus` in more than ~18 % of sentences | The logic is asserted instead of carried by the order; readers skim scaffolding |
 | **Nitpicking a good sentence** — rewriting prose that already passes the gates | Every unnecessary edit is a chance to introduce meaning drift; KEEP is ~40 % of a normal round by design, and three real fixes beat forty cosmetic ones |
+| **Chinese-abstract calque** — "Advisory recall is 0–3%." with no actor, results before the question, a closing significance sentence | The English abstract has an agent and a question: 92% of top-4 abstracts name the author team, 54% use `In this paper, we`, only 1% front the result (A22–A25, `references/abstract.md`) |
 
 ## Resource map
 
 | File | Use |
 |---|---|
+| `references/abstract.md` | English abstract conventions measured on 164 top-4 abstracts; A22–A25; the fact-sheet diagnosis and a worked repair |
 | `references/venue-profiles.md` | Official criteria per venue, magazine requirements, rules-void matrix |
 | `references/venue-prose-corpus.md` | What the top-4 venues reward in prose; corpus protocol to re-measure |
 | `references/comprehension-gate.md` | The first-read / shadow / stranger tests, stall taxonomy, worked pairs |
@@ -325,6 +347,7 @@ table against `references/floats-and-references.md`:
 | `references/l2-grammar.md` | Article / agreement / tense detectors: what was measured, and the three that failed |
 | `references/ai-artifacts.md` | What generated prose gets wrong, split into measured artifacts and local-only ones, with null results kept |
 | `references/worked-example.md` | A full worked case: measured draft → revised paragraphs |
-| `scripts/lint_prose.py` | Sentence-length / passive / nominalisation / dash / negation / L2-blocker counter, `--gate`, `--explain`, `--flow` (rhythm and seam warnings) |
+| `scripts/lint_prose.py` | Sentence-length / passive / nominalisation / dash / negation / L2-blocker counter, `--gate`, `--explain`, `--flow` (rhythm and seam warnings), `--abstract` (abstract shape against the measured top-4 corpus) |
+| `scripts/abstract_study.py` | Re-collect and re-measure the abstract corpus (OpenAlex + usenix.org); prints the tables used in `abstract.md` |
 | `templates/revision-table.md` | Per-round record format |
 | `CHANGELOG.md` | What changed in v2 and why |

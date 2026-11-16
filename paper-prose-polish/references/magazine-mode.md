@@ -40,7 +40,7 @@ paragraph must be readable by someone outside the subfield**.
 ## 3. Skeleton that works
 
 ```
-Title + abstract (≤200 words, no citations) + keywords
+Title + abstract (≤50 words, no citations) + keywords
 1. Opening scene (150–250 words, no heading)
    A named person/machine/version fails after following the advisory.
    Last line states the thesis, not the method.
@@ -122,19 +122,29 @@ smaller object than reality". That framing is defensible and survives fact-check
 the evidence scale. Reject titles that promise a mechanism the paper does not test
 (e.g. "in the Era of AI-Assisted Discovery" when the data show only an era-level association).
 
-**Abstract** (≤200 words, no citations), in this order:
+**Abstract**: **≤50 words, no citations** — a hard limit from the author page, and the published
+norm is even shorter. Measured on 200 magazine abstracts (2022–2025): median **40 words**, median
+**2 sentences** (92% have 1–3), 61% use `we`/`our`, only 15% contain a number.
 
-1. Stakes in one sentence (who acts on this document, and why).
-2. The single claim under test, quoted if possible ("this version is patched").
-3. Object and scale: what was tested, how many units, how many runs.
-4. Data: how many documents/events were coded, and by what reading.
-5. Result 1 in words, then the number.
-6. Result 2, the most surprising single point.
-7. The temporal or secondary result.
-8. One actionable sentence, short.
+Two, at most three, sentences:
 
-Then verify: does it contain at least two `We` sentences, zero passive agents, and no
-terminology that a practitioner would have to look up?
+1. **Stakes**: the practice, document, or failure the reader already meets — one sentence.
+2. **What the article does**: `We validate ...`, `We measure ...`, or `This article describes ...`,
+   with the object named.
+3. *(Optional)* **One number, or one action** the reader can take.
+
+No citations, no contribution list, no background paragraph, no second result, no significance
+sentence. The five-move conference skeleton in `abstract.md` §3 does not fit 40 words; do not
+transfer it.
+
+Verify with the linter:
+
+```bash
+python scripts/lint_prose.py --abstract sections/00_abstract.tex --venue magazine
+```
+
+Target: ≤50 words, 1–3 sentences, mean 18–22 words, `we` or `this article` present. A 200-word
+abstract here is over the limit by 4×, not a style choice.
 
 ---
 
@@ -146,7 +156,8 @@ terminology that a practitioner would have to look up?
 - [ ] Related work folded in; no standalone section
 - [ ] Contribution list compressed to one paragraph or removed
 - [ ] Opening scene present, with real facts only
-- [ ] Abstract ≤200 words, no citations, ≥2 `We` sentences
+- [ ] Abstract **≤50 words**, 1–3 sentences, `we` or `this article` present, no citations
+      (`lint_prose.py --abstract --venue magazine`)
 - [ ] "What we do not know" present; claims match evidence strength
 - [ ] Page count within 6–10 including figures and references
 - [ ] If the venue requires a proposal: 200-word abstract + outline + audience statement drafted

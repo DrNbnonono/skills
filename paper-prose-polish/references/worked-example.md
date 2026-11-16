@@ -143,16 +143,27 @@ Dashes are correct there because they hold a **contrast of examples**, not the a
 
 ## 4. Abstract rewrite
 
-Before: 206 words, 0 `We` sentences, 33% passive.
-After: 191 words, 3 `We` sentences, agent-named throughout, every number identical.
+The abstract had been written to a Chinese-journal template: the method appears as a nominalised
+subject ("validation of X covers ..."), each result is its own short subjectless sentence, and the
+finding is fronted. Measured: 9 sentences, mean 22.9, passive 33%, **zero `we`/`our`** — A22.
+The corpus is unambiguous here: 92% of top-4 abstracts name the author team, and a subjectless
+abstract reads as a results table even when its sentence lengths are normal.
 
-Structure of the rewrite: stakes → the single claim under test ("this version is patched")
-→ object and scale (5 paths, 29 combinations, 149 tests) → data coded (12 advisories) →
-result 1 (strict vs charitable reading) → result 2 (the one dominant gap shape) → patch
-completeness (62% / 31%) → trend (40 events, ratio 0.63 → 1.83) → one actionable line.
+The repaired version: 191 words, 9 sentences, mean 21.2, three `We`-starting sentences, **every
+number identical**. Moves applied:
 
-The closing line is a claim, not a summary: **"'Patched' should be a claim we check, not a
-fact we rely on."**
+1. Stakes: advisories and patches are what defenders act on.
+2. What we did: `We validate ... end to end` and `We map ... and audit ...` replace "validation
+   covers ..." and "advisories are mapped ... and the patch is audited".
+3. What we found: recall, the dominant gap shape, patch completeness, the trend — each number
+   attached to an object, two of them merged into one result sentence.
+4. What it means: the closing line is a claim, not a summary: **"'Patched' should be a claim we
+   check, not a fact we rely on."**
+
+Rule applied: restore the agent first, then merge the numeric stubs. Do not shorten an abstract by
+deleting its verbs; that is how the fact-sheet variant was produced in the first place. If a later
+edit reintroduces a subjectless, number-per-sentence abstract, rerun
+`lint_prose.py --abstract` — the regression is detectable in one command.
 
 ---
 

@@ -58,6 +58,10 @@ Any failed question → the sentence enters revision. All five pass → **KEEP a
 | **A19** | Author-framing hedge | Sentence about the paper's own epistemic status: `that is an empirical question`, `not a premise`, `we treat X as an empirical question`; excludes `X remains an open question whether ...` (subject is the phenomenon) | L20 |
 | **A20** | Orphan split / seam break | A split whose second sentence starts with `This / It / They / That` with no antecedent in its own sentence; a `because / so / although` that vanished in the split; a restriction detached from its claim (`, but only for ...`) | L21, L22, `coherence.md` |
 | **A21** | Choppy run / sentence salad | Three or more consecutive sentences under ~12 words, or a paragraph whose sentences all open the same way; the signature of a metric-driven split pass | L23, `--flow` |
+| **A22** | Abstract without an actor | Findings stated in subjectless clauses; no `we`/`our` anywhere in the abstract. Rare in the corpus (8%), never the ideal: 92% of top-4 abstracts name the team | L1, `abstract.md` §2 |
+| **A23** | Result before the question | The headline number appears before the question it answers, in the abstract or on page one. The corpus does this in 1% of abstracts | L4, `abstract.md` §3 |
+| **A24** | Ceremonial closing | Final abstract sentence asserts significance ("of great significance", "paves the way") instead of naming a result, an implication, or availability | L19, `abstract.md` §5 |
+| **A25** | Fact-sheet abstract | ≥14 sentences, or mean sentence <18 words, or more than 5 numbers per 100 words with short sentences; the abstract lists results and never narrates them | L6, `abstract.md` §6 |
 
 ---
 
@@ -117,6 +121,9 @@ fix: the author has not decided what the sentence asserts. Ask, batch the questi
 8. **Merge two stubs** — when a split has left two short sentences that share a subject or a
    pronoun chain, join them (`coherence.md` §5). A one-line sentence with no independent claim
    is a fragment pretending to be a paragraph.
+9. **Give the abstract its agent back** — `End-to-end validation of X covers N runs` → `We
+   validate X end to end, covering N runs`; `Advisory recall is 1–4%` → `We find that advisories
+   recall 1–4%`. The abstract is where the translated-calque defect concentrates (A22).
 
 ---
 
@@ -176,6 +183,8 @@ number or claim was altered.
 
 - Do not alter numbers or the strength of a claim. If strength must change, list it and ask.
 - Do not replace `we` with `this paper` throughout; `we` is standard and preferred.
+- **Do not make the abstract "more objective" by deleting agents.** That is the Chinese-journal
+  calque, not neutrality; the English abstract names who did the work (A22, `abstract.md`).
 - Do not upgrade plain verbs (`use` → `utilize`, `show` → `demonstrate`, `find` → `ascertain`).
 - Do not restructure sections during the sentence pass; log structural findings separately.
 - **Do not split to move a metric.** Name the seam first; if there is no legal seam, the fix is
