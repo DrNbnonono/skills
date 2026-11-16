@@ -1,5 +1,54 @@
 # Changelog
 
+## v1.2 — the ten-section template, integrated as guidance
+
+The author supplied a ten-section template they find clear. This release folds its content into
+the skill while keeping v1.1's rule that form is not a quota: the template supplies the sections'
+metadata, the search methods, and the table columns; it does not add length limits or mandatory
+exhibits.
+
+### Added
+
+- **§1 metadata**: 调研主题/方向, 调研人, 起止时间, and the link to the project content document.
+  A survey without "who/when" cannot be assessed later.
+- **§3 four search methods**: 顺藤摸瓜 (citation chasing), 找综述 (Survey/SoK), 横向对比
+  (side-by-side comparison), 多渠道 (news/blogs/forums/vendor advisories/WeChat). These are the
+  practical advice the template carries, and they are now part of the method section's guidance.
+- **§4 five-column comparison**: 论文/工具 | 来源（venue/年份） | 核心思路 | 局限性/差距 | 可借鉴点.
+  Limitation and takeaway are called out as the load-bearing columns — a row without them is a
+  citation, not a survey.
+- **§6 structure**: solve (已解决) / falls-short (不够好) / unstudied (尚未研究), building directly
+  on the §4 comparison. These are potential entry points.
+- **§7 five feasibility dimensions**: data availability, technical difficulty, resources/tools,
+  time cost, and risk — each with assessment and risk/mitigation.
+- **§8 candidate approaches**: more than one plausible route, compared; one approach presented as
+  inevitable is now a named failure mode.
+- **§9 four outcomes**: 立项 / 放弃 / 继续调研 / 与导师讨论 (or a close equivalent), instead of only
+  continue/narrow/stop.
+- **§10 参考文献与资料**: every source, typed (paper / survey / news / blog / forum / vendor
+  advisory / WeChat), with link and note. Multi-channel evidence is explicitly welcome.
+
+### Changed
+
+- `SKILL.md` is now "ten sections": §1–§9 are the argument, §10 is the evidence index.
+- `scripts/check_survey.py`: §10 is recommended (missing → warning, not failure); §1 metadata
+  missing → warning; §9 decision recognises the four outcomes; §10 reports links and typed entries.
+- Templates updated to the ten-section skeleton and metadata header.
+
+### Unchanged
+
+- **No word limits, no mandatory tables.** The new table columns are recommended forms; prose with
+  the same facts is still acceptable.
+- Accuracy rules (E1–E4, bounded negatives, denominators) and the decision requirement.
+
+### Calibration
+
+- Reference report (predates this template): PASS; warnings are exactly the two new fields it does
+  not have — no §10 and no researcher/duration metadata.
+- Prose-only report: PASS with warnings (no table, no links).
+
+---
+
 ## v1.1 — remove the quotas; keep the clarity
 
 v1.0 turned a good report into a compliance form: length ranges per section, and a list of

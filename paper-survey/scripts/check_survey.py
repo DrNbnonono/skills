@@ -44,7 +44,9 @@ SECTIONS = [
     ("可行性", ("可行性", "feasibility")),
     ("思路", ("思路", "idea", "approach", "candidate")),
     ("结论与建议", ("结论", "conclusion", "recommendation")),
+    ("参考文献与资料", ("参考文献", "references", "资料链接", "references & links")),
 ]
+REQUIRED = len(SECTIONS) - 1  # §10 is recommended, not required
 
 SCOPE_WORDS = ("检索", "范围内", "据我们所知", "截至", "本次调研", "本文调研", "window", "venues")
 OVERCLAIM = re.compile(r"首次|填补空白|尚属首次|前所未有|从无到有|国内外尚无|尚无研究")
@@ -113,11 +115,13 @@ def main() -> None:
     # --- structure ---------------------------------------------------------
     matched = [(match_section(h), h, body) for h, body in found]
     positions = [i for i, _, _ in matched if i >= 0]
-    missing = [SECTIONS[i][0] for i in range(len(SECTIONS)) if i not in positions]
+    missing = [SECTIONS[i][0] for i in range(REQUIRED) if i not in positions]
     if missing:
         add("FAIL", "sections present", f"missing: {', '.join(missing)}")
     else:
-        add("PASS", "sections present", f"{len(SECTIONS)}/9")
+        add("PASS", "sections present", f"{REQUIRED}/{REQUIRED} core sections")
+    if len(SECTIONS) - 1 not in positions:
+        add("WARN", "references section", "no §10 — put every source (incl. news/blogs) in one place")
     dup = [SECTIONS[i][0] for i in positions if positions.count(i) > 1]
     if dup:
         add("WARN", "sections unique", f"duplicated: {', '.join(sorted(set(dup)))}")
@@ -177,11 +181,29 @@ def main() -> None:
         elif responded < len(blocks):
             add("WARN", "risk responses", f"{responded}/{len(blocks)} carry a response")
 
+    # --- metadata (research's who/when) -----------------------------------
+    first = bodies.get(0, "")
+    has_who = re.search(r"调研人|Researcher|姓名|Name", first)
+    has_when = re.search(r"起止时间|Duration|20\d{2}\.\d{2}", first)
+    if has_who and has_when:
+        add("INFO", "§1 metadata", "researcher and duration present")
+    else:
+        add("WARN", "§1 metadata", "missing 调研人/起止时间 — the reader cannot tell who asked, over what window")
+
     concl = bodies.get(8, "")
     if not any(w in concl for w in ("下一步", "短期", "中期", "长期", "建议")):
         add("WARN", "next steps", "§9 has no next step")
-    if not any(w in concl for w in ("继续", "收窄", "放弃", "停止", "值得")):
-        add("WARN", "decision", "§9 does not state continue/narrow/stop")
+    if not any(w in concl for w in ("立项", "放弃", "继续调研", "导师", "继续", "收窄", "停止", "值得")):
+        add("WARN", "decision", "§9 does not state continue/narrow/stop/kick-off")
+
+    # --- references section ------------------------------------------------
+    refs = bodies.get(len(SECTIONS) - 1, "")
+    if refs:
+        links = len(LINK.findall(refs))
+        kinds = re.findall(r"论文|综述|新闻|博客|论坛|厂商|微信|paper|survey|news|blog|forum|advisory", refs, re.I)
+        add("INFO", "§10 references", f"{links} links, {len(kinds)} typed entries")
+        if links < 3:
+            add("WARN", "§10 links", f"{links} links — is every in-text source listed?")
 
     purpose = bodies.get(1, "")
     rq = len(re.findall(r"RQ\s*\d", purpose))

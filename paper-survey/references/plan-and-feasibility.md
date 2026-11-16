@@ -25,21 +25,20 @@ Three to five items, each: **asset → therefore not-from-scratch**.
 - **已有跨组件环境。** 12 个组件、原始报文与日志采集能力；因此无需从零搭建实验基础设施。
 ```
 
-### Feasibility/risk table
+### Feasibility table: five dimensions
 
-```markdown
-| 研究任务 | 初步可行性 | 主要风险 |
+Assess each dimension concretely, and attach the risk/mitigation to the same row:
+
+| 评估维度 Dimension | 情况 Assessment | 风险/应对 Risk/Mitigation |
 |---|---|---|
-| 已知漏洞复现与根因归纳 | 高 | 新版本可能已修复 |
-| 消费者源码普查 | 高 | 可分析组件有限 |
-| 定向发现系统 | 较高 | 静态分析误报与 oracle 错误 |
-| 真实部署评估 | 中等 | 配置与版本信息不可见 |
-```
+| 数据可得性 Data availability | which corpus / deployments, under what licence or authorisation | e.g. access not granted → fall back to public corpora |
+| 技术难度 Technical difficulty | what must be built vs. reused | e.g. static analysis false positives → manual triage budget |
+| 所需资源/工具 Resources/tools | compute, testbed, people, licences | e.g. no GPU → restrict model size |
+| 时间成本 Time cost | person-weeks per stage | e.g. P2 slips → cut the deployment study |
+| 潜在风险 Risks | the one that could kill it | trigger, response, stop condition |
 
-Rules that make it useful (a table is easiest when there are many tasks; with three tasks, three
-short paragraphs read just as well): every row's feasibility is one of 高 / 较高 / 中等 / 低, and
-anything at 中等 or below reappears in the risk list below. A risk that is not on the list cannot
-be monitored.
+A paragraph per dimension is equally acceptable; the table is just easier to scan. What fails is
+a list of "we are experienced" claims with no assessment of data, tools, or time.
 
 ### Risk register
 

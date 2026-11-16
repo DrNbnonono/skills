@@ -35,16 +35,35 @@ This block is what makes "在本次检索范围内" mean something. Keep it shor
 
 ---
 
+### Four methods that make coverage practical
+
+1. **顺藤摸瓜 — citation chasing.** Take the most recent 1–2 years of top-venue papers and read
+   their reference lists; a recent paper's citations usually cover most important prior work, so
+   tracing backward maps the field quickly.
+2. **找综述 — Survey / SoK first.** A survey or systematization gives the taxonomy and the
+   development line in one place; read it for the map, then verify the primary sources you rely on.
+3. **横向对比 — compare side by side.** Put the works in one table (method, assumptions, data,
+   metrics); what remains unsolved is the raw material for §6.
+4. **多渠道 — look outside papers.** News, technical blogs, HN/Reddit/Zhihu, vendor advisories, and
+   WeChat posts carry recency, real-world impact, and industry reaction that papers do not. They
+   belong in §10 with their type labelled; they are not evidence for a technical claim, but they
+   are evidence for what practitioners face.
+
+---
+
 ## 2. The comparison table
 
-```markdown
-| 研究工作 | 主要研究内容 | 对本研究的启发及区别 |
-|---|---|---|
-| [End-to-End Measurements of Email Spoofing Attacks](url)（USENIX Security 2018） | 测量 35 个服务商对伪造邮件的检测、投递与用户警告 | 已测伪造与用户警告；本研究测认证结果消费 |
-```
+**Recommended columns** (use them when a table helps; a paragraph per work is fine for three
+works, as long as it carries the same five facts):
 
-Rules that make the table persuasive (the table itself is optional — with only three close works,
-three paragraphs may read better):
+| 论文/工具 Paper/Tool | 来源 Venue/Year | 核心思路 Core Idea | 局限性/差距 Limitation/Gap | 可借鉴点 Takeaway |
+|---|---|---|---|---|
+| [End-to-End Measurements of Email Spoofing Attacks](url) | USENIX Security 2018 | measured 35 providers' handling of spoofed mail and user warnings | stops at delivery/UI; not the authentication-result consumption path | deployment measurement design; warning-effect baseline |
+
+The **limitation and takeaway columns are the load-bearing ones**: a row that lists a work but
+not what it cannot do and what can be borrowed is a citation, not a survey.
+
+Rules that make the table persuasive:
 
 1. **Link + venue + year** in the first cell. No link, no row.
 2. **Column 2 is what they did**, in their terms — not what they failed to do.

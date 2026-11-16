@@ -1,7 +1,7 @@
 ---
 name: paper-survey
-description: Run a pre-paper research survey (方向调研与可行性论证) for security/CS venues (S&P, USENIX Security, CCS, NDSS, journals, IEEE S&P Magazine). Use for 调研报告/前期调研/方向调研/选题论证/可行性分析/相关工作梳理/开题报告. Organises the survey into nine sections whose only job is to make the reader understand what was investigated and why the conclusion follows. No word limits, no mandatory tables: structure serves comprehension. Accuracy rules are strict (evidence grades, bounded negatives); form is not.
-version: 1.1
+description: Run a pre-paper research survey (方向调研与可行性论证) for security/CS venues (S&P, USENIX Security, CCS, NDSS, journals, IEEE S&P Magazine). Use for 调研报告/前期调研/方向调研/选题论证/可行性分析/相关工作梳理/开题报告. Organises the survey into ten sections whose only job is to make the reader understand what was investigated and why the conclusion follows. No word limits, no mandatory tables: structure serves comprehension. Accuracy rules are strict (evidence grades, bounded negatives); form is not.
+version: 1.2
 ---
 
 # Paper survey (前期调研)
@@ -22,7 +22,7 @@ makes the situation clear has passed.
 - **Tables, lists, and numbered artifacts are not mandatory.** They are tools: use one when it
   makes a comparison or a set of risks easier to see than prose. A clear paragraph beats a table
   that exists to satisfy a template.
-- **The nine section names are a reading order, not a cage.** Keep the order (it is the argument's
+- **The ten section names are a reading order, not a cage.** Keep the order (it is the argument's
   spine), but merge sub-points, rename sub-headings, and write prose where prose is clearer.
 - **Do not manufacture content to fill a section.** If a section has little to say for this
   direction, say little and say why.
@@ -39,23 +39,54 @@ Three laws carry the accuracy; they are about claims, not about form:
 - **Bounded.** "We did not find X in this search window on these venues" is a finding; "X does not
   exist" is an assertion you cannot support.
 
-## The nine sections: what each must make clear
+## The ten sections: what each must make clear
+
+§1–§9 are the argument; §10 is the evidence index. A reader should be able to stop at §9 and
+still find every source in §10.
 
 | § | Section | The reader must be able to answer afterwards | Typical failure |
 |---|---|---|---|
-| 1 | 基本信息 | What exactly is being studied, at what stage, with what expected output | A background essay instead of a scope |
+| 1 | 基本信息 | What is studied, by whom, over what period, at what stage, with what expected output | A background essay instead of a scope |
 | 2 | 目的与背景 | Why this question exists, and what it must answer | No turn from "the field" to "the gap"; RQs that are topics |
-| 3 | 范围与方法 | What is in, what is out, and how a claim will be judged | Scope only lists inclusions; method names without procedure |
-| 4 | 相关工作 | Who is closest, what they settled, and where the distance is | Strawmen; "related" without "different in which dimension" |
+| 3 | 范围与方法 | What is in, what is out, **how to search**, and how a claim will be judged | Scope only lists inclusions; method names without procedure |
+| 4 | 相关工作 | Who is closest, what they settled, **their limitation**, and what can be borrowed | Strawmen; a row with no limitation and no takeaway |
 | 5 | 现状总结 | What is settled and what is not, as judgments | Paper-by-paper summaries again |
-| 6 | 空白与问题 | Which gap is real, why it is not already solved, and how it could be closed | "No one has studied X"; gaps too large to test |
-| 7 | 可行性 | Whether we can do it, and what could stop us | Optimism without risk; risks without response |
-| 8 | 初步思路 | How it would be done and how success would be measured | Wish list; metrics that mix three different claims |
-| 9 | 结论与建议 | The decision, the next step, and what would change the decision | Ending on "promising" |
+| 6 | 空白与问题 | What existing work solved, where it falls short, what nobody has studied — and which gaps are real | "No one has studied X"; gaps too large to test |
+| 7 | 可行性 | Data, difficulty, resources, time, risk — and what could stop us | Optimism without risk; risks without response |
+| 8 | 初步思路 | How it would be done, in **more than one candidate**, and how success would be measured | Wish list; one approach presented as inevitable |
+| 9 | 结论与建议 | Whether to continue, and the next step (立项 / 放弃 / 继续调研 / 与导师讨论) | Ending on "promising" |
+| 10 | 参考文献与资料 | Every source used, including non-paper channels | Links without type or venue/year |
 
 Per-section guidance — the questions to answer, what a convincing answer looks like, and the
 questions to self-check — is in `references/section-constraints.md`. It is guidance, not a
 completion form.
+
+### Section 1 carries the survey's metadata
+
+Add the four fields at the top; they answer "who is asking, over what window, on top of which
+project document":
+
+| 调研主题/方向 Topic/Direction | 调研人 Researcher | 起止时间 Duration | 项目内容文档 Project Doc |
+|---|---|---|---|
+| topic, may be broader than the project title | name | YYYY.MM – YYYY.MM | link to the project documentation |
+
+### Four search methods worth naming in §3
+
+1. **顺藤摸瓜 (citation chasing).** Start from the most recent 1–2 years of top-venue papers;
+   their reference lists already cover most important prior work — trace backward.
+2. **找综述 (Survey / SoK).** A survey or systematization gives the taxonomy and development
+   line faster than scattered reading; use it for the map, then verify primary sources.
+3. **横向对比 (side-by-side comparison).** Line up method, assumptions, data, and metrics
+   (that is the §4 table); what is not solved becomes §6.
+4. **多渠道 (multi-channel).** News, technical blogs, HN/Reddit/Zhihu, vendor advisories, and
+   WeChat posts reveal recency and real-world impact that papers do not; they belong in §10
+   with their type labelled.
+
+### §10 is an evidence index, not only a bibliography
+
+It is not limited to academic papers: news, blogs, forum threads, vendor advisories, and
+WeChat posts all belong here. A table with type / title or outlet / link / note is the easiest
+form; a plain list is acceptable if each entry still says what kind of source it is.
 
 ## What "readable" means here
 
@@ -108,6 +139,9 @@ Never promote a grade silently. Wording rules, source format, and the ten accura
 8. **The decision is a deliverable:** continue / narrow / stop, and what would change it.
 9. **Ethics and access are part of feasibility.**
 10. **Negative and inconclusive results stay visible.**
+11. **Every source in the text appears in §10**, with its type (paper / survey / news / blog /
+    forum / vendor advisory / WeChat post). A source that is only in the body is a dead link
+    nobody can check.
 
 ## Workflow
 
@@ -130,7 +164,8 @@ Never promote a grade silently. Wording rules, source format, and the ten accura
 
 ## Deliverables
 
-- The report, with date and search protocol.
+- The report, with date, researcher/window metadata, and search protocol.
+- §10: every source used, typed (paper / survey / news / blog / forum / vendor advisory / WeChat).
 - Whatever exhibits help the reader follow it (a comparison table, a risk table, a route table) —
   chosen, not mandatory.
 - The decision and next steps.
