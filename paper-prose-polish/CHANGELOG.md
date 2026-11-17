@@ -1,5 +1,73 @@
 # Changelog
 
+## v2.8.0 - IMC specialisation (additive; no existing rule moved)
+
+The skill could polish a security paper, reshape one for a magazine, and repair an English
+abstract. It had nothing to say about a **measurement** venue, where the reviewer's first
+question is not "is the attack novel" but "over what population, in what period, from
+where". This release adds ACM IMC as a venue profile, measured rather than remembered.
+
+### Added
+
+- **`references/venue-imc.md`**: official IMC 2026 gates (13/6 pages, abstract ≤200 words,
+  double-blind with the unique-capability exception, **mandatory "Ethics" appendix**,
+  artifact declaration, appendices may not carry a contribution's evidence, grayscale-safe
+  figures, AI disclosure), the measured prose fingerprint, the abstract recipe with its
+  base rates, the number-and-scope rule, the measurement-verb register, validity language
+  for the four questions an IMC reviewer asks, ethics and artifact paragraphs, twelve
+  IMC-specific anti-patterns, and a worked before/after in IMC voice.
+- **`scripts/imc_check.py`**: the venue checks a prose linter cannot make — abstract budget
+  and opening frame, presence of the Ethics section, artifact statement, measurement vs
+  systems verb counts, digit-bearing sentence share, unbounded generality, unhedged "first"
+  claims, "significant" with no test, em-dash budget. Every threshold prints the base rate
+  it came from.
+- **`venue-profiles.md` §6**, three anti-pattern rows, and a **Step 0 / Step 5 hook** in
+  `SKILL.md`: the profile is entered from the existing venue gate, not from a parallel
+  workflow.
+
+### Measured
+
+Two samples, both DOI-anchored to the ACM proceedings (2022-2025), never to an arXiv
+comment field: **75 full texts** (32% of the 237-paper programme; the ACM DL answers 403,
+so this is what arXiv and repositories could supply) and **all 237 camera-ready titles and
+abstracts** from the programme pages.
+
+- Prose: mean sentence **23.7** words, median 21, p90 38, passive 19.0%, negation 5.7 per
+  1,000, hedges 3.8 per 1,000, em dashes **2.75** per 1,000, and **51.5% of sentences carry
+  a digit**.
+- Against the 120-paper top-4 corpus: sentence length is **identical** (23.7 vs 23.1),
+  negation identical, passive slightly lower — the IMC difference is not at the sentence
+  level. It is the digit-bearing share (51.5% vs 39.7%), the em-dash density (3x), and the
+  verb register (`we find` is IMC's most frequent body verb; `we use / evaluate / propose`
+  lead in security).
+- Sections: introduction 98.7%, background/related 81.3%, method 64.0%, results-or-
+  evaluation 40.0%, discussion 46.7%, limitations 26.7%, conclusion 78.7%, Ethics anywhere
+  92.0%, appendices 21.3%. Only 40% name a section "Evaluation"; the middle of an IMC paper
+  is usually named after the object measured.
+- Abstracts: median **189** words (29.5% exceed the 200-word limit anyway — recorded, not
+  imitated), 82.3% carry a number, 95.8% use "we", only **8.0%** open with
+  "We / In this paper" (first sentence, as defined in `imc_abstracts.py`), 52% open with a
+  property of the object, 24.1% claim "first".
+- Titles: median 10 words, 55.3% with a colon, 24.5% naming measurement work.
+
+### Explicitly not done
+
+No threshold in `lint_prose.py` was touched, and `--venue imc` was not added: the measured
+IMC numbers sit inside the existing conference limits, and the venue-specific checks live in
+their own script. No existing reference file was rewritten, no rule was renumbered, and the
+precedence rule (claim fidelity > coherence > metrics) is unchanged: a `WARN` from
+`imc_check.py` may stand with a recorded reason, exactly like a gate miss.
+
+### Recorded as not measured
+
+Inter-rater agreement on the section roles (single layout detector, no double annotation);
+prose from 2021 and earlier (different template, different ethics rule); whether an IMC
+paper's arXiv preprint is the camera-ready text (76% of the sample carries camera-ready
+furniture; the Ethics figures are also reported on that subset). The caveats are printed in
+`venue-imc.md` §11 rather than hidden.
+
+---
+
 ## v2.7.0 - the abstract is an English genre, not a translated one
 
 The previous abstract guidance was inherited from Chinese-journal conventions (目的 / 方法 / 结果 /

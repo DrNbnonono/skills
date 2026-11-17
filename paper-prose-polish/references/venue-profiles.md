@@ -112,3 +112,44 @@ Rules that are correct for one target and wrong for another. Check the row befor
 
 The most common magazine mistake is **shortening** a conference paper. The magazine needs a
 **rewrite**: the same finding, opened with a specific person, machine, and failure.
+
+---
+
+## 6. Measurement venues: ACM Internet Measurement Conference
+
+IMC is not a security venue with a different name. The unit of contribution is a **finding
+about an operational network**, and the reviewer's first question is not "is the attack
+novel" but "over what population, in what period, from where". That question is answered in
+the sentence that makes the claim, not in a threat model three sections away.
+
+Full profile, with the measurements behind every number: `references/venue-imc.md`.
+What belongs here is only how it changes the rules above.
+
+| Dimension | Top-4 security | ACM IMC |
+|---|---|---|
+| First-page question | What is the contribution, and how does it differ? | What does the Internet do, and how do you know? |
+| Claim's bound | Threat model, stated once | Population / place / period, in the same sentence |
+| House verbs | design, implement, evaluate, outperform | measure, observe, find, identify, compare |
+| Contribution list (C1/C2/C3) | Expected by page 2 | Used by only 25% of papers; not a defect either way |
+| Related work | Often late (its own section near the end) | Early: second section in most papers |
+| Ethics | USENIX: a section before references | **Mandatory appendix section headed "Ethics"**; the only appendix reviewers must read |
+| Data / artifacts | Encouraged | **Declared** (full / partial / none); a "none" needs a reason and a cost |
+| Appendix | Reviewers may skip | Cannot carry a contribution's primary evidence |
+| Abstract | 200–250 words, claim-dense | **≤ 200 words**, median 189, 82% carry a number |
+| Display items | Tables and ablations | Figures: median 9 figures + 5 tables |
+
+**Rules that void at IMC** (relative to the top-4 rows in §4):
+
+- Do **not** convert a measurement into a system contribution to look more novel; the
+  venue reviews the finding.
+- Do **not** delete the local scope clause to shorten a sentence — the scope is the claim.
+- Do **not** import a threat-model section as the place where bounds live.
+- Do **not** assume a bullet contribution list is required; it is the minority form.
+- Do **not** treat "significantly" as free: only 16% of papers run a test, so a statistical
+  word without one is conspicuous rather than conventional.
+
+Measured fingerprint, 75 full texts and 237 abstracts (details in `venue-imc.md` §2):
+mean sentence 23.7 words — **the same as top-4 security**; passive 19.0%; em dashes 2.75 per
+1,000 words (3× security); and **51.5% of sentences contain a digit** (security: 39.7%).
+The difference between the venues is not sentence length. It is how much a sentence must
+carry.

@@ -1,7 +1,7 @@
 ---
 name: paper-prose-polish
-description: Polish English academic prose for security/systems venues (S&P, USENIX Security, CCS, NDSS, journals, IEEE S&P Magazine), written for readers whose first language is not English. Use for 润色/改写/逐句修改论文表述, 摘要润色 (English top-4 conventions, not the Chinese 摘要 template), diagnosing why a paragraph is unreadable, converting a conference paper into a magazine feature, or a clarity review before submission. Core rule: if a competent non-native reader cannot follow a sentence on the first pass, the sentence is broken. Measures the draft first, then revises sentence by sentence with a defect code and a stated reader-stall reason for every change.
-version: 2.7.0
+description: Polish English academic prose for security/systems/measurement venues (S&P, USENIX Security, CCS, NDSS, ACM IMC, journals, IEEE S&P Magazine), written for readers whose first language is not English. Use for 润色/改写/逐句修改论文表述, 摘要润色 (English top-4 conventions, not the Chinese 摘要 template), diagnosing why a paragraph is unreadable, converting a conference paper into a magazine feature, retargeting a security draft for a measurement venue such as IMC, or a clarity review before submission. Core rule: if a competent non-native reader cannot follow a sentence on the first pass, the sentence is broken. Measures the draft first, then revises sentence by sentence with a defect code and a stated reader-stall reason for every change.
+version: 2.8.0
 ---
 
 # Paper prose polish
@@ -151,6 +151,12 @@ a magazine, which is single-blind, requires CVE numbers, and is typeset by the p
 Record the decision: venue class, page/word budget, abstract limit, audience
 (researcher vs practitioner), review model.
 
+If the target is a **measurement venue** (ACM IMC, and the workshops that share its review
+culture), read `references/venue-imc.md` as well. It is a specialisation, not a second
+framework: the same gates apply, but a claim there must carry its population, place, and
+period in the sentence that makes it, and the house verbs are `measure / observe / find`
+rather than `design / evaluate / outperform`.
+
 `references/venue-prose-corpus.md` explains what the top-4 venues actually reward in prose,
 and how to re-measure a fresh corpus instead of trusting remembered style advice.
 
@@ -293,6 +299,10 @@ closing. Fix person and order first, then length. Do not "fix" person by deletin
 - Read the revised paragraph aloud once. A sentence the reviser cannot finish in one breath
   is still too long.
 - Back-check: every number, `\cite`, `\ref`, and technical term unchanged.
+- **If the target is IMC**, run `scripts/imc_check.py` after the prose gates: abstract
+  budget, Ethics appendix, artifact statement, measurement-verb register, digit-bearing
+  sentence share, unbounded generality. It answers venue questions the prose linter cannot
+  ask; it does not replace it, and a WARN there may stand with a recorded reason.
 
 ## Deliverables per round
 
@@ -326,12 +336,16 @@ closing. Fix person and order first, then length. Do not "fix" person by deletin
 | **Connective glue** — `However / Therefore / Thus` in more than ~18 % of sentences | The logic is asserted instead of carried by the order; readers skim scaffolding |
 | **Nitpicking a good sentence** — rewriting prose that already passes the gates | Every unnecessary edit is a chance to introduce meaning drift; KEEP is ~40 % of a normal round by design, and three real fixes beat forty cosmetic ones |
 | **Chinese-abstract calque** — "Advisory recall is 0–3%." with no actor, results before the question, a closing significance sentence | The English abstract has an agent and a question: 92% of top-4 abstracts name the author team, 54% use `In this paper, we`, only 1% front the result (A22–A25, `references/abstract.md`) |
+| **Retargeting by shortening** — cutting a security draft down to fit IMC | The two venues have the same sentence length (23.7 vs 23.1 words). What differs is that half of an IMC sentence carries a number and its scope; shortening removes the bound, not the fat (`venue-imc.md`) |
+| **Borrowing the security register for a measurement** — "we propose / evaluate / outperform" when you measured | Reads as a systems paper reviewed by a measurement PC; IMC's most frequent body verb is "we find", 51.5% of its sentences carry a digit, and 82% of its abstracts carry a number |
+| **An unbounded number** — "12% of domains fail validation" with no population, place, or period | At IMC the reviewer's first question is "over what, where, when"; the scope belongs in the sentence that makes the claim, not in a limitations section (`venue-imc.md` §4) |
 
 ## Resource map
 
 | File | Use |
 |---|---|
 | `references/abstract.md` | English abstract conventions measured on 164 top-4 abstracts; A22–A25; the fact-sheet diagnosis and a worked repair |
+| `references/venue-imc.md` | ACM IMC specialisation: hard gates, measured prose fingerprint (75 full texts, 237 abstracts), abstract recipe, number+scope rule, validity language, ethics/artifact paragraphs, IMC anti-patterns, worked example |
 | `references/venue-profiles.md` | Official criteria per venue, magazine requirements, rules-void matrix |
 | `references/venue-prose-corpus.md` | What the top-4 venues reward in prose; corpus protocol to re-measure |
 | `references/comprehension-gate.md` | The first-read / shadow / stranger tests, stall taxonomy, worked pairs |
@@ -349,5 +363,6 @@ closing. Fix person and order first, then length. Do not "fix" person by deletin
 | `references/worked-example.md` | A full worked case: measured draft → revised paragraphs |
 | `scripts/lint_prose.py` | Sentence-length / passive / nominalisation / dash / negation / L2-blocker counter, `--gate`, `--explain`, `--flow` (rhythm and seam warnings), `--abstract` (abstract shape against the measured top-4 corpus) |
 | `scripts/abstract_study.py` | Re-collect and re-measure the abstract corpus (OpenAlex + usenix.org); prints the tables used in `abstract.md` |
+| `scripts/imc_check.py` | IMC venue checks: abstract budget, Ethics appendix, artifact statement, verb register, digit-bearing sentences, unbounded generality |
 | `templates/revision-table.md` | Per-round record format |
 | `CHANGELOG.md` | What changed in v2 and why |
